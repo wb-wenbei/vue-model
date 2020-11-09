@@ -1,0 +1,43 @@
+.table-edit-dialog {
+  text-align: left;
+
+  .dialog-title {
+    padding: 10px;
+
+  }
+
+  .dialog-footer {
+    text-align: center;
+    padding-top: 8px;
+  }
+
+  .el-form-item {
+    margin-bottom: 16px;
+  }
+
+  .el-dialog__header {
+    padding: 10px 20px 5px;
+    border-bottom: 1px solid #eeeeee
+  }
+
+  .el-dialog__body {
+    padding: 20px;
+    max-height: 600px;
+    min-height: 500px;
+    overflow: auto;
+  }
+
+  .el-dialog__footer {
+    border-top: 1px solid #eeeeee
+  }
+
+  /*抵消全局样式*/
+  .el-form-item.is-error .el-input__inner,
+  .el-form-item.is-error .el-input__inner:focus,
+  .el-form-item.is-error .el-textarea__inner,
+  .el-form-item.is-error .el-textarea__inner:focus,
+  .el-message-box__input input.invalid,
+  .el-message-box__input input.invalid:focus {
+    margin-bottom: 0 !important;
+  }
+}
