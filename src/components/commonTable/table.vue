@@ -282,7 +282,7 @@ export default {
               this.tableData = [];
             }
           })
-          .finally(res => {
+          .finally(() => {
             this.isLoading = false;
           });
       }
@@ -320,7 +320,7 @@ export default {
         this.$confirm(this.deleteMessage)
           .then(() => {
             this.deleteApi({ data: { id: v.id } })
-              .then(res => {
+              .then(() => {
                 this.$message.success(this.deleteTitle + "成功");
                 this.loadData();
               })

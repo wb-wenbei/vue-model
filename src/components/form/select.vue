@@ -69,7 +69,7 @@ export default {
         this.currentValue = v;
       }
     },
-    change(v) {
+    change() {
       this.$emit("input", this.currentValue);
     }
   }

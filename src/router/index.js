@@ -36,7 +36,7 @@ const routes = [
     component: Layout,
     meta: {
       title: "内容管理",
-      icon: "aim",
+      icon: "cms",
       code: ""
     },
     children: [
@@ -63,7 +63,7 @@ const routes = [
     component: Layout,
     meta: {
       title: "个人中心",
-      icon: "aim",
+      icon: "mine",
       code: ""
     },
     children: [

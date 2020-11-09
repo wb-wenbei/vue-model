@@ -44,11 +44,11 @@ export default {
     this.currentValue = this.value;
   },
   methods: {
-    handleAvatarSuccess(res, file) {
+    handleAvatarSuccess(res) {
       this.currentValue = res.data.url;
       this.$emit("input", this.currentValue);
     },
-    beforeAvatarUpload(file) {
+    beforeAvatarUpload() {
       return true;
     }
   }

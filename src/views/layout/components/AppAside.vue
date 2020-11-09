@@ -12,7 +12,7 @@
         :index="menu.path"
       >
         <template slot="title">
-          <i class="el-icon-message"></i>
+          <svg-icon :icon-class="menu.meta.icon" />
           {{ menu.meta.title }}
         </template>
         <template v-if="menu.children && menu.children.length">

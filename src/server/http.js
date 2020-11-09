@@ -54,6 +54,7 @@ http.interceptors.response.use(
     if (error.response) {
       code = error.response.status;
       if (code === 401) {
+        // Notify.info(err)
       } else if (code === 403) {
         router.push({ path: "/error/403" });
       } else if (code === 500) {
@@ -66,7 +67,6 @@ http.interceptors.response.use(
     } else {
       // Notify.info(err)
     }
-
     return Promise.reject(error);
   }
 );

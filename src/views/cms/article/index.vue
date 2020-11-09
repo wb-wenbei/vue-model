@@ -7,8 +7,12 @@
           :headers="headers"
           :data="tableData"
           @editRow="editRow"
+          @add="add"
         ></common-table>
-        <edit-dialog :visibleDialog.sync="visibleDialog"></edit-dialog>
+        <edit-dialog
+          :visibleDialog.sync="visibleDialog"
+          :title="title"
+        ></edit-dialog>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -32,6 +36,7 @@ export default {
         { prop: "action", label: "操作", width: 140, fixed: "right" }
       ],
       visibleDialog: false,
+      title: "添加文章",
       tableData: [
         {
           id: 1,
@@ -44,6 +49,11 @@ export default {
   },
   methods: {
     editRow() {
+      this.title = "编辑文章";
+      this.visibleDialog = true;
+    },
+    add() {
+      this.title = "添加文章";
       this.visibleDialog = true;
     }
   }
