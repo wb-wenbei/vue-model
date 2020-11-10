@@ -12,7 +12,10 @@
         <edit-dialog
           :visibleDialog.sync="visibleDialog"
           :title="title"
-        ></edit-dialog>
+          :columns="columns"
+        >
+          <template v-slot:content></template>
+        </edit-dialog>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -44,7 +47,29 @@ export default {
           updateTime: Date.now(),
           updateUser: "test"
         }
-      ]
+      ],
+      columns: [
+        { prop: "title", label: "标题", type: "text", required: true },
+        {
+          prop: "description",
+          label: "描述",
+          type: "textarea",
+          required: true
+        },
+        { prop: "image", label: "图片", type: "image", required: true },
+        { prop: "content", label: "内容", type: "custom", cols: 2 },
+        { prop: "sort", label: "排序", type: "number" },
+        { prop: "sort", label: "排序", type: "number" },
+        { prop: "setTop", label: "置顶", type: "radio" }
+      ],
+      form: {
+        title: "",
+        image: "",
+        description: "",
+        content: "",
+        sort: 0,
+        setTop: false
+      }
     };
   },
   methods: {
