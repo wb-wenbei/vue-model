@@ -6,7 +6,7 @@
 export default {
   name: "selectLabel",
   props: {
-    keyId: { type: Number | String | Array },
+    keyId: {},
     data: {},
     defaultLabel: { type: String, default: "--" }
   },

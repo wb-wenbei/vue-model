@@ -15,16 +15,16 @@
               :label="column.label"
               :label-width="column.labelWidth"
             >
-              <cb-select
+              <form-organize
                 v-if="column.type === 'org'"
                 v-model="form[column.prop]"
-              ></cb-select>
+              ></form-organize>
 
               <el-input
                 v-else-if="column.type === 'input'"
                 v-model="form[column.prop]"
                 v-bind="column.props"
-                style="width: 196px"
+                class="short-width"
               >
               </el-input>
 
@@ -54,10 +54,8 @@
     </div>
     <div class="search-btn">
       <slot name="search-btn">
-        <el-button type="primary" size="small" @click="search">查 询</el-button>
-        <el-button v-if="resettable" size="small" @click="reset"
-          >重 置</el-button
-        >
+        <el-button type="primary" @click="search">查 询</el-button>
+        <el-button v-if="resettable" @click="reset">重 置</el-button>
       </slot>
       <template v-if="showOpen">
         <el-button v-if="open === false" type="text" @click="open = true">
@@ -72,27 +70,23 @@
 </template>
 
 <script>
-import CbSelect from "@/components/cbinationSelect.vue";
 import FormSelect from "@/components/form/select.vue";
+import FormOrganize from "@/components/form/organize";
 
 const defaultProps = {
   input: {
-    size: "small",
     placeholder: "请输入"
   },
   select: {
-    size: "small",
     placeholder: "请选择",
     clearable: true
   },
   date: {
-    size: "small",
     placeholder: "选择日期",
     valueFormat: "timestamp",
     type: "date"
   },
   dateRange: {
-    size: "small",
     placeholder: "选择日期",
     valueFormat: "timestamp",
     type: "daterange",
@@ -104,7 +98,7 @@ const defaultProps = {
 
 export default {
   name: "tableSearch",
-  components: { CbSelect, FormSelect },
+  components: { FormSelect, FormOrganize },
   props: {
     value: {},
     columns: { type: Array },
@@ -199,7 +193,7 @@ export default {
     setHeight() {
       this.$refs["search-form"].style.height = this.open
         ? this.$refs["form-box"].clientHeight + "px"
-        : "48px";
+        : "40px";
     },
     reset() {
       this.form = Object.assign({}, this.defaultForm);
@@ -218,7 +212,7 @@ export default {
 
   .search-form {
     flex: 1;
-    height: 48px;
+    height: 40px;
     overflow: hidden;
     transition: height ease-out 0.2s;
   }
@@ -230,13 +224,13 @@ export default {
   }
 
   .search-select-item {
-    /deep/ .el-select__tags-text {
+    ::v-deep .el-select__tags-text {
       display: inline-block;
       max-width: 75px;
       overflow: hidden;
     }
 
-    /deep/ i {
+    ::v-deep i {
       margin-bottom: 8px;
       margin-right: 2px;
     }

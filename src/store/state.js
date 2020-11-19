@@ -1,7 +1,8 @@
 const state = {
   customerId: "",
   orgIds: "",
-  userInfo: {}
+  userInfo: {},
+  baseOrgList: []
 };
 
 export default state;

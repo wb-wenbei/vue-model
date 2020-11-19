@@ -8,11 +8,25 @@ import state from "./state";
 import mutations from "./mutations";
 import actions from "./actions";
 import auth from "./modules/auth";
+import tagsView from "./modules/tagsView";
+
+const reducer = val => {
+  return {
+    userInfo: val.userInfo,
+    auth: val.auth,
+    permission: val.permission,
+    baseOrgList: val.baseOrgList
+  };
+};
 
 export default new Vuex.Store({
   state,
   mutations,
   actions,
-  modules: { auth },
-  plugins: [createPersistedState()]
+  modules: { auth, tagsView },
+  plugins: [
+    createPersistedState({
+      reducer: reducer
+    })
+  ]
 });

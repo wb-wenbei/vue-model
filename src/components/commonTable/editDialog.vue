@@ -106,23 +106,18 @@
     <div slot="footer" class="dialog-footer">
       <slot name="form-action" v-bind:form="defaultForm">
         <slot name="action-prepend"></slot>
-        <el-button
-          type="primary"
-          size="small"
-          @click="save"
-          :disabled="loading"
-          >{{ saveBtn }}</el-button
-        >
+        <el-button type="primary" @click="save" :disabled="loading">{{
+          saveBtn
+        }}</el-button>
         <el-button
           v-if="canSaveAndCreate"
           type="primary"
-          size="small"
           :disabled="loading"
           @click="saveAndCreate"
         >
           保存再新增
         </el-button>
-        <el-button size="small" @click="closeDialog">{{ cancelBtn }}</el-button>
+        <el-button @click="closeDialog">{{ cancelBtn }}</el-button>
         <slot name="action-append"></slot>
       </slot>
     </div>
@@ -152,25 +147,19 @@ import "./css/index.scss";
 
 const defaultProps = {
   text: {
-    size: "small",
     placeholder: "请输入"
   },
-  num: {
-    size: "small"
-  },
+  num: {},
   select: {
-    size: "small",
     placeholder: "请选择",
     clearable: true
   },
   date: {
-    size: "small",
     placeholder: "选择日期",
     valueFormat: "timestamp",
     type: "date"
   },
   textArea: {
-    size: "small",
     placeholder: "请输入",
     rows: "3"
   },
@@ -226,7 +215,7 @@ export default {
       rules: {},
       defaultForm: {},
       defaultOptions: {
-        rows: 2,
+        rows: 4,
         colMinWidth: "320px",
         labelWidth: "100px"
       }

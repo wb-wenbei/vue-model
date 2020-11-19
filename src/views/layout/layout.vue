@@ -2,11 +2,11 @@
   <el-container class="layout-wrap">
     <el-header height="50" class="header">
       <router-link id="logo" tag="div" class="logo" to="/home">
-        <span class="gray_white">太的科技内容管理系统</span>
+        <span class="gray_white">虹桥镇智慧社区评价系统</span>
       </router-link>
       <el-dropdown trigger="click">
         <el-button type="primary" size="medium" icon="el-icon-user-solid">
-          账号
+          {{ userName }}
           <i class="el-icon-caret-bottom"></i>
         </el-button>
         <el-dropdown-menu slot="dropdown">
@@ -20,13 +20,20 @@
     <el-container class="layout-main">
       <app-aside />
       <el-main class="main-body">
-        <el-scrollbar style="height: 100%">
+        <tags-view />
+        <el-scrollbar style="height: calc(100% - 50px)">
           <transition name="fade" mode="out-in" appear>
-            <keep-alive>
+            <keep-alive :include="cachedViews">
               <router-view />
             </keep-alive>
           </transition>
         </el-scrollbar>
+        <div class="footer">
+          <div class="footer-logo"></div>
+          <div class="footer-copy">
+            Copyright @ 2020 TideCloud 沪ICP备16024988号-1
+          </div>
+        </div>
       </el-main>
     </el-container>
   </el-container>
@@ -34,16 +41,25 @@
 
 <script>
 import AppAside from "./components/AppAside";
+import TagsView from "./components/TagsView";
 import { logoutAPI } from "@/api/auth.js";
 import { removeToken } from "@/utils/auth";
 
 export default {
   name: "layout",
-  components: { AppAside },
+  components: { AppAside, TagsView },
   data() {
     return {
       activeIndex: 0
     };
+  },
+  computed: {
+    cachedViews() {
+      return this.$store.state.tagsView.cachedViews;
+    },
+    userName() {
+      return this.$store.state.userInfo.userName;
+    }
   },
   methods: {
     revisePwd() {
@@ -69,12 +85,12 @@ export default {
     left: 0;
     right: 0;
     top: 0;
-    background-color: #36445e;
     padding: 0;
     height: 50px;
     line-height: 50px;
     font-size: 14px;
     color: #ffffff;
+    background: #3b7cef;
     cursor: pointer;
     display: flex;
     justify-content: space-between;
@@ -82,16 +98,23 @@ export default {
     .logo {
       padding: 0 10px;
       font-size: 18px;
+      font-weight: bold;
+    }
+
+    ::v-deep .el-dropdown {
+      overflow: hidden;
     }
 
     ::v-deep .el-button--primary {
       height: 50px;
-      background: #36445e;
-      border-color: #36445e;
+      background: #3b7cef;
+      border-color: transparent;
+      border-radius: 0;
     }
+
     ::v-deep .el-button:focus,
     .el-button:hover {
-      background: #101010;
+      background: #6496ee;
     }
   }
 
@@ -101,21 +124,36 @@ export default {
 
     .main-body {
       background: #ddd;
+      padding-bottom: 56px;
+      position: relative;
 
       &::v-deep .el-scrollbar__wrap {
         overflow-x: hidden;
         background: white;
       }
-    }
-  }
 
-  .footer {
-    height: 40px;
-    line-height: 40px;
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
+      .footer {
+        height: 56px;
+        position: absolute;
+        width: calc(100% - 40px);
+        bottom: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        .footer-logo {
+          height: 30px;
+          margin: 4px 0 2px;
+          width: 290px;
+          background: url("../../assets/footer/footer_logo.png") center /
+            contain;
+        }
+        .footer-copy {
+          line-height: 20px;
+          font-size: 12px;
+          color: rgba(0, 0, 0, 0.45);
+        }
+      }
+    }
   }
 }
 </style>

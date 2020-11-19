@@ -7,11 +7,7 @@
 
 <script>
 export default {
-  name: "index",
-  created() {
-    let token = this.$store.state.auth.token;
-    console.log("token", token);
-  }
+  name: "index"
 };
 </script>
 

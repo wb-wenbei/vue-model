@@ -19,7 +19,6 @@
             slot="reference"
             class="btn"
             type="text"
-            size="small"
             @click="onClick(item)"
           >
             <i :class="item.icon"></i>
@@ -40,13 +39,7 @@
             >
           </el-checkbox-group>
         </el-popover>
-        <el-button
-          v-else
-          class="btn"
-          type="text"
-          size="small"
-          @click="onClick(item)"
-        >
+        <el-button v-else class="btn" type="text" @click="onClick(item)">
           <i :class="item.icon"></i>
         </el-button>
       </el-tooltip>
@@ -73,7 +66,7 @@
         </el-upload>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button size="small" @click="uploadDialog = false">取 消</el-button>
+        <el-button @click="uploadDialog = false">取 消</el-button>
       </span>
     </el-dialog>
   </div>

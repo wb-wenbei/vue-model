@@ -6,7 +6,7 @@
     <div class="table-header-btn">
       <div>
         <slot name="header-left">
-          <el-button v-if="canAdd" size="small" type="primary" @click="add">
+          <el-button v-if="canAdd" type="primary" @click="add">
             <i class="el-icon-plus"></i>{{ addTitle }}
           </el-button>
         </slot>
@@ -85,14 +85,12 @@
                   v-if="canEdit"
                   @click="editRow(scope.row)"
                   type="text"
-                  size="small"
                   >编辑</el-button
                 >
                 <el-button
                   v-if="canDelete"
                   @click="deleteRow(scope.row)"
                   type="text"
-                  size="small"
                   class="table-del"
                   >删除</el-button
                 >
@@ -100,17 +98,14 @@
               </span>
               <!--              链接-->
               <span v-else-if="header.type === 'link'">
-                <el-button
-                  @click="rowClick(scope.row, header.prop)"
-                  type="text"
-                  size="small"
+                <el-button @click="rowClick(scope.row, header.prop)" type="text"
                   ><span :class="header.copiable ? 'copiable' : ''">{{
                     scope.row[header.prop]
                   }}</span></el-button
                 >
               </span>
               <!--              时间-->
-              <span v-else-if="header.type === 'time'">
+              <span v-else-if="header.type === 'date'">
                 {{ scope.row[header.prop] | formatDate }}
               </span>
               <!--              时间-时-分-->
@@ -123,11 +118,11 @@
               </span>
               <!--              图片-->
               <span v-else-if="header.type === 'image'">
-                <img
+                <el-image
                   class="table-image"
                   :src="scope.row[header.prop]"
-                  v-preview="scope.row[header.prop]"
-                />
+                  :preview-src-list="[scope.row[header.prop]]"
+                ></el-image>
               </span>
               <span v-else-if="header.filter">
                 {{ header.filter(scope.row[header.prop]) }}
@@ -150,6 +145,7 @@
     </div>
     <el-pagination
       v-if="!noShow && showPagination && page.totalCount > page.pageSize"
+      class="pagination"
       :disabled="isLoading"
       background
       layout="total, prev, pager, next, jumper"
@@ -250,12 +246,10 @@ export default {
         h.show = true;
         headers.push(h);
       });
-      console.log(headers);
       this.currentHeaders = this.arrayObjDeepCopy(headers);
       this.currentHeaders.forEach(h => {
         h.show = !this.noShowList.includes(h.prop);
       });
-      console.log(this.currentHeaders);
     },
     arrayObjDeepCopy(source) {
       var sourceCopy = source instanceof Array ? [] : {};
@@ -270,7 +264,7 @@ export default {
     loadData() {
       if (this.api) {
         this.isLoading = true;
-        let data = { data: Object.assign(this.pageParams, this.params) };
+        let data = Object.assign(this.pageParams, this.params);
         this.api(data)
           .then(res => {
             if (res) {
@@ -319,7 +313,7 @@ export default {
       if (this.deleteApi) {
         this.$confirm(this.deleteMessage)
           .then(() => {
-            this.deleteApi({ data: { id: v.id } })
+            this.deleteApi({ id: v.id })
               .then(() => {
                 this.$message.success(this.deleteTitle + "成功");
                 this.loadData();
@@ -369,12 +363,12 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.table-content {
-  padding-bottom: 16px;
+.common-table {
+  margin: 16px 0;
 }
 
-.common-table {
-  margin-top: 16px;
+.pagination {
+  text-align: right;
 }
 
 .table-del {
@@ -395,7 +389,7 @@ export default {
   border-style: solid;
   border-color: rgb(19, 168, 168);
   border-image: initial;
-  padding: 0px 20px;
+  padding: 0 20px;
 
   span {
     cursor: pointer;

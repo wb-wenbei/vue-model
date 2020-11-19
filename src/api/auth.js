@@ -23,10 +23,17 @@ export const updatePwdAPI = (data = {}) => {
   });
 };
 
-export const getUserInfoAPI = (options = {}) => {
+export const getUserInfoAPI = params => {
   return http({
     url: "/api-customer/user/userInfo",
     method: "get",
-    data: options.data
+    params
+  });
+};
+
+export const getPermissionAPI = () => {
+  return http({
+    url: "/api-customer/account/web/permission",
+    method: "get"
   });
 };

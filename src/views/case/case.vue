@@ -1,10 +1,10 @@
 <template>
-  <h1>job</h1>
+  <div>案件管理</div>
 </template>
 
 <script>
 export default {
-  name: "inde"
+  name: "Case"
 };
 </script>
 

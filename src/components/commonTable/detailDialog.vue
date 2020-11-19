@@ -93,7 +93,7 @@ export default {
     appendToBody: { type: Boolean, default: false },
     showFooter: { type: Boolean, default: false },
     data: {
-      type: Object | Array,
+      type: Array | Object,
       default() {
         return [];
       }

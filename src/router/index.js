@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import { getToken } from "@/utils/auth";
+import store from "@/store";
+import { Message } from "element-ui";
 
 Vue.use(VueRouter);
 
@@ -9,7 +10,7 @@ const Layout = () => import("../views/layout/layout");
 const routes = [
   {
     path: "/",
-    redirect: "/cms/article"
+    redirect: "/home"
   },
   {
     path: "/error/403",
@@ -32,28 +33,166 @@ const routes = [
     component: () => import("../views/login/index")
   },
   {
-    path: "/cms",
+    path: "/home",
+    name: "Home",
     component: Layout,
     meta: {
-      title: "内容管理",
+      title: "数据统计",
       icon: "cms",
-      code: ""
+      code: "hongqiao.dataCount",
+      affix: true
     },
     children: [
       {
-        path: "/cms/article",
-        component: () => import("../views/cms/article/index"),
+        path: "/home",
+        name: "DataCount",
+        component: () => import("../views/home/index"),
         meta: {
-          title: "新闻管理",
-          code: ""
+          title: "数据统计",
+          code: "hongqiao.dataCount"
         }
-      },
+      }
+    ]
+  },
+  {
+    path: "/community",
+    component: Layout,
+    meta: {
+      title: "社区管理",
+      icon: "cms",
+      code: "hongqiao.community"
+    },
+    children: [
       {
-        path: "/cms/job",
-        component: () => import("../views/cms/job/index"),
+        path: "/community",
+        name: "Community",
+        component: () => import("../views/community/community"),
         meta: {
-          title: "职位管理",
-          code: ""
+          title: "社区管理",
+          code: "hongqiao.community"
+        }
+      }
+    ]
+  },
+  {
+    path: "/strategy",
+    name: "strategy",
+    component: Layout,
+    meta: {
+      title: "策略管理",
+      icon: "cms",
+      code: "hongqiao.strategy"
+    },
+    children: [
+      {
+        path: "/strategy",
+        name: "Strategy",
+        component: () => import("../views/strategy/strategy"),
+        meta: {
+          title: "策略管理",
+          code: "hongqiao.strategy"
+        }
+      }
+    ]
+  },
+  {
+    path: "/case",
+    name: "case",
+    component: Layout,
+    meta: {
+      title: "案件管理",
+      icon: "cms",
+      code: "hongqiao.case"
+    },
+    children: [
+      {
+        path: "/case",
+        name: "Case",
+        component: () => import("../views/case/case"),
+        meta: {
+          title: "案件管理",
+          code: "hongqiao.case"
+        }
+      }
+    ]
+  },
+  {
+    path: "/examine",
+    name: "examine",
+    component: Layout,
+    meta: {
+      title: "考核记录",
+      icon: "cms",
+      code: "hongqiao.examine"
+    },
+    children: [
+      {
+        path: "/examine",
+        name: "Examine",
+        component: () => import("../views/examine/examine"),
+        meta: {
+          title: "考核记录",
+          code: "hongqiao.examine"
+        }
+      }
+    ]
+  },
+  {
+    path: "/organize",
+    component: Layout,
+    meta: {
+      title: "组织架构",
+      icon: "cms",
+      code: "hongqiao.organize"
+    },
+    children: [
+      {
+        path: "/organize",
+        name: "Organize",
+        component: () => import("../views/organize/organize"),
+        meta: {
+          title: "组织架构",
+          code: "hongqiao.organize"
+        }
+      }
+    ]
+  },
+  {
+    path: "/roles",
+    component: Layout,
+    meta: {
+      title: "角色权限",
+      icon: "cms",
+      code: "hongqiao.roles"
+    },
+    children: [
+      {
+        path: "/roles",
+        name: "Roles",
+        component: () => import("../views/roles/roles"),
+        meta: {
+          title: "角色权限",
+          code: "hongqiao.roles"
+        }
+      }
+    ]
+  },
+  {
+    path: "/account",
+    component: Layout,
+    meta: {
+      title: "账号管理",
+      icon: "cms",
+      code: "hongqiao.account"
+    },
+    children: [
+      {
+        path: "/account",
+        name: "Account",
+        component: () => import("../views/account/account"),
+        meta: {
+          title: "账号管理",
+          code: "hongqiao.account"
         }
       }
     ]
@@ -61,11 +200,6 @@ const routes = [
   {
     path: "/mine",
     component: Layout,
-    meta: {
-      title: "个人中心",
-      icon: "mine",
-      code: ""
-    },
     children: [
       {
         path: "/mine/revisePwd",
@@ -84,17 +218,25 @@ const router = new VueRouter({
   routes
 });
 
-const whiteList = ["/login"];
+const whiteList = ["/login", "/mine/revisePwd"];
 
 router.beforeEach((to, from, next) => {
-  if (getToken()) {
+  if (whiteList.includes(to.path)) {
+    next();
+    return;
+  }
+  let permission = store.state.auth.permission;
+  if (permission.length === 0) {
+    next({ path: "/login" });
+    return;
+  }
+  if (permission.length && to.meta.code && permission.includes(to.meta.code)) {
     next();
   } else {
-    if (whiteList.indexOf(to.path) > -1) {
-      next();
-    } else {
-      next({ path: "/login" });
-    }
+    Message.error("您没有权限访问此页面");
+    setTimeout(() => {
+      router.back();
+    }, 1000);
   }
 });
 

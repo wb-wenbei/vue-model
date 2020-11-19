@@ -40,9 +40,7 @@
 export default {
   name: "TreeSelect",
   props: {
-    value: {
-      type: Number | String | Array
-    },
+    value: {},
     data: {
       type: Array
     },
@@ -69,7 +67,7 @@ export default {
     filterText(val) {
       this.$refs.tree.filter(val);
     },
-    value(v) {
+    value() {
       this.load();
     }
   },
@@ -127,7 +125,7 @@ export default {
         }
       }
     },
-    checkChange(v) {
+    checkChange() {
       if (!this.isRadio) {
         this.$emit("input", this.$refs.tree.getCheckedKeys());
         this.selectValue = [];

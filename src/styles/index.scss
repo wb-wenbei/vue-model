@@ -1,0 +1,22 @@
+html, body, #app {
+  height: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+a{
+  text-decoration : none
+}
+
+.tabs-box{
+  padding: 0 30px 16px;
+}
+
+//固定宽度form-item
+.short-width{
+  width: 215px;
+}
+
+.medium-width{
+  width: 315px;
+}

@@ -5,8 +5,8 @@ import store from "./store";
 import "./icons";
 
 import ElementUI from "element-ui";
-import "element-ui/lib/theme-chalk/index.css";
-import "./style/index.scss";
+import "./styles/element-variables.scss";
+import "./styles/index.scss";
 import "./filters/index";
 
 Vue.use(ElementUI, { size: "small" });
