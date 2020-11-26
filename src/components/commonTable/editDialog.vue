@@ -1,15 +1,22 @@
 <template>
   <el-dialog
-    custom-class="table-edit-dialog"
+    :custom-class="
+      fullscreen ? 'table-edit-dialog' : 'table-edit-dialog no-screen'
+    "
     :title="title"
     :width="width"
     :top="top"
+    :fullscreen="fullscreen"
     :close-on-click-modal="false"
     :visible.sync="visibleDialog"
     :before-close="closeDialog"
   >
     <div slot="title" class="dialog-title">
       <slot name="dialog-header">{{ title }}</slot>
+      <i
+        class="screen-icon el-icon-full-screen"
+        @click.stop="fullscreen = !fullscreen"
+      ></i>
     </div>
     <slot name="form-header" v-bind:form="defaultForm"></slot>
     <slot name="form-content" v-bind:form="defaultForm">
@@ -24,10 +31,17 @@
           <el-col
             v-for="column in columns"
             :key="column.prop"
-            :span="(24 / defaultOptions.rows) * (column.cols || 1)"
+            :span="
+              column.type === 'title'
+                ? 24
+                : (24 / defaultOptions.rows) * (column.cols || 1)
+            "
             :style="{ 'min-width': defaultOptions.colMinWidth }"
           >
             <slot v-if="column.type === 'custom'" :name="column.prop"></slot>
+            <div class="form-title" v-else-if="column.type === 'title'">
+              {{ column.label }}
+            </div>
             <el-form-item
               v-else
               :label="column.label"
@@ -36,17 +50,22 @@
             >
               <el-input
                 v-if="column.type === 'text'"
-                class="form-normal-width"
+                class="short-width"
                 v-model="defaultForm[column.prop]"
                 v-bind="column.props"
               >
               </el-input>
               <el-input-number
                 v-else-if="column.type === 'num'"
-                class="form-normal-width"
+                class="short-width"
                 v-model="defaultForm[column.prop]"
                 v-bind="column.props"
               ></el-input-number>
+              <form-organize
+                v-if="column.type === 'org'"
+                v-model="defaultForm[column.prop]"
+                v-bind="column.props"
+              ></form-organize>
               <el-date-picker
                 v-else-if="column.type === 'date'"
                 v-model="defaultForm[column.prop]"
@@ -90,12 +109,12 @@
                 v-bind="column.props"
               >
               </form-upload-image>
-              <!--<form-address
+              <form-address
                 v-else-if="column.type === 'address'"
                 v-model="defaultForm[column.prop]"
                 v-bind="column.props"
               >
-              </form-address>-->
+              </form-address>
               <slot v-else :name="column.prop" v-bind:form="defaultForm"></slot>
             </el-form-item>
           </el-col>
@@ -106,9 +125,9 @@
     <div slot="footer" class="dialog-footer">
       <slot name="form-action" v-bind:form="defaultForm">
         <slot name="action-prepend"></slot>
-        <el-button type="primary" @click="save" :disabled="loading">{{
-          saveBtn
-        }}</el-button>
+        <el-button type="primary" @click="save" :disabled="loading">
+          {{ saveBtn }}
+        </el-button>
         <el-button
           v-if="canSaveAndCreate"
           type="primary"
@@ -140,8 +159,9 @@
 import FormSelect from "@/components/form/select.vue";
 import FormCheckbox from "@/components/form/checkbox.vue";
 import FormRadio from "@/components/form/radio.vue";
-// import FormAddress from "@/components/form/address";
+import FormAddress from "@/components/form/address";
 import FormUploadImage from "@/components/form/uploadImage";
+import FormOrganize from "@/components/form/organize";
 
 import "./css/index.scss";
 
@@ -207,11 +227,14 @@ export default {
     FormSelect,
     FormCheckbox,
     FormRadio,
-    FormUploadImage
+    FormUploadImage,
+    FormAddress,
+    FormOrganize
   },
   data() {
     return {
       tableForm: null,
+      fullscreen: false,
       rules: {},
       defaultForm: {},
       defaultOptions: {
@@ -311,7 +334,11 @@ export default {
           }
         });
       }
-      this.defaultForm = Object.assign(defaultForm, this.form);
+      this.defaultForm = Object.assign(
+        defaultForm,
+        this.defaultForm,
+        this.form
+      );
     },
     canSave() {
       let result = false;

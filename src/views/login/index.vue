@@ -45,7 +45,6 @@
 </template>
 
 <script>
-import { setToken } from "@/utils/auth";
 import { loginAPI } from "@/api/auth.js";
 
 export default {
@@ -73,7 +72,7 @@ export default {
           this.loading = true;
           loginAPI(this.loginForm)
             .then(res => {
-              setToken(res.token);
+              this.$store.commit("SET_TOKEN", res.token);
               let customersArr = [];
               for (let prop in res.customers) {
                 customersArr = [...customersArr, ...res.customers[prop]];
@@ -82,9 +81,7 @@ export default {
               res.saveTime = new Date().getTime();
               this.$store.commit("SET_USER_INFO", res);
               this.$store.commit("SET_CUSTOMER_ID", res.rootGroupId);
-              this.$store.dispatch("setBaseOrgList");
-              this.$store.dispatch("setPermission");
-              this.$router.push("/");
+              this.getPermissions();
             })
             .catch(err => {
               this.$message.error("登录失败：" + err);
@@ -96,6 +93,11 @@ export default {
           return false;
         }
       });
+    },
+    async getPermissions() {
+      await this.$store.dispatch("setPermission");
+      await this.$store.dispatch("setBaseOrgList");
+      this.$router.push("/");
     }
   }
 };

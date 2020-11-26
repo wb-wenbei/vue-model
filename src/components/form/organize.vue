@@ -67,7 +67,7 @@ export default {
     }
   },
   watch: {
-    value(newValue) {
+    value() {
       this.combinationName = this.$refs.combination.getMatchName(this.value);
     }
   }

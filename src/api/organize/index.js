@@ -1,3 +1,4 @@
+/*组织架构api*/
 import http from "@/server/http.js";
 
 // 获取组织机构

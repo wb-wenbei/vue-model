@@ -1,10 +1,10 @@
-/*社区管理api*/
+/*关键词管理api*/
 import http from "@/server/http.js";
 
 //列表（分页）
 export const pageAPI = params => {
   return http({
-    url: "/api-customer/community/community/list",
+    url: "/api-customer/community/keyword/list",
     method: "GET",
     params
   });
@@ -13,7 +13,7 @@ export const pageAPI = params => {
 //列表
 export const getAllAPI = params => {
   return http({
-    url: "/api-customer/community/community/getAll",
+    url: "/api-customer/community/keyword/getAll",
     method: "GET",
     params
   });
@@ -23,7 +23,7 @@ export const getAllAPI = params => {
 export const addAPI = data => {
   return http({
     method: "POST",
-    url: `/api-customer/community/community/add`,
+    url: `/api-customer/community/keyword/add`,
     data
   });
 };
@@ -32,7 +32,7 @@ export const addAPI = data => {
 export const updateAPI = data => {
   return http({
     method: "PUT",
-    url: `/api-customer/community/community/update`,
+    url: `/api-customer/community/keyword/update`,
     data
   });
 };
@@ -41,6 +41,6 @@ export const updateAPI = data => {
 export const deleteAPI = params => {
   return http({
     method: "DELETE",
-    url: `/api-customer/community/community/delete?id=${params.id}`
+    url: `/api-customer/community/keyword/delete?id=${params.id}`
   });
 };

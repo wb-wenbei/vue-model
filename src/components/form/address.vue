@@ -16,7 +16,7 @@
       ></el-input>
     </el-tooltip>
     <div style="padding-left: 10px">
-      <el-button type="primary" :size="size" @click="open">选取地址</el-button>
+      <el-button type="primary" :size="size" @click="open">选取位置</el-button>
     </div>
     <el-dialog
       width="80%"
@@ -54,11 +54,8 @@
 
 <script>
 import AMap from "AMap";
-import DetailDialog from "@/components/commonTable/detailDialog.vue";
-
 export default {
   name: "form-address",
-  components: { DetailDialog },
   props: {
     value: {
       type: Array,

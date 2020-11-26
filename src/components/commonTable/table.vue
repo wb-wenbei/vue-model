@@ -21,6 +21,7 @@
             v-on="$listeners"
             @checkChange="checkChange"
             @download="download"
+            @uploadSuccess="onQuery"
           ></table-function>
         </slot>
       </div>

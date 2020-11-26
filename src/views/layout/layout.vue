@@ -43,7 +43,6 @@
 import AppAside from "./components/AppAside";
 import TagsView from "./components/TagsView";
 import { logoutAPI } from "@/api/auth.js";
-import { removeToken } from "@/utils/auth";
 
 export default {
   name: "layout",
@@ -67,8 +66,12 @@ export default {
     },
     logout() {
       logoutAPI().finally(() => {
-        removeToken();
         this.$store.commit("SET_USER_INFO", {});
+        this.$store.commit("SET_USER_INFO", {});
+        this.$store.commit("SET_BASE_ORG_LIST", []);
+        this.$store.commit("REMOVE_PERMISSION");
+        this.$store.commit("REMOVE_TOKEN");
+        this.$store.dispatch("tagsView/delAllVisitedViews")
         this.$router.push("/login");
       });
     }

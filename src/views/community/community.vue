@@ -7,6 +7,7 @@
           ref="table"
           :headers="headers"
           :api="pageAPI"
+          :params="params"
           :columns="columns"
           :deleteApi="deleteAPI"
           :settings="['setting']"
@@ -30,6 +31,12 @@
           :form="form"
           @save="submit"
         >
+          <template v-slot:communityAddress="{ form }">
+            <address-select v-model="form.communityAddress"></address-select>
+          </template>
+          <template v-slot:propertyFee="{ form }">
+            <property-select v-model="form.propertyFee"></property-select>
+          </template>
         </edit-dialog>
       </el-tab-pane>
     </el-tabs>
@@ -40,12 +47,21 @@
 import CommonTable from "@/components/commonTable/table";
 import EditDialog from "@/components/commonTable/editDialog";
 import TableSearch from "@/components/commonTable/tableSearch.vue";
+import PropertySelect from "./components/property-select";
+import AddressSelect from "./components/address-select";
+import { getTypeList } from "@/utils/index";
 
 import { pageAPI, deleteAPI, addAPI, updateAPI } from "@/api/community/index";
 
 export default {
   name: "Community",
-  components: { CommonTable, EditDialog, TableSearch },
+  components: {
+    CommonTable,
+    EditDialog,
+    TableSearch,
+    PropertySelect,
+    AddressSelect
+  },
   data() {
     return {
       pageAPI,
@@ -60,32 +76,132 @@ export default {
       matchMenu: [],
       params: {},
       searchColumns: [
-        { prop: "name", label: "社区名称", type: "input" },
+        { prop: "communityName", label: "社区名称", type: "input" },
         { prop: "orgId", label: "归属物业", type: "org" },
-        { prop: "level", label: "社区等级", type: "select", options: [] },
-        { prop: "type", label: "社区类型", type: "select", options: [] }
+        {
+          prop: "communityLevel",
+          label: "社区等级",
+          type: "select",
+          options: []
+        },
+        {
+          prop: "communityType",
+          label: "社区类型",
+          type: "select",
+          options: []
+        }
       ],
       headers: [
         { prop: "index", label: "序号" },
-        { prop: "name", label: "社区名称" },
-        { prop: "name1", label: "归属物业" },
-        { prop: "name2", label: "社区类型" },
-        { prop: "name3", label: "物业费" },
-        { prop: "name4", label: "社区等级" },
-        { prop: "name5", label: "建筑面积" },
-        { prop: "name6", label: "建成年份" },
-        { prop: "name7", label: "人口户数" },
-        { prop: "name8", label: "更新时间", type: "date" },
+        { prop: "communityName", label: "社区名称" },
+        { prop: "orgName", label: "归属物业" },
+        { prop: "communityTypeName", label: "社区类型" },
+        { prop: "communityLevelName", label: "社区等级" },
+        { prop: "buildingArea", label: "建筑面积" },
+        { prop: "buildingYear", label: "建成年份" },
+        { prop: "householdsNumber", label: "人口户数" },
+        { prop: "updateTime", label: "更新时间", type: "date" },
         { prop: "action", label: "操作", width: 100, fixed: "right" }
       ],
       columns: [
-        { prop: "name", label: "社区名称", type: "text", required: true }
+        { prop: "basicInfo", label: "基础信息", type: "title" },
+        {
+          prop: "communityName",
+          label: "社区名称",
+          type: "text",
+          required: true
+        },
+        {
+          prop: "communityTypeId",
+          label: "社区类型",
+          type: "select",
+          required: true,
+          options: []
+        },
+        {
+          prop: "communityLevelId",
+          label: "社区等级",
+          type: "select",
+          required: true,
+          options: []
+        },
+        { prop: "orgId", label: "归属物业", type: "org", required: true },
+        {
+          prop: "projectNature",
+          label: "项目性质",
+          type: "select",
+          required: true,
+          options: []
+        },
+        {
+          prop: "communityAddress",
+          label: "社区地址",
+          required: true,
+          cols: 4
+        },
+        {
+          prop: "lngLat",
+          label: "社区位置",
+          type: "address",
+          required: true,
+          cols: 2
+        },
+        { prop: "assessInfo", label: "评估信息", type: "title" },
+        {
+          prop: "buildingArea",
+          label: "建筑面积",
+          type: "num",
+          required: true
+        },
+        {
+          prop: "buildingYear",
+          label: "建成年份",
+          type: "text",
+          required: true
+        },
+        {
+          prop: "peopleEngagedNumber",
+          label: "从业人数",
+          type: "num",
+          required: true
+        },
+        {
+          prop: "householdsNumber",
+          label: "人口户数",
+          type: "num",
+          required: true
+        },
+        { prop: "propertyFee", label: "物业费", required: true, cols: 4 },
+        {
+          prop: "isSpecCommunityFacilities",
+          label: "安全屋",
+          type: "radio",
+          required: true,
+          options: [
+            { id: 1, name: "是" },
+            { id: 0, name: "否" }
+          ]
+        }
       ],
       form: {}
     };
   },
-  created() {},
+  created() {
+    this.getOptions();
+  },
   methods: {
+    async getOptions() {
+      let communityLevels = await getTypeList("COMMUNITY_LEVEL");
+      this.searchColumns[2].options = communityLevels;
+      this.columns[3].options = communityLevels;
+
+      let communityTypes = await getTypeList("COMMUNITY_TYPE");
+      this.searchColumns[3].options = communityTypes;
+      this.columns[2].options = communityTypes;
+
+      let projectNatures = await getTypeList("PROJECT_NATURE");
+      this.columns[5].options = projectNatures;
+    },
     search() {
       this.$refs.table.onQuery();
     },
@@ -93,37 +209,80 @@ export default {
       this.type = "edit";
       this.title = "编辑社区";
       this.form = row;
+      if (row.lng && row.lat) {
+        this.form.lngLat = [row.lng, row.lat];
+      }
       this.visibleDialog = true;
     },
     add() {
       this.type = "add";
       this.title = "添加社区";
-      this.form = {};
+      this.form = { isSpecCommunityFacilities: 0 };
       this.visibleDialog = true;
     },
     submit(form) {
       let saveForm = Object.assign({}, form);
-      let api = this.type === "add" ? addAPI : updateAPI;
-      this.loading = true;
-      api(saveForm)
-        .then(() => {
-          this.$message.success(`${this.title}成功！`);
-          this.visibleDialog = false;
-          this.$refs.table.refresh();
-        })
-        .catch(err => {
-          this.$message.error(`${this.title}失败：${err}`);
-        })
-        .finally(() => {
-          this.loading = false;
+      if (this.checkForm(saveForm)) {
+        let api = this.type === "add" ? addAPI : updateAPI;
+        this.loading = true;
+        api(saveForm)
+          .then(() => {
+            this.$message.success(`${this.title}成功！`);
+            this.visibleDialog = false;
+            this.$refs.table.refresh();
+          })
+          .catch(err => {
+            this.$message.error(`${this.title}失败：${err}`);
+          })
+          .finally(() => {
+            this.loading = false;
+          });
+      }
+    },
+    checkForm(form) {
+      if (!form.communityAddress || !form.communityAddress.length) {
+        this.$message.error("请填写社区地址！");
+        return false;
+      } else {
+        let check = false;
+        form.communityAddress.forEach(v => {
+          if (v.address) {
+            check = true;
+          }
         });
+        if (!check) {
+          this.$message.error("请填写社区地址！");
+        }
+      }
+
+      if (!form.propertyFee || !form.propertyFee.length) {
+        this.$message.error("请至少完整填写一项物业费！");
+        return false;
+      } else {
+        let check = false;
+        form.propertyFee.forEach(v => {
+          if (v.amount && v.standard) {
+            check = true;
+          }
+        });
+        if (!check) {
+          this.$message.error("请至少完整填写一项物业费！");
+        }
+      }
+
+      if (!form.lngLat || !form.lngLat.length) {
+        this.$message.error("请选择社区位置！");
+        return false;
+      } else {
+        if (form.lngLat[0] && form.lngLat[1]) {
+          [form.lng, form.lat] = form.lngLat;
+        } else {
+          this.$message.error("请选择社区位置！");
+          return false;
+        }
+      }
+      return true;
     }
   }
 };
 </script>
-
-<style scoped lang="scss">
-.tabs-box {
-  padding: 0 30px 16px;
-}
-</style>

@@ -1,6 +1,5 @@
 const state = {
   customerId: "",
-  orgIds: "",
   userInfo: {},
   baseOrgList: []
 };

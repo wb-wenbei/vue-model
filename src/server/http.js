@@ -1,5 +1,6 @@
 import axios from "axios";
 import store from "../store";
+import router from "../router";
 
 const http = axios.create({
   timeout: 60000
@@ -24,6 +25,9 @@ http.interceptors.request.use(
       config.headers["Content-Type"] = "application/json";
     }
 
+    config.params = deleteNullParams(config.params);
+    config.data = deleteNullParams(config.data);
+
     return config;
   },
   error => {
@@ -39,6 +43,9 @@ http.interceptors.response.use(
       let data = response.data;
       if (code === 200) {
         return data.data;
+      } else if (code === 401) {
+        Promise.reject(data.message + "：token无效/token已过期");
+        router.push("/login");
       } else {
         console.error("请求错误：" + data.message);
         return Promise.reject(data.message);
@@ -65,5 +72,18 @@ http.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+//去除空params
+function deleteNullParams(params) {
+  if (!params) {
+    return params;
+  }
+  for (let key in params) {
+    if (params[key] === "" || params[key] == null) {
+      delete params[key];
+    }
+  }
+  return params;
+}
 
 export default http;

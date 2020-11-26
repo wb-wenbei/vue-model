@@ -1,8 +1,16 @@
 <template>
-  <el-aside :width="isCollapse ? '64px' : '200px'">
-    <div class="menu-controller" @click="isCollapse = !isCollapse">
-      <div v-show="!isCollapse">平台导航</div>
-      <svg-icon class="menu-icon" icon-class="cms" />
+  <el-aside
+    class="aside-animate"
+    style="overflow-x: hidden"
+    :width="isCollapse ? '64px' : '200px'"
+  >
+    <div class="menu-controller">
+      <div class="menu-animate" v-show="!isCollapse">平台导航</div>
+      <svg-icon
+        class="menu-icon"
+        :icon-class="isCollapse ? 'menu-open' : 'menu-close'"
+        @click="isCollapse = !isCollapse"
+      />
     </div>
     <el-menu
       v-if="menus.length"
@@ -87,27 +95,39 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.aside-animate {
+  transition: width 0.5s;
+}
+
 .menu-controller {
   height: 40px;
   line-height: 40px;
+  min-width: 64px;
   display: flex;
   justify-content: space-between;
   padding: 0 20px;
 
   .menu-icon {
-    font-size: 22px;
+    font-size: 18px;
     position: relative;
-    top: 8px;
+    top: 10px;
+    cursor: pointer;
   }
 }
 
 .aside-menu {
   text-align: left;
+  border-right: 0;
+
+  ::v-deep &:not(.el-menu--collapse) {
+    width: 200px;
+  }
 
   .menu-icon {
-    font-size: 22px;
+    font-size: 18px;
     position: relative;
-    top: 3px;
+    top: 1px;
+    margin-right: 5px;
   }
 }
 </style>

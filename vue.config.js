@@ -32,6 +32,9 @@ module.exports = {
       alias: {
         "@": resolve("src")
       }
+    },
+    externals: {
+      AMap: "AMap"
     }
   },
   chainWebpack(config) {
@@ -53,5 +56,5 @@ module.exports = {
         symbolId: "icon-[name]"
       })
       .end();
-  }
+  },
 };

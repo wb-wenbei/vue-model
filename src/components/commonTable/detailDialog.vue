@@ -4,7 +4,6 @@
     :title="title"
     :width="width"
     :top="top"
-    :fullscreen="fullscreen"
     :append-to-body="appendToBody"
     :close-on-click-modal="false"
     :visible.sync="visibleDialog"
@@ -12,6 +11,10 @@
   >
     <div slot="title" class="dialog-title">
       <slot name="dialog-header">{{ title }}</slot>
+      <i
+        class="screen-icon el-icon-full-screen"
+        @click.stop="fullscreen = !fullscreen"
+      ></i>
     </div>
     <slot name="detail-header"></slot>
     <slot name="detail-content">
@@ -88,20 +91,15 @@ export default {
     visibleDialog: { type: Boolean, default: false },
     title: { type: String, default: "信息明细" },
     selection: { type: Boolean, default: false },
-    fullscreen: { type: Boolean, default: false },
     loading: { type: Boolean, default: false },
     appendToBody: { type: Boolean, default: false },
     showFooter: { type: Boolean, default: false },
-    data: {
-      type: Array | Object,
-      default() {
-        return [];
-      }
-    },
+    data: {},
     headers: { type: Array }
   },
   data() {
     return {
+      fullscreen: false,
       tableData: [],
       selects: [],
       page: {

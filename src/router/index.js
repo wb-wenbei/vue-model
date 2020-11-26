@@ -1,7 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import store from "@/store";
-import { Message } from "element-ui";
 
 Vue.use(VueRouter);
 
@@ -15,12 +14,12 @@ const routes = [
   {
     path: "/error/403",
     name: "403",
-    component: () => import("../views/error/500")
+    component: () => import("../views/error/403")
   },
   {
     path: "/error/404",
     name: "404",
-    component: () => import("../views/error/500")
+    component: () => import("../views/error/404")
   },
   {
     path: "/error/500",
@@ -38,7 +37,7 @@ const routes = [
     component: Layout,
     meta: {
       title: "数据统计",
-      icon: "cms",
+      icon: "shujutongji",
       code: "hongqiao.dataCount",
       affix: true
     },
@@ -59,7 +58,7 @@ const routes = [
     component: Layout,
     meta: {
       title: "社区管理",
-      icon: "cms",
+      icon: "shequ",
       code: "hongqiao.community"
     },
     children: [
@@ -80,7 +79,7 @@ const routes = [
     component: Layout,
     meta: {
       title: "策略管理",
-      icon: "cms",
+      icon: "tiaozheng",
       code: "hongqiao.strategy"
     },
     children: [
@@ -101,7 +100,7 @@ const routes = [
     component: Layout,
     meta: {
       title: "案件管理",
-      icon: "cms",
+      icon: "guanli",
       code: "hongqiao.case"
     },
     children: [
@@ -122,7 +121,7 @@ const routes = [
     component: Layout,
     meta: {
       title: "考核记录",
-      icon: "cms",
+      icon: "l9",
       code: "hongqiao.examine"
     },
     children: [
@@ -142,7 +141,7 @@ const routes = [
     component: Layout,
     meta: {
       title: "组织架构",
-      icon: "cms",
+      icon: "zuzhiguanlin",
       code: "hongqiao.organize"
     },
     children: [
@@ -162,7 +161,7 @@ const routes = [
     component: Layout,
     meta: {
       title: "角色权限",
-      icon: "cms",
+      icon: "jiaosequanxian",
       code: "hongqiao.roles"
     },
     children: [
@@ -182,7 +181,7 @@ const routes = [
     component: Layout,
     meta: {
       title: "账号管理",
-      icon: "cms",
+      icon: "zhanghaoguanli",
       code: "hongqiao.account"
     },
     children: [
@@ -218,25 +217,29 @@ const router = new VueRouter({
   routes
 });
 
-const whiteList = ["/login", "/mine/revisePwd"];
+const whiteList = [
+  "/login",
+  "/mine/revisePwd",
+  "/error/403",
+  "/error/404",
+  "/error/500"
+];
 
 router.beforeEach((to, from, next) => {
   if (whiteList.includes(to.path)) {
     next();
     return;
   }
+  let token = store.state.auth.token;
   let permission = store.state.auth.permission;
-  if (permission.length === 0) {
+  if (!token || permission.length === 0) {
     next({ path: "/login" });
     return;
   }
   if (permission.length && to.meta.code && permission.includes(to.meta.code)) {
     next();
   } else {
-    Message.error("您没有权限访问此页面");
-    setTimeout(() => {
-      router.back();
-    }, 1000);
+    router.push({ path: "/error/403" });
   }
 });
 

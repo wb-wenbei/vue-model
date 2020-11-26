@@ -1,3 +1,4 @@
+/*账号管理api*/
 import http from "@/server/http.js";
 
 export const getUserListAPI = params => {

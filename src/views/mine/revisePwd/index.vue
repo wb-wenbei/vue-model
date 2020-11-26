@@ -37,6 +37,9 @@
 
 <script>
 import { updatePwdAPI, getUserInfoAPI } from "@/api/auth";
+
+const passwordReg = /^(?=.*[a-zA-Z])(?=.*\d)[\S]{8,16}$/; //8-16位，至少包含一个字母和一个数字，不能有空格
+
 export default {
   data() {
     const validatePass2 = (rule, value, callback) => {
@@ -56,8 +59,21 @@ export default {
       isLoading: false,
       rules: {
         password: [
-          { required: true, message: "请输入新密码", trigger: "blur" },
-          { min: 6, message: "最少六位密码", trigger: "blur" }
+          {
+            required: true,
+            validator: (rule, value, callback) => {
+              if (passwordReg.test(value)) {
+                callback();
+              } else {
+                callback(
+                  new Error(
+                    "新密码需要8-16位，且至少包含字母和数字，不能有空格"
+                  )
+                );
+              }
+            },
+            trigger: "blur"
+          }
         ],
         repPassword: [
           { required: true, message: "请再次输入新密码", trigger: "blur" },

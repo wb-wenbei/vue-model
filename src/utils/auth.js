@@ -12,7 +12,7 @@ export function getToken() {
  * */
 export function setToken(token) {
   if (!token) return false;
-  store.commit("SET_TOKEN", token);
+  store.commit("REMOVE_TOKEN", token);
   return localStorage.setItem(TokenKey, token);
 }
 

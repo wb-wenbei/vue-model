@@ -1,4 +1,3 @@
-import { getToken } from "../../utils/auth";
 import { getPermissionAPI } from "@/api/auth";
 
 /**
@@ -34,7 +33,7 @@ const getMenuCode = menus => {
 
 const auth = {
   state: {
-    token: getToken(),
+    token: "",
     permission: []
   },
 
@@ -42,17 +41,23 @@ const auth = {
     SET_TOKEN: (state, token) => {
       state.token = token;
     },
+    REMOVE_TOKEN: state => {
+      state.token = "";
+    },
     SET_PERMISSION: (state, permission) => {
       state.permission = [];
       let array = getMenuCode(permission);
-      state.permission = [...array, ""];
+      state.permission = [...array];
     },
+    REMOVE_PERMISSION: state => {
+      state.permission = [];
+    }
   },
   actions: {
-    setPermission: ({ commit }) => {
-      getPermissionAPI().then(res => {
-        commit("SET_PERMISSION", res.menuDtos)
-      });
+    setPermission: async ({ commit }) => {
+      let res = await getPermissionAPI();
+      commit("SET_PERMISSION", res.menuDtos);
+      return res.menuDtos;
     }
   }
 };

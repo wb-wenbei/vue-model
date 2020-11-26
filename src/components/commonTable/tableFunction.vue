@@ -45,15 +45,19 @@
       </el-tooltip>
     </template>
 
-    <el-dialog :visible.sync="uploadDialog" append-to-body width="500px" center>
+    <el-dialog :visible.sync="uploadDialog" append-to-body width="600px" center>
       <div style="text-align: center">
         <span>选择需要导入的Excel文件导入即可。</span>
         <el-button type="text" @click="downLoadModel" v-if="modelUrl"
           >模板下载</el-button
         >
       </div>
-      <div v-if="uploadDialog" style="text-align: left;padding: 20px 0 0 200px">
+      <div
+        v-if="uploadDialog"
+        style="display: flex;justify-content: center;margin-top: 40px"
+      >
         <el-upload
+          drag
           :action="uploadURL"
           :data="uploadParams"
           :headers="{ token: this.$store.state.userInfo.token }"
@@ -62,7 +66,13 @@
           :before-upload="beforeUpload"
           :on-success="uploadSuccess"
         >
-          <el-button type="text">导入文件</el-button>
+          <i class="el-icon-upload"></i>
+          <div class="el-upload__text">
+            <div>将导入文件拖到此处，或<em>点击上传</em></div>
+            <div class="el-upload__tip" style="color: rgba(0,0,0,0.45);">
+              上传文件格式只支持xls/xlsx
+            </div>
+          </div>
         </el-upload>
       </div>
       <span slot="footer" class="dialog-footer">
@@ -156,16 +166,16 @@ export default {
     beforeUpload(file) {
       let suffix = file.name.substr(file.name.lastIndexOf("."));
       if (".xls" !== suffix && ".xlsx" !== suffix) {
-        this.$message.error("上传文件必须是 Excel 格式!");
+        this.$message.error("上传文件必须是 xls/xlsx 格式!");
         return false;
       }
       return true;
     },
     uploadSuccess(v) {
+      this.uploadDialog = false;
       if (v.code === 200) {
         this.$message.success("导入成功");
-        this.uploadDialog = false;
-        this.$refs[this.activeName + "-table"].onQuery();
+        this.$emit("uploadSuccess");
       } else {
         this.$message.error("导入失败：" + v.message);
       }
@@ -187,7 +197,7 @@ export default {
     padding: 0;
 
     i {
-      font-size: 16px;
+      font-size: 20px;
     }
   }
 }

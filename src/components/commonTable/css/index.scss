@@ -1,14 +1,39 @@
 .table-edit-dialog {
   text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
   .dialog-title {
     padding: 10px;
+    position: relative;
 
+    .screen-icon{
+      position: absolute;
+      right: 30px;
+    }
   }
 
   .dialog-footer {
     text-align: center;
     padding-top: 8px;
+  }
+
+  .form-title{
+    margin: 10px 20px;
+    position: relative;
+    font-weight: bold;
+  }
+
+  .form-title::before{
+    content:"";
+    position: absolute;
+    left: -10px;
+    top: 3px;
+    height: 14px;
+    width: 2px;
+    background: #13a8a8;
+
   }
 
   .el-form-item {
@@ -22,12 +47,36 @@
 
   .el-dialog__body {
     padding: 20px;
-    max-height: 600px;
+    flex: 1;
     min-height: 500px;
     overflow: auto;
   }
 
+  &.no-screen .el-dialog__body{
+    max-height: 600px;
+  }
+
   .el-dialog__footer {
     border-top: 1px solid #eeeeee
+  }
+
+  @media (max-height: 910px) {
+    .el-dialog__body {
+      min-height: 400px;
+    }
+
+    &.no-screen .el-dialog__body{
+      max-height: 500px;
+    }
+  }
+
+  @media (max-height: 810px) {
+    .el-dialog__body {
+      min-height: 300px;
+    }
+
+    &.no-screen .el-dialog__body{
+      max-height: 400px;
+    }
   }
 }
