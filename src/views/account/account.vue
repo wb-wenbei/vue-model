@@ -121,7 +121,7 @@ export default {
       showPassword: false,
       loading: false,
       type: "add",
-      title: "添加账号",
+      title: "新增账号",
       options: {
         roles: [],
         account: []
@@ -188,7 +188,7 @@ export default {
     },
     add() {
       this.type = "add";
-      this.title = "添加账号";
+      this.title = "新增账号";
       this.form = {};
       this.showPassword = true;
       this.visibleDialog = true;

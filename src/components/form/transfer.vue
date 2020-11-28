@@ -127,7 +127,6 @@ export default {
         return v.id;
       });
       if (this.$refs["select-tree"]) {
-        console.log(12111)
         this.$refs["select-tree"].setCheckedKeys(this.checkedKeys);
       }
     },

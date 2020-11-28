@@ -118,7 +118,7 @@ export default {
     this.tableData = this.data.data || this.data || [];
   },
   methods: {
-    changePage(v) {
+    changePage() {
       this.$emit("changePage", this.page);
     },
     handleSelectionChange(v) {

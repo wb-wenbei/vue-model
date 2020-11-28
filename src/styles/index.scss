@@ -14,9 +14,20 @@ a{
 
 //固定宽度form-item
 .short-width{
-  width: 215px;
+  width: 215px !important;
 }
 
 .medium-width{
-  width: 315px;
+  width: 315px !important;
+}
+
+//所有表格竖向边框透明化
+.el-table--border, .el-table--group {
+  border: 1px solid rgba(0,0,0,0) ;
+}
+.el-table--border td, .el-table--border th {
+  border-right: 1px solid rgba(0,0,0,0) ;
+}
+.el-table--border:after, .el-table--group:after{
+  width: 0;
 }

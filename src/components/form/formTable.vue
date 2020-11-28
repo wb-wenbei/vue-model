@@ -212,7 +212,7 @@ export default {
       }
     },
     indexWidth: { type: String, default: "50px" },
-    addTitle: { type: String, default: "添加步骤" },
+    addTitle: { type: String, default: "添加设置" },
     docType: { type: String },
     employees: {
       type: Array,

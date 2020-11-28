@@ -70,7 +70,7 @@ export default {
       visibleDialog: false,
       loading: false,
       type: "add",
-      title: "添加社区",
+      title: "新增社区",
       community: [],
       totalMenus: [],
       matchMenu: [],
@@ -216,7 +216,7 @@ export default {
     },
     add() {
       this.type = "add";
-      this.title = "添加社区";
+      this.title = "新增社区";
       this.form = { isSpecCommunityFacilities: 0 };
       this.visibleDialog = true;
     },

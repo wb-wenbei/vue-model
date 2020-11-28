@@ -18,7 +18,7 @@
               <i class="el-icon-plus"></i>{{ title }}
             </el-button>
             <el-button @click="setEva">
-              评 价 设 置
+              评价设置
             </el-button>
           </template>
           <template v-slot:table-header>
@@ -32,11 +32,11 @@
           <template v-slot:action-prepend="{ row }">
             <el-button @click="concatRow(row)" type="text">关联</el-button>
           </template>
-          <template v-slot:action="{ row }">
+          <!--<template v-slot:action="{ row }">
             <el-button @click="stopRow(row)" type="text">
               {{ row.isEnabled ? "停用" : "启用" }}
             </el-button>
-          </template>
+          </template>-->
         </common-table>
         <edit-dialog
           v-if="visibleDialog"
@@ -84,6 +84,7 @@ import TableSearch from "@/components/commonTable/tableSearch.vue";
 import Keywords from "./components/keywords";
 import EvaSetting from "./components/evaSetting";
 import ConcatSetting from "./components/concatSetting";
+import { getAssessmentTypes } from "@/config/dictionary";
 
 import {
   pageAPI,
@@ -114,7 +115,7 @@ export default {
       showConcat: false,
       concatData: {},
       type: "add",
-      title: "添加策略",
+      title: "新增策略",
       strategy: [],
       params: {},
       caseReasons: [],
@@ -137,7 +138,7 @@ export default {
         },
         { prop: "userName", label: "创建人" },
         { prop: "updateTime", label: "更新时间", type: "date" },
-        { prop: "action", label: "操作", width: 140, fixed: "right" }
+        { prop: "action", label: "操作", width: 100, fixed: "right" }
       ],
       searchColumns: [
         {
@@ -184,11 +185,7 @@ export default {
           prop: "assessmentType",
           label: "考核方式",
           type: "select",
-          options: [
-            { id: 1, name: "扣分" },
-            { id: 2, name: "豁免" },
-            { id: 3, name: "加分" }
-          ]
+          options: getAssessmentTypes()
         },
         {
           prop: "singleThreshold",
@@ -235,7 +232,7 @@ export default {
     },
     add() {
       this.type = "add";
-      this.title = "添加策略";
+      this.title = "新增策略";
       this.form = { isSpecCommunityFacilities: 0 };
       this.visibleDialog = true;
     },
@@ -281,6 +278,8 @@ export default {
       }
       let percentCount = 0;
       let isEdit = false;
+      let sameCaseReasonId = false;
+      let caseReasonIds = [];
       form.assessmentPolicyDetail.forEach(v => {
         v.scoresPercentage = Number(v.percent / 100);
         v.singleThreshold = Number(v.singleThreshold);
@@ -288,9 +287,18 @@ export default {
         if (v.isEdit) {
           isEdit = true;
         }
+        if (caseReasonIds.indexOf(v.caseReasonId) > -1) {
+          sameCaseReasonId = true;
+        } else {
+          caseReasonIds.push(v.caseReasonId);
+        }
       });
       if (isEdit) {
         this.$message.error("请先保存所有策略设置明细！");
+        return false;
+      }
+      if (sameCaseReasonId) {
+        this.$message.error("相同报案缘由只能设置一次扣分策略！");
         return false;
       }
       if (percentCount !== 100) {

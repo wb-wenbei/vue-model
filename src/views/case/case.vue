@@ -12,7 +12,7 @@
           :deleteApi="deleteAPI"
           uploadURL="/api-customer/community/case/import"
           modelUrl=""
-          :settings="['setting', 'upload', 'download']"
+          :settings="['setting', 'upload']"
           @editRow="editRow"
           @add="add"
         >
@@ -108,7 +108,7 @@ export default {
       visibleDialog: false,
       loading: false,
       type: "add",
-      title: "添加案件",
+      title: "新增案件",
       case: [],
       params: {},
       searchColumns: [
@@ -268,7 +268,7 @@ export default {
     },
     async getCommunities() {
       let communities = await communityListAPI();
-      this.searchColumns[4].options = communities;
+      this.searchColumns[3].options = communities;
       this.columns[4].options = communities;
     },
     async getKeywords(parentCode) {
@@ -289,7 +289,7 @@ export default {
     },
     add() {
       this.type = "add";
-      this.title = "添加案件";
+      this.title = "新增案件";
       this.form = {
         caseDimensionId: "",
         caseReasonId: "",

@@ -34,7 +34,8 @@ module.exports = {
       }
     },
     externals: {
-      AMap: "AMap"
+      AMap: "AMap",
+      Echarts: "echarts"
     }
   },
   chainWebpack(config) {
@@ -56,5 +57,5 @@ module.exports = {
         symbolId: "icon-[name]"
       })
       .end();
-  },
+  }
 };

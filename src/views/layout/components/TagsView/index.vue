@@ -242,7 +242,6 @@ export default {
 .tags-view-container {
   width: 100%;
   background: #fff;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 0 3px 0 rgba(0, 0, 0, 0.04);
 
   .tags-view-wrapper {
     text-align: left;
@@ -253,6 +252,7 @@ export default {
     }
 
     ::v-deep .el-tabs {
+      border: 0;
       .el-tabs__header {
         border: 0;
       }
@@ -274,7 +274,6 @@ export default {
     font-size: 12px;
     font-weight: 400;
     color: #333;
-    box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, 0.3);
 
     li {
       margin: 0;

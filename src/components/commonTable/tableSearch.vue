@@ -40,12 +40,11 @@
                 v-else-if="
                   column.type === 'date' || column.type === 'dateRange'
                 "
-                :style="{ width: column.type === 'date' ? '196px' : '' }"
+                :style="{ width: column.type === 'date' ? '215px' : '' }"
                 v-model="form[column.prop]"
                 v-bind="column.props"
               ></el-date-picker>
-
-              <slot v-else :name="column.prop"></slot>
+              <slot v-else :name="column.prop" :form="form"></slot>
             </el-form-item>
             <slot></slot>
           </el-form>

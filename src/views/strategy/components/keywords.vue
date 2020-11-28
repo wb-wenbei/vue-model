@@ -65,7 +65,7 @@ export default {
       visibleDialog: false,
       loading: false,
       type: "add",
-      title: "添加关键词",
+      title: "新增关键词",
       case: [],
       params: {
         caseDimensionId: ""
@@ -171,7 +171,7 @@ export default {
     },
     add() {
       this.type = "add";
-      this.title = "添加关键词";
+      this.title = "新增关键词";
       this.form = {
         caseDimensionId: "",
         caseReasonId: ""

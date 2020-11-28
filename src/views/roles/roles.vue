@@ -60,7 +60,7 @@ export default {
       visibleDialog: false,
       loading: false,
       type: "add",
-      title: "添加角色",
+      title: "新增角色",
       roles: [],
       totalMenus: [],
       matchMenu: [],
@@ -116,7 +116,7 @@ export default {
     },
     add() {
       this.type = "add";
-      this.title = "添加角色";
+      this.title = "新增角色";
       this.form = {};
       this.matchMenu = [];
       this.visibleDialog = true;

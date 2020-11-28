@@ -71,7 +71,7 @@ export default {
         this.$store.commit("SET_BASE_ORG_LIST", []);
         this.$store.commit("REMOVE_PERMISSION");
         this.$store.commit("REMOVE_TOKEN");
-        this.$store.dispatch("tagsView/delAllVisitedViews")
+        this.$store.dispatch("tagsView/delAllVisitedViews");
         this.$router.push("/login");
       });
     }
@@ -126,7 +126,7 @@ export default {
     padding: 50px 0 0;
 
     .main-body {
-      background: #ddd;
+      background: #eee;
       padding-bottom: 56px;
       position: relative;
 
