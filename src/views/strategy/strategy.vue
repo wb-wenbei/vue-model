@@ -63,7 +63,10 @@
           </template>
         </edit-dialog>
         <eva-setting :visibleDialog.sync="showEva"></eva-setting>
-        <concat-setting :visibleDialog.sync="showConcat"></concat-setting>
+        <concat-setting
+          :visibleDialog.sync="showConcat"
+          :data="concatData"
+        ></concat-setting>
       </el-tab-pane>
       <el-tab-pane name="keywords" @click.native="activeName = 'keywords'">
         <span slot="label" style="padding: 0 6px">关键词管理</span>
@@ -91,7 +94,7 @@ import {
 import { getTypeList, getTypeChildren } from "@/utils/index";
 
 export default {
-  name: "strategy",
+  name: "Strategy",
   components: {
     CommonTable,
     EditDialog,
@@ -109,6 +112,7 @@ export default {
       loading: false,
       showEva: false,
       showConcat: false,
+      concatData: {},
       type: "add",
       title: "添加策略",
       strategy: [],
@@ -235,7 +239,8 @@ export default {
       this.form = { isSpecCommunityFacilities: 0 };
       this.visibleDialog = true;
     },
-    concatRow() {
+    concatRow(row) {
+      this.concatData = row;
       this.showConcat = true;
     },
     setEva() {

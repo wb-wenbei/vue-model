@@ -64,10 +64,10 @@ export default {
         } 个文件，共选择了 ${files.length + fileList.length} 个文件`
       );
     },
-    beforeRemove(file, fileList) {
+    beforeRemove(file) {
       return this.$confirm(`确定移除 ${file.name}？`);
     },
-    handleAvatarSuccess(res, file) {
+    handleAvatarSuccess(res) {
       this.fileList.push(res.data);
     }
   }

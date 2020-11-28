@@ -6,23 +6,36 @@
     :form="form"
     @save="submit"
   >
+    <template v-slot:form-content>
+      <form-transfer
+        v-model="communityIdList"
+        :data="transferData"
+        :loading="loading"
+      ></form-transfer>
+    </template>
   </edit-dialog>
 </template>
 
 <script>
 import EditDialog from "@/components/commonTable/editDialog";
+import FormTransfer from "@/components/form/transfer";
+
+import { relevanceAPI, updateRelevanceAPI } from "@/api/strategy/index";
 
 export default {
   name: "concatSetting",
-  components: { EditDialog },
+  components: { EditDialog, FormTransfer },
   props: {
+    data: { type: Object, require: true },
     title: { type: String, default: "关联设置" },
     visibleDialog: { type: Boolean, default: false }
   },
   data() {
     return {
       form: {},
-      visible: false
+      visible: false,
+      communityIdList: [],
+      transferData: []
     };
   },
   watch: {
@@ -35,12 +48,46 @@ export default {
     visible: {
       immediate: true,
       handler(v) {
+        if (v) {
+          this.loadData();
+        }
         this.$emit("update:visibleDialog", v);
       }
     }
   },
   methods: {
-    submit() {}
+    loadData() {
+      this.loading = true;
+      relevanceAPI({ id: this.data.id }).then(res => {
+        this.transferData = res.left;
+        let value = [];
+        if (res.right && res.right.length) {
+          res.right.forEach(v => {
+            value.push(v.communityId);
+          });
+        }
+        this.communityIdList = value;
+        this.loading = false;
+      });
+    },
+    submit() {
+      let form = {
+        policyId: this.data.id,
+        communityIdList: this.communityIdList
+      };
+      this.loading = true;
+      updateRelevanceAPI(form)
+        .then(() => {
+          this.$message.success("策略关联更新成功！");
+          this.visible = false;
+        })
+        .catch(err => {
+          this.$message.error("策略关联更新失败：" + err);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    }
   }
 };
 </script>

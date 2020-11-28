@@ -44,3 +44,21 @@ export const enablePolicyAPI = params => {
     params
   });
 };
+
+//策略关联查询
+export const relevanceAPI = params => {
+  return http({
+    method: "GET",
+    url: `/api-customer/community/policy/relevance`,
+    params
+  });
+};
+
+//策略关联查询
+export const updateRelevanceAPI = data => {
+  return http({
+    method: "PUT",
+    url: `/api-customer/community/policy/updateRelevance`,
+    data
+  });
+};

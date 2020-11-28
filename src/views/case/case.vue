@@ -93,7 +93,7 @@ import { getAllAPI as communityListAPI } from "@/api/community/index";
 import { getAllAPI as keywordListAPI } from "@/api/keywords/index";
 
 export default {
-  name: "case",
+  name: "Case",
   components: {
     CommonTable,
     EditDialog,
