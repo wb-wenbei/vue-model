@@ -4,6 +4,7 @@
     :title="title"
     :width="width"
     :top="top"
+    :fullscreen="fullscreen"
     :append-to-body="appendToBody"
     :close-on-click-modal="false"
     :visible.sync="visibleDialog"

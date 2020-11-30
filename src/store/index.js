@@ -26,6 +26,7 @@ export default new Vuex.Store({
   modules: { auth, tagsView },
   plugins: [
     createPersistedState({
+      storage: window.sessionStorage,
       reducer: reducer
     })
   ]

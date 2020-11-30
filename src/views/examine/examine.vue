@@ -58,18 +58,12 @@
           <template v-slot:detail-header>
             <div class="detail-header">
               <div class="detail-content">
-                <div class="item">考核对象：{{ detailData.communityName }}</div>
-                <div class="item">归属物业：{{ detailData.orgName }}</div>
-                <div class="item">考核策略：{{ detailData.policyName }}</div>
-                <div class="item">
-                  考核次数：{{ detailData.assessmentTimes }}
-                </div>
-                <div class="item">
-                  考核成绩：{{ detailData.assessmentScore }}
-                </div>
-                <div class="item">
-                  考核评价：{{ detailData.assessmentLevel }}
-                </div>
+                <div>考核对象：{{ detailData.communityName }}</div>
+                <div>归属物业：{{ detailData.orgName }}</div>
+                <div>考核策略：{{ detailData.policyName }}</div>
+                <div>考核次数：{{ detailData.assessmentTimes }}</div>
+                <div>考核成绩：{{ detailData.assessmentScore }}</div>
+                <div>考核评价：{{ detailData.assessmentLevel }}</div>
               </div>
               <div class="detail-chart">
                 <common-chart
@@ -79,6 +73,56 @@
                 ></common-chart>
               </div>
             </div>
+          </template>
+          <template v-slot:assessmentTime="{ row }">
+            {{ row.assessmentTime | formatDate }}
+          </template>
+          <template v-slot:action="{ row }">
+            <el-button
+              v-if="row.assessmentType === 1"
+              @click="exemptionRow(row)"
+              type="text"
+              >豁免</el-button
+            >
+            <el-button
+              v-if="row.assessmentType === 2"
+              @click="exemptionRow(row)"
+              type="text"
+              >取消</el-button
+            >
+            <el-button @click="deleteRow(row)" type="text">删除</el-button>
+            <el-button @click="showRow(row)" type="text">查看</el-button>
+          </template>
+        </detail-dialog>
+        <detail-dialog
+          v-if="showDetailRow"
+          :visibleDialog.sync="showDetailRow"
+          title="查看明细"
+        >
+          <template v-slot:detail-content>
+            <el-row :gutter="10">
+              <el-col :span="6" class="detail-row-item"
+                >考核对象：{{ detailRow.communityName }}</el-col
+              >
+              <el-col :span="6" class="detail-row-item"
+                >考核时间：{{ detailRow.assessmentTime | formatDate }}</el-col
+              >
+              <el-col :span="6" class="detail-row-item"
+                >考核维度：{{ detailRow.caseDimensionName }}</el-col
+              >
+              <el-col :span="6" class="detail-row-item"
+                >报案缘由：{{ detailRow.caseReasonName }}</el-col
+              >
+              <el-col :span="6" class="detail-row-item"
+                >考核方式：{{ detailRow.assessmentWayName }}</el-col
+              >
+              <el-col :span="6" class="detail-row-item"
+                >阈值：{{ detailRow.singleThreshold }}</el-col
+              >
+              <el-col :span="24" class="detail-row-item"
+                >备注：{{ detailRow.remark }}</el-col
+              >
+            </el-row>
           </template>
         </detail-dialog>
       </el-tab-pane>
@@ -99,10 +143,14 @@ import {
   pageAPI,
   detailAddAPI,
   detailListAPI,
-  radarAPI
+  radarAPI,
+  detailExemptionAPI,
+  detailDeleteAPI
 } from "@/api/examine/index";
 import { getTypeList, getTypeChildren } from "@/utils/index";
-import { getAllAPI } from "@/api/community/index";
+import { getAllAPI as communityAllAPI } from "@/api/community/index";
+import { listAllAPI as evaluateAllAPI } from "@/api/strategy/evaluate";
+import { listAllAPI as strategyAllAPI } from "@/api/strategy/index";
 
 export default {
   name: "Examine",
@@ -119,6 +167,7 @@ export default {
       activeName: "examine",
       visibleDialog: false,
       detailVisible: false,
+      showDetailRow: false,
       detailLoading: false,
       chartLoading: false,
       loading: false,
@@ -213,12 +262,13 @@ export default {
         { prop: "singleThreshold", label: "单次阈值" },
         { prop: "assessmentTime", label: "考核时间" },
         { prop: "assessmentTypeName", label: "考核类型" },
-        { prop: "action", label: "操作" }
+        { prop: "action", label: "操作", width: 140, fixed: "right" }
       ],
       form: {},
       caseDimensionId: "",
       detailData: {},
-      chartOptions: {}
+      chartOptions: {},
+      detailRow: {}
     };
   },
   watch: {
@@ -233,10 +283,20 @@ export default {
     getOptions() {
       this.getCommunities();
       this.getCaseDimensions();
+      this.getEvaluates();
+      this.getStrategies();
     },
     async getCommunities() {
-      let communities = await getAllAPI();
+      let communities = await communityAllAPI();
       this.columns[1].options = communities;
+    },
+    async getEvaluates() {
+      let evaluates = await evaluateAllAPI();
+      this.searchColumns[2].options = evaluates;
+    },
+    async getStrategies() {
+      let strategies = await strategyAllAPI();
+      this.searchColumns[1].options = strategies;
     },
     async getCaseDimensions() {
       let caseDimensions = await getTypeList("CASE_DIMENSION");
@@ -305,6 +365,36 @@ export default {
         this.chartOptions = getRadarChart(res);
         this.chartLoading = false;
       });
+    },
+    exemptionRow(row) {
+      let text = row.assessmentType === 1 ? "豁免" : "取消豁免";
+      this.$confirm(`确定${text}该条记录？`).then(() => {
+        detailExemptionAPI({ id: row.id })
+          .then(() => {
+            this.$message.success(`${text}成功！`);
+            this.getDetailList(this.detailData);
+          })
+          .catch(err => {
+            this.$message.success(`${text}失败：` + err);
+          });
+      });
+    },
+    deleteRow(row) {
+      this.$confirm("确定删除该条记录？").then(() => {
+        detailDeleteAPI({ id: row.id })
+          .then(() => {
+            this.$message.success(`删除成功！`);
+            this.getDetailList(this.detailData);
+          })
+          .catch(err => {
+            this.$message.success(`删除失败：` + err);
+          });
+      });
+    },
+    showRow(row) {
+      console.log(row);
+      this.detailRow = row;
+      this.showDetailRow = true;
     }
   }
 };
@@ -326,5 +416,9 @@ export default {
   .detail-chart {
     flex: 1;
   }
+}
+
+.detail-row-item {
+  padding: 10px !important;
 }
 </style>

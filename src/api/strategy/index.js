@@ -10,6 +10,15 @@ export const pageAPI = params => {
   });
 };
 
+//列表（字典）
+export const listAllAPI = params => {
+  return http({
+    url: "/api-customer/community/policy/listAll",
+    method: "GET",
+    params
+  });
+};
+
 // 新增
 export const addAPI = data => {
   return http({

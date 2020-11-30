@@ -10,6 +10,15 @@ export const listAPI = params => {
   });
 };
 
+//列表（字典）
+export const listAllAPI = params => {
+  return http({
+    url: "/api-customer/community/evaluate/listAll",
+    method: "GET",
+    params
+  });
+};
+
 // 编辑
 export const updateAPI = data => {
   return http({

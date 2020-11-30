@@ -32,7 +32,9 @@ export function getRadarChart(data) {
 
   return {
     color: color,
-    tooltip: {},
+    tooltip: {
+      position: ["60%", "10%"]
+    },
     legend: {
       bottom: 5,
       data: legend || ["10月份", "9月份", "8月份"]

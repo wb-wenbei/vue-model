@@ -37,11 +37,10 @@ export const detailDeleteAPI = params => {
 };
 
 //考核记录明细豁免
-export const detailExemptionAPI = data => {
+export const detailExemptionAPI = params => {
   return http({
     method: "PUT",
-    url: `/api-customer/community/assessmentDetail/exemption`,
-    data
+    url: `/api-customer/community/assessmentDetail/exemption?id=${params.id}`
   });
 };
 
