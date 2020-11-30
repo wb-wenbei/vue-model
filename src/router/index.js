@@ -9,7 +9,7 @@ const Layout = () => import("../views/layout/layout");
 const routes = [
   {
     path: "/",
-    redirect: "/home"
+    redirect: "/dataCount"
   },
   {
     path: "/error/403",
@@ -32,8 +32,8 @@ const routes = [
     component: () => import("../views/login/index")
   },
   {
-    path: "/home",
-    name: "Home",
+    path: "/dataCount",
+    name: "dataCount",
     component: Layout,
     meta: {
       title: "数据统计",
@@ -43,9 +43,9 @@ const routes = [
     },
     children: [
       {
-        path: "/home",
+        path: "/dataCount",
         name: "DataCount",
-        component: () => import("../views/home/index"),
+        component: () => import("../views/dataCount/dataCount"),
         meta: {
           title: "数据统计",
           code: "hongqiao.dataCount"

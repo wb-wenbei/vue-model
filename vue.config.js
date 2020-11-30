@@ -35,7 +35,7 @@ module.exports = {
     },
     externals: {
       AMap: "AMap",
-      Echarts: "echarts"
+      echarts: "echarts"
     }
   },
   chainWebpack(config) {

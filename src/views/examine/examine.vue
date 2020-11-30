@@ -79,13 +79,13 @@
           </template>
           <template v-slot:action="{ row }">
             <el-button
-              v-if="row.assessmentType === 1"
+              v-if="row.assessmentWay === 1"
               @click="exemptionRow(row)"
               type="text"
               >豁免</el-button
             >
             <el-button
-              v-if="row.assessmentType === 2"
+              v-if="row.assessmentWay === 2"
               @click="exemptionRow(row)"
               type="text"
               >取消</el-button
@@ -367,7 +367,7 @@ export default {
       });
     },
     exemptionRow(row) {
-      let text = row.assessmentType === 1 ? "豁免" : "取消豁免";
+      let text = row.assessmentWay === 1 ? "豁免" : "取消豁免";
       this.$confirm(`确定${text}该条记录？`).then(() => {
         detailExemptionAPI({ id: row.id })
           .then(() => {

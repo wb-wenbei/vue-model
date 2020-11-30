@@ -4,30 +4,44 @@ html, body, #app {
   margin: 0;
 }
 
-a{
-  text-decoration : none
+a {
+  text-decoration: none
 }
 
-.tabs-box{
+.tabs-box {
   padding: 0 30px 16px;
 }
 
 //固定宽度form-item
-.short-width{
+.short-width {
   width: 215px !important;
 }
 
-.medium-width{
+.medium-width {
   width: 315px !important;
+}
+
+//form-item label和form双行显示
+.two-line.el-form-item {
+  .el-form-item__label {
+    float: none;
+    text-align: left
+  }
+
+  .el-form-item__content {
+    margin-left: 0 !important;
+  }
 }
 
 //所有表格竖向边框透明化
 .el-table--border, .el-table--group {
-  border: 1px solid rgba(0,0,0,0) ;
+  border: 1px solid rgba(0, 0, 0, 0);
 }
+
 .el-table--border td, .el-table--border th {
-  border-right: 1px solid rgba(0,0,0,0) ;
+  border-right: 1px solid rgba(0, 0, 0, 0);
 }
-.el-table--border:after, .el-table--group:after{
+
+.el-table--border:after, .el-table--group:after {
   width: 0;
 }

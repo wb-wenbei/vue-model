@@ -190,15 +190,22 @@ export default {
     this.getOptions();
   },
   methods: {
-    async getOptions() {
+    getOptions() {
+      this.getLevels();
+      this.getTypes();
+      this.getNatures();
+    },
+    async getLevels() {
       let communityLevels = await getTypeList("COMMUNITY_LEVEL");
       this.searchColumns[2].options = communityLevels;
       this.columns[3].options = communityLevels;
-
+    },
+    async getTypes() {
       let communityTypes = await getTypeList("COMMUNITY_TYPE");
       this.searchColumns[3].options = communityTypes;
       this.columns[2].options = communityTypes;
-
+    },
+    async getNatures() {
       let projectNatures = await getTypeList("PROJECT_NATURE");
       this.columns[5].options = projectNatures;
     },

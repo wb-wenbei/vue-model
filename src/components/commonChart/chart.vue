@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import Echarts from "echarts";
+import echarts from "echarts";
 
 export default {
   name: "chart",
@@ -36,7 +36,7 @@ export default {
   methods: {
     initChart() {
       if (this.options && JSON.stringify(this.options) !== "{}") {
-        this.chart = Echarts.init(this.$refs["common-chart"], this.theme);
+        this.chart = echarts.init(this.$refs["common-chart"], this.theme);
         this.loadOptions();
         this.ObjectResize(this.chart.resize);
         this.chart.on("click", e => {
