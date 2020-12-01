@@ -95,7 +95,11 @@ export default {
     loading: { type: Boolean, default: false },
     appendToBody: { type: Boolean, default: false },
     showFooter: { type: Boolean, default: false },
-    data: {},
+    data: {
+      default() {
+        return [];
+      }
+    },
     headers: { type: Array }
   },
   data() {

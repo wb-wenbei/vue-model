@@ -1,7 +1,13 @@
+@font-face {
+  font-family: "PingFang Regular";
+  src: url('../assets/font/PingFang Medium.ttf')
+}
+
 html, body, #app {
   height: 100%;
   padding: 0;
   margin: 0;
+  font-family: PingFang Regular;
 }
 
 a {

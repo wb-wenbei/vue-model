@@ -4,18 +4,30 @@
       <router-link id="logo" tag="div" class="logo" to="/home">
         <span class="gray_white">虹桥镇智慧社区评价系统</span>
       </router-link>
-      <el-dropdown trigger="click">
-        <el-button type="primary" size="medium" icon="el-icon-user-solid">
-          {{ userName }}
-          <i class="el-icon-caret-bottom"></i>
-        </el-button>
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>
-            <span style="display:block;" @click="revisePwd">修改密码</span>
-          </el-dropdown-item>
-          <el-dropdown-item @click.native="logout">退出</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
+      <div>
+        <el-dropdown trigger="click">
+          <el-button
+            type="primary"
+            size="medium"
+            icon="el-icon-s-platform"
+            @click="toVisual"
+          >
+            大屏
+          </el-button>
+        </el-dropdown>
+        <el-dropdown trigger="click">
+          <el-button type="primary" size="medium" icon="el-icon-user-solid">
+            {{ userName }}
+            <i class="el-icon-caret-bottom"></i>
+          </el-button>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item>
+              <span style="display:block;" @click="revisePwd">修改密码</span>
+            </el-dropdown-item>
+            <el-dropdown-item @click.native="logout">退出</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </div>
     </el-header>
     <el-container class="layout-main">
       <app-aside />
@@ -74,6 +86,9 @@ export default {
         this.$store.dispatch("tagsView/delAllVisitedViews");
         this.$router.push("/login");
       });
+    },
+    toVisual() {
+      window.open(`/visual`);
     }
   }
 };
@@ -117,7 +132,7 @@ export default {
 
     ::v-deep .el-button:focus,
     .el-button:hover {
-      background: #6496ee;
+      background: #326acd;
     }
   }
 

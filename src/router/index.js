@@ -38,17 +38,17 @@ const routes = [
     meta: {
       title: "数据统计",
       icon: "shujutongji",
-      code: "hongqiao.dataCount",
-      affix: true
+      code: "hongqiao.dataCount"
     },
     children: [
       {
-        path: "/dataCount",
-        name: "DataCount",
-        component: () => import("../views/dataCount/dataCount"),
+        path: "/dataStatistics",
+        name: "DataStatistics",
+        component: () => import("../views/dataStatistics/dataStatistics"),
         meta: {
           title: "数据统计",
-          code: "hongqiao.dataCount"
+          code: "hongqiao.dataCount",
+          affix: true
         }
       }
     ]
@@ -209,6 +209,10 @@ const routes = [
         }
       }
     ]
+  },
+  {
+    path: "/visual",
+    component: () => import("../views/visual/visual")
   }
 ];
 
@@ -220,6 +224,7 @@ const router = new VueRouter({
 const whiteList = [
   "/login",
   "/mine/revisePwd",
+  "/visual",
   "/error/403",
   "/error/404",
   "/error/500"

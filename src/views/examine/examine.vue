@@ -63,7 +63,7 @@
                 <div>考核策略：{{ detailData.policyName }}</div>
                 <div>考核次数：{{ detailData.assessmentTimes }}</div>
                 <div>考核成绩：{{ detailData.assessmentScore }}</div>
-                <div>考核评价：{{ detailData.assessmentLevel }}</div>
+                <div>考核评价：{{ detailData.assessmentLevelName }}</div>
               </div>
               <div class="detail-chart">
                 <common-chart
@@ -78,19 +78,26 @@
             {{ row.assessmentTime | formatDate }}
           </template>
           <template v-slot:action="{ row }">
-            <el-button
-              v-if="row.assessmentWay === 1"
-              @click="exemptionRow(row)"
-              type="text"
-              >豁免</el-button
+            <template
+              v-if="
+                row.assessmentTime >=
+                  new Date(new Date().setDate(1)).setHours(0, 0, 0, 0)
+              "
             >
-            <el-button
-              v-if="row.assessmentWay === 2"
-              @click="exemptionRow(row)"
-              type="text"
-              >取消</el-button
-            >
-            <el-button @click="deleteRow(row)" type="text">删除</el-button>
+              <el-button
+                v-if="row.assessmentWay === 1"
+                @click="exemptionRow(row)"
+                type="text"
+                >豁免</el-button
+              >
+              <el-button
+                v-if="row.assessmentWay === 2"
+                @click="exemptionRow(row)"
+                type="text"
+                >取消</el-button
+              >
+              <el-button @click="deleteRow(row)" type="text">删除</el-button>
+            </template>
             <el-button @click="showRow(row)" type="text">查看</el-button>
           </template>
         </detail-dialog>
@@ -176,7 +183,9 @@ export default {
       examine: [],
       totalMenus: [],
       matchMenu: [],
-      params: {},
+      params: {
+        monthTime: Date.now()
+      },
       searchColumns: [
         {
           prop: "monthTime",
@@ -350,7 +359,10 @@ export default {
     },
     getDetailList(row) {
       this.detailLoading = true;
-      detailListAPI({ communityId: row.communityId })
+      detailListAPI({
+        communityId: row.communityId,
+        monthTime: row.assessmentMonth
+      })
         .then(res => {
           this.detailData.list = res || [];
         })
@@ -361,7 +373,10 @@ export default {
     getChart(row) {
       this.chartLoading = true;
       this.chartOptions = {};
-      radarAPI({ communityId: row.communityId }).then(res => {
+      radarAPI({
+        communityId: row.communityId,
+        monthTime: row.assessmentMonth
+      }).then(res => {
         this.chartOptions = getRadarChart(res);
         this.chartLoading = false;
       });
@@ -392,7 +407,6 @@ export default {
       });
     },
     showRow(row) {
-      console.log(row);
       this.detailRow = row;
       this.showDetailRow = true;
     }
