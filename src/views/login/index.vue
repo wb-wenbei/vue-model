@@ -51,7 +51,7 @@ export default {
   name: "index",
   data() {
     return {
-      title: "虹桥镇智慧社区大数据平台",
+      title: "大数据平台",
       loginForm: {
         userName: "",
         password: ""

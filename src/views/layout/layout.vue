@@ -5,16 +5,6 @@
         <span class="gray_white">虹桥镇智慧社区评价系统</span>
       </router-link>
       <div>
-        <div class="el-dropdown">
-          <el-button
-            type="primary"
-            size="medium"
-            icon="el-icon-s-platform"
-            @click="toVisual"
-          >
-            大屏
-          </el-button>
-        </div>
         <el-dropdown trigger="click">
           <el-button type="primary" size="medium" icon="el-icon-user-solid">
             {{ userName }}

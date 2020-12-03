@@ -9,7 +9,7 @@ const Layout = () => import("../views/layout/layout");
 const routes = [
   {
     path: "/",
-    redirect: "/dataStatistics"
+    redirect: "/organize"
   },
   {
     path: "/error/403",
@@ -30,111 +30,6 @@ const routes = [
     path: "/login",
     name: "Login",
     component: () => import("../views/login/index")
-  },
-  {
-    path: "/dataStatistics",
-    name: "dataStatistics",
-    component: Layout,
-    meta: {
-      title: "数据统计",
-      icon: "shujutongji",
-      code: "hongqiao.dataCount"
-    },
-    children: [
-      {
-        path: "/dataStatistics",
-        name: "DataStatistics",
-        component: () => import("../views/dataStatistics/dataStatistics"),
-        meta: {
-          title: "数据统计",
-          code: "hongqiao.dataCount",
-          affix: true
-        }
-      }
-    ]
-  },
-  {
-    path: "/community",
-    component: Layout,
-    meta: {
-      title: "社区管理",
-      icon: "shequ",
-      code: "hongqiao.community"
-    },
-    children: [
-      {
-        path: "/community",
-        name: "Community",
-        component: () => import("../views/community/community"),
-        meta: {
-          title: "社区管理",
-          code: "hongqiao.community"
-        }
-      }
-    ]
-  },
-  {
-    path: "/strategy",
-    name: "strategy",
-    component: Layout,
-    meta: {
-      title: "策略管理",
-      icon: "tiaozheng",
-      code: "hongqiao.strategy"
-    },
-    children: [
-      {
-        path: "/strategy",
-        name: "Strategy",
-        component: () => import("../views/strategy/strategy"),
-        meta: {
-          title: "策略管理",
-          code: "hongqiao.strategy"
-        }
-      }
-    ]
-  },
-  {
-    path: "/case",
-    name: "case",
-    component: Layout,
-    meta: {
-      title: "案件管理",
-      icon: "guanli",
-      code: "hongqiao.case"
-    },
-    children: [
-      {
-        path: "/case",
-        name: "Case",
-        component: () => import("../views/case/case"),
-        meta: {
-          title: "案件管理",
-          code: "hongqiao.case"
-        }
-      }
-    ]
-  },
-  {
-    path: "/examine",
-    name: "examine",
-    component: Layout,
-    meta: {
-      title: "考核记录",
-      icon: "l9",
-      code: "hongqiao.examine"
-    },
-    children: [
-      {
-        path: "/examine",
-        name: "Examine",
-        component: () => import("../views/examine/examine"),
-        meta: {
-          title: "考核记录",
-          code: "hongqiao.examine"
-        }
-      }
-    ]
   },
   {
     path: "/organize",
@@ -209,10 +104,6 @@ const routes = [
         }
       }
     ]
-  },
-  {
-    path: "/visual",
-    component: () => import("../views/visual/visual")
   }
 ];
 
