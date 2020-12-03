@@ -20,7 +20,6 @@
             v-bind="$attrs"
             v-on="$listeners"
             @checkChange="checkChange"
-            @download="download"
             @uploadSuccess="onQuery"
           ></table-function>
         </slot>
@@ -345,9 +344,6 @@ export default {
       } else {
         this.noShow = true;
       }
-    },
-    download() {
-      this.$emit("download");
     },
     cancelSelect() {
       this.$refs.multipleTable.clearSelection();

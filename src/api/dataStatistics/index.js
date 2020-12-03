@@ -18,3 +18,40 @@ export const evaluateRatioAPI = params => {
     params
   });
 };
+
+//考核策略考核评价占比
+export const policyEvaluateRatioAPI = params => {
+  return http({
+    url: "/api-customer/community/dataStatistics/policyEvaluateRatio",
+    method: "GET",
+    params
+  });
+};
+
+//近12个月案件变化趋势
+export const queryTwelveMonthCaseDataAPI = params => {
+  return http({
+    url: "/api-customer/community/dataStatistics/queryTwelveMonthCaseData",
+    method: "GET",
+    params
+  });
+};
+
+//近12个月各社区案件数量变化趋势
+export const queryTwelveMonthCaseDataByCommunityAPI = params => {
+  return http({
+    url:
+      "/api-customer/community/dataStatistics/queryTwelveMonthCaseDataByCommunity",
+    method: "GET",
+    params
+  });
+};
+
+//近12个月各社区分值变化趋势
+export const queryTwelveMonthDataAPI = params => {
+  return http({
+    url: "/api-customer/community/dataStatistics/queryTwelveMonthData",
+    method: "GET",
+    params
+  });
+};

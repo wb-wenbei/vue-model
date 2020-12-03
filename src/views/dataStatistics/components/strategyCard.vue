@@ -8,7 +8,7 @@
       :class="'item-' + (index % 3)"
     >
       <div class="name">{{ item.name }}</div>
-      <div class="percent">{{ item.percent | percent }}</div>
+      <div class="ratio">{{ item.ratio | percent }}</div>
       <div class="value">{{ item.value }}个</div>
     </div>
   </div>
@@ -23,9 +23,9 @@ export default {
       type: Array,
       default() {
         return [
-          { name: "优秀", value: 10, percent: "0.23" },
-          { name: "中等", value: 10, percent: "0.23" },
-          { name: "差", value: 10, percent: "0.23" }
+          { name: "优秀", value: 10, ratio: "0.23" },
+          { name: "中等", value: 10, ratio: "0.23" },
+          { name: "差", value: 10, ratio: "0.23" }
         ];
       }
     }

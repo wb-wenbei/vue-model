@@ -52,7 +52,7 @@
           <div class="flex-5 pr-2">
             <count-card title="考核评价占比">
               <common-chart
-                v-if="chartOptions.evaluate"
+                :loading="loading.evaluate"
                 :options="chartOptions.evaluate"
               ></common-chart>
             </count-card>
@@ -61,10 +61,12 @@
             <count-card title="考核策略考核评价占比">
               <div class="examine-content">
                 <el-scrollbar style="height: 100%">
-                  <strategy-card></strategy-card>
-                  <strategy-card></strategy-card>
-                  <strategy-card></strategy-card>
-                  <strategy-card></strategy-card>
+                  <strategy-card
+                    v-for="(item, index) in evaluateData"
+                    :key="index"
+                    :title="item.name"
+                    :data="item.data"
+                  ></strategy-card>
                 </el-scrollbar>
               </div>
             </count-card>
@@ -73,13 +75,17 @@
         <div class="count-content">
           <div class="flex-3">
             <count-card title="各社区近12个月分值变化趋势">
-              <div class="flex-1">
+              <div class="flex-1" v-loading="loading.score">
                 <common-chart
-                  v-if="chartOptions.score"
+                  v-if="!loading.score"
                   :options="chartOptions.score"
                 ></common-chart>
               </div>
-              <community-check v-model="checkedList"></community-check>
+              <community-check
+                v-model="communityIds"
+                @loadComplete="initCommunityIds"
+                @change="getTwelveMonthData"
+              ></community-check>
             </count-card>
           </div>
         </div>
@@ -87,15 +93,15 @@
           <div class="flex-5 pr-2">
             <count-card title="近12个月案件变化趋势">
               <common-chart
-                v-if="chartOptions.score"
-                :options="chartOptions.score"
+                :loading="loading.case"
+                :options="chartOptions.case"
               ></common-chart>
             </count-card>
           </div>
           <div class="flex-3">
             <count-card title="近3个月各纬度案件数量">
               <common-chart
-                v-if="chartOptions.radar"
+                :loading="loading.radar"
                 :options="chartOptions.radar"
               ></common-chart>
             </count-card>
@@ -106,11 +112,16 @@
             <count-card title="近12个月各社区案件数量变化趋势">
               <div class="flex-1">
                 <common-chart
-                  v-if="chartOptions.caseCount"
+                  :loading="loading.caseCount"
                   :options="chartOptions.caseCount"
                 ></common-chart>
               </div>
-              <community-check v-model="checkedList" single></community-check>
+              <community-check
+                v-model="communityId"
+                single
+                @loadComplete="initCommunityId"
+                @change="getTwelveMonthCaseDataByCommunity"
+              ></community-check>
             </count-card>
           </div>
         </div>
@@ -132,8 +143,13 @@ import {
 } from "./config/chartOptions";
 import {
   communityScoreRankAPI,
-  evaluateRatioAPI
+  evaluateRatioAPI,
+  policyEvaluateRatioAPI,
+  queryTwelveMonthCaseDataAPI,
+  queryTwelveMonthCaseDataByCommunityAPI,
+  queryTwelveMonthDataAPI
 } from "@/api/dataStatistics/index";
+import { radarAPI } from "@/api/examine/index";
 
 export default {
   name: "DataStatistics",
@@ -144,27 +160,24 @@ export default {
       form: {
         monthTime: Date.now()
       },
+      communityIds: [],
+      communityId: [],
       chartOptions: {
         evaluate: {},
-        radar: {}
+        radar: {},
+        score: {},
+        case: {},
+        caseCount: {}
       },
-      rankData: [
-        {
-          id: 1,
-          communityName: "虹桥社区",
-          score: 98
-        },
-        { id: 2, communityName: "虹桥社区", assessmentScore: 98 },
-        { id: 3, communityName: "虹桥社区", assessmentScore: 98 },
-        { id: 4, communityName: "虹桥社区", assessmentScore: 98 },
-        { id: 5, communityName: "虹桥社区", assessmentScore: 98 },
-        { id: 6, communityName: "虹桥社区", assessmentScore: 98 },
-        { id: 7, communityName: "虹桥社区", assessmentScore: 98 },
-        { id: 8, communityName: "虹桥社区", assessmentScore: 98 },
-        { id: 9, communityName: "虹桥社区", assessmentScore: 98 },
-        { id: 10, communityName: "虹桥社区", assessmentScore: 98 }
-      ],
-      checkedList: []
+      loading: {
+        evaluate: false,
+        radar: false,
+        score: false,
+        case: false,
+        caseCount: false
+      },
+      rankData: [],
+      evaluateData: []
     };
   },
   watch: {
@@ -173,37 +186,115 @@ export default {
     }
   },
   created() {
-    this.getOptions();
     this.getData();
   },
   methods: {
-    getOptions() {
-      this.chartOptions.evaluate = getPieChart();
-      this.chartOptions.score = getLineOptions();
-      this.chartOptions.caseCount = getLineBarOptions();
-    },
     getData() {
       this.getCommunityRank();
       this.getEvaluateRatio();
       this.getRadarChart();
+      this.getPolicyEvaluateRatio();
+      this.getTwelveMonthCaseData();
+      this.getTwelveMonthData();
+      this.getTwelveMonthCaseDataByCommunity();
+    },
+    initCommunityIds(ids) {
+      if (ids && ids.length) {
+        this.communityIds = [ids[0].id];
+        this.getTwelveMonthData();
+      }
+    },
+    initCommunityId(ids) {
+      if (ids && ids.length) {
+        this.communityId = [ids[0].id];
+        this.getTwelveMonthCaseDataByCommunity();
+      }
     },
     getCommunityRank() {
       communityScoreRankAPI({
         pageSize: 10,
         page: 1,
-        monthTime: this.form.monthTime
+        monthTime: this.form.monthTime,
+        isOneMonth: true
       }).then(res => {
         this.rankData = res.data || [];
       });
     },
     getEvaluateRatio() {
-      evaluateRatioAPI(this.form).then(res => {
-        console.log(res);
-      });
+      this.chartOptions.evaluate = {};
+      this.loading.evaluate = true;
+      evaluateRatioAPI(this.form)
+        .then(res => {
+          this.chartOptions.evaluate = getPieChart(res);
+        })
+        .finally(() => {
+          this.loading.evaluate = false;
+        });
     },
     getRadarChart() {
-      this.chartOptions.radar = getRadarChart();
-      console.log(this.chartOptions.radar);
+      this.chartOptions.radar = {};
+      this.loading.radar = true;
+      radarAPI(this.form)
+        .then(res => {
+          this.chartOptions.radar = getRadarChart(res);
+        })
+        .finally(() => {
+          this.loading.radar = false;
+        });
+    },
+    getPolicyEvaluateRatio() {
+      policyEvaluateRatioAPI(this.form).then(res => {
+        console.log("policyEvaluateRatioAPI", res);
+        this.evaluateData = res;
+      });
+    },
+    getTwelveMonthCaseData() {
+      this.chartOptions.case = {};
+      this.loading.case = true;
+      queryTwelveMonthCaseDataAPI(this.form)
+        .then(res => {
+          let data = [{ communityName: "", data: res }];
+          this.chartOptions.case = getLineOptions(data, "数量");
+        })
+        .finally(() => {
+          this.loading.case = false;
+        });
+    },
+    getTwelveMonthCaseDataByCommunity() {
+      if (!this.communityId.toString()) {
+        return {};
+      }
+      let form = {
+        monthTime: this.form.monthTime,
+        communityId: this.communityId.toString()
+      };
+      this.chartOptions.caseCount = {};
+      this.loading.caseCount = true;
+      queryTwelveMonthCaseDataByCommunityAPI(form)
+        .then(res => {
+          this.chartOptions.caseCount = getLineBarOptions(res);
+        })
+        .finally(() => {
+          this.loading.caseCount = false;
+        });
+    },
+    getTwelveMonthData() {
+      if (!this.communityIds.toString()) {
+        return {};
+      }
+      let form = {
+        monthTime: this.form.monthTime,
+        communityIds: this.communityIds.toString()
+      };
+      this.chartOptions.score = {};
+      this.loading.score = true;
+      queryTwelveMonthDataAPI(form)
+        .then(res => {
+          this.chartOptions.score = getLineOptions(res, "评分");
+        })
+        .finally(() => {
+          this.loading.score = false;
+        });
     }
   }
 };

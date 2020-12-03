@@ -11,7 +11,14 @@ const hexToRgba = (hex, opacity) => {
   return rgbaColor;
 };
 
-export function getPieChart() {
+export function getPieChart(data) {
+  if (!data || !data.length) {
+    return {};
+  }
+  let legendData = [];
+  data.forEach(v => {
+    legendData.push(v.name);
+  });
   const color = ["#4A90E2", "#7A95E5", "#50E3C2", "#F6A93B"];
   return {
     color: color,
@@ -21,7 +28,7 @@ export function getPieChart() {
     },
     legend: {
       top: "top",
-      data: ["优秀", "中等", "差"]
+      data: legendData
     },
     series: [
       {
@@ -35,11 +42,7 @@ export function getPieChart() {
         label: {
           show: false
         },
-        data: [
-          { value: 335, name: "优秀" },
-          { value: 310, name: "中等" },
-          { value: 234, name: "差" }
-        ],
+        data: data,
         emphasis: {
           itemStyle: {
             shadowBlur: 10,
@@ -57,13 +60,13 @@ export function getRadarChart(data = []) {
   let legend = [];
   let indicator = [];
   let seriesData = [];
+  let max = 0;
   data.forEach((item, index) => {
     let value = [];
-    let max = 0;
     item.data.forEach(v => {
       value.push(v.value);
       max = Math.max(max, v.value * 1.2);
-      if (index === 0) {
+      if (index === data.length - 1) {
         indicator.push({
           name: v.name,
           max
@@ -81,7 +84,7 @@ export function getRadarChart(data = []) {
     legend.push(item.month + "月份");
   });
 
-  return {
+  let options = {
     color: color,
     tooltip: {
       position: ["60%", "10%"]
@@ -129,39 +132,52 @@ export function getRadarChart(data = []) {
       }
     ]
   };
+  return options;
 }
 
-export function getLineOptions(options) {
-  if (!options) {
-    options = {
-      color: ["#F4D458", "#51F8A8"],
-      yAxisName: "评分",
-      xAxisData: ["1", "2", "3", "4", "5", "6", "7", "8"],
-      yAxisData: [
-        { name: "虹桥社区", data: [100, 138, 350, 173, 180, 150, 180, 230] },
-        {
-          name: "金龙小区",
-          data: [233, 233, 200, 180, 199, 233, 210, 180]
-        }
-      ]
-    };
+export function getLineOptions(data, yAxisName) {
+  if (!data || !data.length) {
+    return {};
   }
+  const color = [
+    "#F4D458",
+    "#51F8A8",
+    "#8075FF",
+    "#19B0AE",
+    "#F6A93B",
+    "#F19B78",
+    "#4A90E2",
+    "#80C16B"
+  ];
+  let xAxisData = [];
+  let yAxisData = [];
+  data.forEach((v, index) => {
+    let yData = { name: v.communityName, data: [] };
+    let itemData = v.data.reverse();
+    itemData.forEach(item => {
+      if (index === 0) {
+        xAxisData.push(item.month + "月");
+      }
+      yData.data.push(item.value);
+    });
+    yAxisData.push(yData);
+  });
 
   let series = [];
-  options.yAxisData.forEach((v, index) => {
+  yAxisData.forEach((v, index) => {
     series.push({
       name: v.name,
       type: "line",
       smooth: true,
       lineStyle: {
         normal: {
-          color: options.color[index],
+          color: color[index],
           shadowBlur: 3,
-          shadowColor: hexToRgba(options.color[0], 0.5),
+          shadowColor: hexToRgba(color[index], 0.5),
           shadowOffsetY: 8
         }
       },
-      symbol: "circle",
+      symbol: "roundRect",
       areaStyle: {
         normal: {
           color: new echarts.graphic.LinearGradient(
@@ -172,16 +188,16 @@ export function getLineOptions(options) {
             [
               {
                 offset: 0,
-                color: hexToRgba(options.color[0], 0.3)
+                color: hexToRgba(color[index], 0.3)
               },
               {
                 offset: 1,
-                color: hexToRgba(options.color[0], 0.1)
+                color: hexToRgba(color[index], 0.1)
               }
             ],
             false
           ),
-          shadowColor: hexToRgba(options.color[0], 0.1),
+          shadowColor: hexToRgba(color[index], 0.1),
           shadowBlur: 10
         }
       },
@@ -190,7 +206,7 @@ export function getLineOptions(options) {
   });
 
   return {
-    color: options.color,
+    color: color,
     legend: {
       top: 7
     },
@@ -216,13 +232,13 @@ export function getLineOptions(options) {
             color: "#D9D9D9"
           }
         },
-        data: options.xAxisData
+        data: xAxisData
       }
     ],
     yAxis: [
       {
         type: "value",
-        name: options.yAxisName,
+        name: yAxisName,
         axisLabel: {
           formatter: "{value}",
           color: "#666"
@@ -245,7 +261,10 @@ export function getLineOptions(options) {
   };
 }
 
-export function getLineBarOptions() {
+export function getLineBarOptions(data) {
+  if (!data || !data.length) {
+    return {};
+  }
   const color = [
     "#F6A93B",
     "#8075FF",
@@ -254,6 +273,26 @@ export function getLineBarOptions() {
     "#4A90E2",
     "#80C16B"
   ];
+  let legendData = [];
+  let xAxisData = [];
+  let series = [];
+  data = data.reverse();
+  data.forEach((v, index) => {
+    v.data.forEach((item, i) => {
+      if (index === 0) {
+        legendData.push(item.name);
+        series.push({
+          name: item.name,
+          type: "bar",
+          stack: "案件数量",
+          barWidth: "40%",
+          data: []
+        });
+      }
+      series[i].data.push(v.data[i].value);
+    });
+    xAxisData.push(v.month + "月");
+  });
   return {
     color: color,
     tooltip: {
@@ -263,7 +302,7 @@ export function getLineBarOptions() {
       }
     },
     legend: {
-      data: ["公共设施", "治安管理", "消防管理"]
+      data: legendData
     },
     grid: {
       top: "40",
@@ -284,7 +323,15 @@ export function getLineBarOptions() {
             color: "#D9D9D9"
           }
         },
-        data: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"]
+        data: xAxisData || [
+          "周一",
+          "周二",
+          "周三",
+          "周四",
+          "周五",
+          "周六",
+          "周日"
+        ]
       }
     ],
     yAxis: [
@@ -298,7 +345,7 @@ export function getLineBarOptions() {
         }
       }
     ],
-    series: [
+    series: series || [
       {
         name: "公共设施",
         type: "bar",

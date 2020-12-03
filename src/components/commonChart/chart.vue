@@ -4,6 +4,7 @@
 
 <script>
 import echarts from "echarts";
+import cloneDeep from "lodash/cloneDeep";
 
 export default {
   name: "chart",
@@ -35,7 +36,7 @@ export default {
   },
   methods: {
     initChart() {
-      if (this.options && JSON.stringify(this.options) !== "{}") {
+      if (this.options) {
         this.chart = echarts.init(this.$refs["common-chart"], this.theme);
         this.loadOptions();
         this.ObjectResize(this.chart.resize);
@@ -45,7 +46,8 @@ export default {
       }
     },
     loadOptions() {
-      this.chartOptions = Object.assign({}, this.options);
+      this.chartOptions = cloneDeep(this.options) || {};
+      console.log("chartOptions",this.chart, this.chartOptions);
       this.chart.setOption(this.chartOptions);
     },
     ObjectResize(fn) {

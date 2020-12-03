@@ -19,7 +19,12 @@
       </el-form-item>
     </el-form>
     <div class="check-content">
-      <el-checkbox-group v-model="currentValue" @change="checkChange">
+      <el-checkbox-group
+        v-model="currentValue"
+        :min="1"
+        :max="4"
+        @change="checkChange"
+      >
         <template v-for="(community, index) in filterCommunities">
           <el-checkbox
             v-show="
@@ -88,13 +93,6 @@ export default {
         this.currentValue = v;
       }
     },
-    currentValue: {
-      immediate: true,
-      deep: true,
-      handler(v) {
-        this.$emit("input", v);
-      }
-    },
     communityName() {
       this.filterData();
     }
@@ -110,7 +108,7 @@ export default {
     getData() {
       getAllAPI(this.form).then(res => {
         this.communities = res;
-        this.currentValue = [];
+        this.$emit("loadComplete", res);
         this.filterData();
       });
     },
@@ -128,6 +126,8 @@ export default {
       if (this.single) {
         this.currentValue = [v[v.length - 1]];
       }
+      this.$emit("input", this.currentValue);
+      this.$emit("change", this.currentValue);
     },
     changePage(v) {
       this.currentPage = v;
@@ -150,6 +150,10 @@ export default {
     padding: 0 5px;
 
     ::v-deep {
+      .el-checkbox-group {
+        text-align: left;
+      }
+
       .el-checkbox {
         width: 50%;
         margin: 0;
@@ -166,6 +170,18 @@ export default {
           white-space: nowrap;
           text-overflow: ellipsis;
         }
+      }
+
+      /*checkbox 禁用状态颜色设置为正常颜色*/
+      .el-checkbox__input.is-disabled + span.el-checkbox__label {
+        color: #606266;
+      }
+      .el-checkbox__input.is-disabled.is-checked .el-checkbox__inner {
+        background-color: #3b7cef;
+        border-color: #3b7cef;
+      }
+      .el-checkbox__input.is-disabled.is-checked .el-checkbox__inner::after {
+        border-color: white;
       }
     }
   }

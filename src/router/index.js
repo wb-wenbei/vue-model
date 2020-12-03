@@ -9,7 +9,7 @@ const Layout = () => import("../views/layout/layout");
 const routes = [
   {
     path: "/",
-    redirect: "/dataCount"
+    redirect: "/dataStatistics"
   },
   {
     path: "/error/403",
@@ -32,8 +32,8 @@ const routes = [
     component: () => import("../views/login/index")
   },
   {
-    path: "/dataCount",
-    name: "dataCount",
+    path: "/dataStatistics",
+    name: "dataStatistics",
     component: Layout,
     meta: {
       title: "数据统计",
