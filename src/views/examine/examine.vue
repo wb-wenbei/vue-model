@@ -211,7 +211,7 @@ export default {
         { prop: "policyName", label: "考核策略" },
         { prop: "assessmentTimes", label: "考核次数" },
         { prop: "assessmentScore", label: "考核成绩" },
-        { prop: "assessmentLevel", label: "考核评价" },
+        { prop: "assessmentLevelName", label: "考核评价" },
         { prop: "action", label: "操作", width: 100, fixed: "right" }
       ],
       columns: [

@@ -177,7 +177,7 @@ export function getLineOptions(data, yAxisName) {
           shadowOffsetY: 8
         }
       },
-      symbol: "roundRect",
+      symbol: "circle",
       areaStyle: {
         normal: {
           color: new echarts.graphic.LinearGradient(

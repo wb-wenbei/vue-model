@@ -47,7 +47,6 @@ export default {
     },
     loadOptions() {
       this.chartOptions = cloneDeep(this.options) || {};
-      console.log("chartOptions",this.chart, this.chartOptions);
       this.chart.setOption(this.chartOptions);
     },
     ObjectResize(fn) {
