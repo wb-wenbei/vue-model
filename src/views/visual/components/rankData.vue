@@ -1,5 +1,10 @@
 <template>
-  <el-table class="rank-table" :data="rankData" style="width: 100%">
+  <el-table
+    class="rank-table"
+    v-loading="loading"
+    :data="rankData"
+    style="width: 100%"
+  >
     <el-table-column type="index" label="排名" width="60">
       <template slot-scope="scope">
         <div class="rank-index" :class="'rank-index-' + scope.$index">
@@ -31,6 +36,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       rankData: []
     };
   },
@@ -39,14 +45,19 @@ export default {
   },
   methods: {
     loadData() {
+      this.loading = true;
       communityScoreRankAPI({
         pageSize: 10,
         page: 1,
         monthTime: this.params.monthTime,
         isOneMonth: false
-      }).then(res => {
-        this.rankData = res.data || [];
-      });
+      })
+        .then(res => {
+          this.rankData = res.data || [];
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     }
   }
 };

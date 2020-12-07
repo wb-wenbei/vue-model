@@ -11,7 +11,7 @@
     </div>
     <div class="left-card">
       <div class="left-search-card">
-        <div>近三月</div>
+        <div class="month-range">近三月</div>
         <el-date-picker
           v-model="params.monthTime"
           type="month"
@@ -37,9 +37,9 @@
       <div style="height: 20px"></div>
       <div class="left-bottom-card">
         <card title="社区排名 TOP10">
-          <div style="height: 100%">
-            <rank-card :params="params"></rank-card>
-          </div>
+          <el-scrollbar style="height: 100%">
+            <rank-card ref="rank-card" :params="params"></rank-card>
+          </el-scrollbar>
         </card>
       </div>
     </div>
@@ -120,7 +120,8 @@ import {
 
 import {
   queryCommunityForScoreAPI,
-  queryCaseRatioAPI
+  queryCaseRatioAPI,
+  queryThreeMonthCaseNumberAPI
 } from "@/api/dataStatistics/index";
 import { radarAPI } from "@/api/examine/index";
 
@@ -201,6 +202,8 @@ export default {
     },
     onSearch() {
       this.loadMarkers();
+      this.loadData();
+      this.$refs["rank-card"].loadData();
     },
     loadMarkers() {
       queryCommunityForScoreAPI(this.params).then(res => {
@@ -228,6 +231,9 @@ export default {
           });*/
         });
         this.setHeatMapData();
+        this.timeout = setTimeout(() => {
+          this.onMarkerHover(this.markers[this.hoverIndex]);
+        }, 5000);
       });
     },
     loadData() {
@@ -259,16 +265,15 @@ export default {
     },
     getCommunityCaseChart() {
       this.chartOptions.communityCase = {};
-      this.chartOptions.communityCase = getLinesChart();
-      /*this.loading.communityCase = true;
-      let params = Object.assign({},this.params,this.pageParams)
-      getLinesChart(params)
+      this.loading.communityCase = true;
+      let params = Object.assign({}, this.params, this.pageParams);
+      queryThreeMonthCaseNumberAPI(params)
         .then(res => {
-          this.chartOptions.communityCase = getPieChart(res);
+          this.chartOptions.communityCase = getLinesChart(res.data);
         })
         .finally(() => {
           this.loading.communityCase = false;
-        });*/
+        });
     },
     onMarkerHover(marker) {
       if (marker !== this.hoverMarker) {
@@ -369,6 +374,7 @@ export default {
   height: 100%;
   position: relative;
   user-select: none;
+  min-height: 700px;
 
   .header {
     position: absolute;
@@ -436,6 +442,10 @@ export default {
       border-radius: 4px;
       padding: 4px 15px;
 
+      .month-range {
+        font-size: 12px;
+      }
+
       ::v-deep {
         .el-input,
         input {
@@ -452,6 +462,12 @@ export default {
 
     .left-bottom-card {
       flex: 1;
+      min-height: 0;
+      ::v-deep{
+        .el-scrollbar__wrap{
+          overflow-x: hidden;
+        }
+      }
     }
   }
 
@@ -530,6 +546,10 @@ export default {
 
   ::v-deep {
     .amap-info-contentContainer {
+    }
+
+    .el-loading-mask {
+      background: rgba(0, 68, 83, 0.8);
     }
   }
 }

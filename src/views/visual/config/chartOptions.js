@@ -1,5 +1,16 @@
 export function getLinesChart(data) {
-  console.log(data);
+  let dimensions = ["name"];
+  let source = [];
+  data.forEach((item, index) => {
+    let sourceData = { name: item.name };
+    item.data.forEach(v => {
+      if (index === 0) {
+        dimensions.push(v.month + "月");
+      }
+      sourceData[v.month + "月"] = v.value;
+    });
+    source.push(sourceData);
+  });
   const color = ["#F6A93B", "#7A95E5", "#50E3C2"];
   return {
     color: color,
@@ -17,16 +28,16 @@ export function getLinesChart(data) {
     },
     tooltip: {},
     dataset: {
-      dimensions: ["product", "2015", "2016", "2017"],
-      source: [
-        { product: "虹桥小区", "2015": 43.3, "2016": 85.8, "2017": 93.7 },
-        { product: "名都小区", "2015": 83.1, "2016": 73.4, "2017": 55.1 },
-        { product: "红春小区", "2015": 86.4, "2016": 65.2, "2017": 82.5 },
-        { product: "龙腾小区", "2015": 72.4, "2016": 53.9, "2017": 39.1 },
-        { product: "龙腾小区1", "2015": 72.4, "2016": 53.9, "2017": 39.1 },
-        { product: "龙腾小区2", "2015": 72.4, "2016": 53.9, "2017": 39.1 },
-        { product: "龙腾小区3", "2015": 72.4, "2016": 53.9, "2017": 39.1 },
-        { product: "龙腾小区4", "2015": 72.4, "2016": 53.9, "2017": 39.1 }
+      dimensions: dimensions || ["name", "2015", "2016", "2017"],
+      source: source || [
+        { name: "虹桥小区", "2015": 43.3, "2016": 85.8, "2017": 93.7 },
+        { name: "名都小区", "2015": 83.1, "2016": 73.4, "2017": 55.1 },
+        { name: "红春小区", "2015": 86.4, "2016": 65.2, "2017": 82.5 },
+        { name: "龙腾小区", "2015": 72.4, "2016": 53.9, "2017": 39.1 },
+        { name: "龙腾小区1", "2015": 72.4, "2016": 53.9, "2017": 39.1 },
+        { name: "龙腾小区2", "2015": 72.4, "2016": 53.9, "2017": 39.1 },
+        { name: "龙腾小区3", "2015": 72.4, "2016": 53.9, "2017": 39.1 },
+        { name: "龙腾小区4", "2015": 72.4, "2016": 53.9, "2017": 39.1 }
       ]
     },
     xAxis: {
