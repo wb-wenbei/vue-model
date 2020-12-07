@@ -55,3 +55,30 @@ export const queryTwelveMonthDataAPI = params => {
     params
   });
 };
+
+//大屏-3个月案件数量
+export const queryCaseRatioAPI = params => {
+  return http({
+    url: "/api-customer/community/dataStatistics/queryCaseRatio",
+    method: "GET",
+    params
+  });
+};
+
+//大屏-3个月各社区案件数量
+export const queryThreeMonthCaseNumberAPI = params => {
+  return http({
+    url: "/api-customer/community/dataStatistics/queryThreeMonthCaseNumber",
+    method: "GET",
+    params
+  });
+};
+
+//大屏-分布图
+export const queryCommunityForScoreAPI = params => {
+  return http({
+    url: "/api-customer/community/dataStatistics/queryCommunityForScore",
+    method: "GET",
+    params
+  });
+};
