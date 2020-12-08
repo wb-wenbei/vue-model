@@ -33,7 +33,7 @@
         <div style="position: absolute;top: 20px;left: 20px;z-index: 500">
           <el-input
             v-model="keyword"
-            id="tipinput"
+            id="tipInput"
             size="small"
             clearable
             placeholder="关键字查询"
@@ -150,7 +150,7 @@ export default {
     inputOptions() {
       //输入提示-address
       let autoOptions = {
-        input: "tipinput"
+        input: "tipInput"
       };
       let auto = new AMap.Autocomplete(autoOptions);
       this.placeSearch = new AMap.PlaceSearch({

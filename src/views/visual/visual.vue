@@ -341,12 +341,7 @@ export default {
     },
     openInfoWindow(marker) {
       this.$nextTick(() => {
-        this.infoData = {
-          name: "虹桥小区",
-          caseNumber: 156,
-          score: 86,
-          levelName: "优秀"
-        };
+        this.infoData = marker.getExtData();
         this.infoWindow = new AMap.InfoWindow({
           position: marker.getPosition(),
           isCustom: true,
@@ -624,6 +619,7 @@ export default {
   }
 }
 
+/*切换热力图时隐藏marker-icon 和 info-window*/
 .hide-marker {
   .info-window {
     display: none;
