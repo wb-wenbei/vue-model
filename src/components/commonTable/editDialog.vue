@@ -334,11 +334,7 @@ export default {
           }
         });
       }
-      this.defaultForm = Object.assign(
-        defaultForm,
-        this.defaultForm,
-        this.form
-      );
+      this.defaultForm = Object.assign(defaultForm, this.form);
     },
     canSave() {
       let result = false;

@@ -21,7 +21,7 @@
           v-for="sonMenu in menuItem.sonMenus"
           :label="sonMenu"
           :key="sonMenu.id"
-          >{{ sonMenu.name }}</el-checkbox
+          >{{ getFilterName(sonMenu.name) }}</el-checkbox
         >
       </el-checkbox-group>
     </div>
@@ -80,6 +80,9 @@ export default {
     },
     export() {
       this.$emit("exportEvent", getSubmitMenu(this.menuOptions));
+    },
+    getFilterName(name) {
+      return name.replace("虹桥-", "");
     }
   }
 };

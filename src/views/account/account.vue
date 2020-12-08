@@ -32,6 +32,7 @@
             <div class="account-form">
               <el-form
                 ref="form"
+                style="position: relative"
                 :model="form"
                 :rules="accountRules"
                 label-width="80px"
@@ -42,13 +43,18 @@
                     v-model="form.userName"
                   ></el-input>
                 </el-form-item>
-                <el-link
-                  v-if="type === 'edit'"
-                  :underline="false"
-                  type="primary"
-                  @click="showPassword = !showPassword"
-                  >修改密码</el-link
+                <div
+                  style="position: absolute;top: 8px;left: 400px;width: 100px;"
                 >
+                  <el-link
+                    v-if="type === 'edit'"
+                    :underline="false"
+                    type="primary"
+                    @click="showPassword = !showPassword"
+                    >修改密码</el-link
+                  >
+                </div>
+
                 <el-form-item v-if="showPassword" label="密码" prop="password">
                   <el-input
                     class="medium-width"
@@ -68,11 +74,15 @@
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="组织架构" prop="orgId">
-                  <form-organize v-model="form.orgId"></form-organize>
+                  <form-organize
+                    v-model="form.orgId"
+                    class="medium-width"
+                  ></form-organize>
                 </el-form-item>
                 <el-form-item label="角色权限" prop="roleIds">
                   <form-select
                     v-model="form.roleIds"
+                    class="medium-width"
                     multiple
                     :options="options.roles"
                   ></form-select>
@@ -137,7 +147,6 @@ export default {
         { prop: "userName", label: "用户名" },
         { prop: "orgName", label: "组织机构" },
         { prop: "roleNames", label: "角色权限", filter: this.filterRolesName },
-        { prop: "employeeName", label: "关联人员" },
         { prop: "action", label: "操作", width: 100, fixed: "right" }
       ],
       form: {}
@@ -180,6 +189,7 @@ export default {
           .then(() => {
             this.$message.success("账号删除成功！");
             this.$refs.table.refresh();
+            this.getAccountList();
           })
           .catch(err => {
             this.$message.error("账号删除失败：" + err);
@@ -211,6 +221,7 @@ export default {
               this.$message.success(`${this.title}成功！`);
               this.visibleDialog = false;
               this.$refs.table.refresh();
+              this.getAccountList();
             })
             .catch(err => {
               this.$message.error(`${this.title}失败：${err}`);

@@ -274,6 +274,7 @@ export default {
         });
         if (!check) {
           this.$message.error("请至少完整填写一项物业费！");
+          return false;
         }
       }
 

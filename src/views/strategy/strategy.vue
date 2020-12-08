@@ -84,7 +84,7 @@ import TableSearch from "@/components/commonTable/tableSearch.vue";
 import Keywords from "./components/keywords";
 import EvaSetting from "./components/evaSetting";
 import ConcatSetting from "./components/concatSetting";
-import { getAssessmentTypes } from "@/config/dictionary";
+import { getAssessmentType } from "@/config/dictionary";
 
 import {
   pageAPI,
@@ -129,13 +129,13 @@ export default {
             return v ? v.length : 0;
           }
         },
-        {
+        /*{
           prop: "isEnabled",
           label: "状态",
           filter: v => {
             return v ? "启用" : "停用";
           }
-        },
+        },*/
         { prop: "userName", label: "创建人" },
         { prop: "updateTime", label: "更新时间", type: "date" },
         { prop: "action", label: "操作", width: 100, fixed: "right" }
@@ -166,6 +166,7 @@ export default {
       ],
       form: { assessmentPolicyDetail: [] },
       defaultRow: {
+        assessmentType: 1,
         options: { caseReasonId: [] }
       },
       formColumns: [
@@ -185,7 +186,7 @@ export default {
           prop: "assessmentType",
           label: "考核方式",
           type: "select",
-          options: getAssessmentTypes()
+          options: getAssessmentType()
         },
         {
           prop: "singleThreshold",

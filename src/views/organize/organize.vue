@@ -147,6 +147,7 @@ export default {
           this.$message.success(`${this.title}成功`);
           this.visibleDialog = false;
           this.loadData();
+          this.$store.dispatch("setBaseOrgList");
         })
         .catch(message => {
           this.$message.error(`${this.title}失败：${message}`);
