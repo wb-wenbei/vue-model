@@ -3,7 +3,7 @@ export function getLinesChart(data) {
   let source = [];
   data.forEach((item, index) => {
     let sourceData = { name: item.name };
-    item.data.forEach(v => {
+    item.data.reverse().forEach(v => {
       if (index === 0) {
         dimensions.push(v.month + "月");
       }

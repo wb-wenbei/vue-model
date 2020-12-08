@@ -1,7 +1,10 @@
 <template>
   <div class="card">
     <div class="top-border"></div>
-    <div class="title">{{ title }}</div>
+    <div class="title">
+      <div>{{ title }}</div>
+      <slot name="right-header"></slot>
+    </div>
     <div class="content">
       <slot>content</slot>
     </div>
@@ -50,6 +53,8 @@ export default {
     border-bottom: 1px solid #305860;
     color: white;
     text-align: left;
+    display: flex;
+    justify-content: space-between;
 
     &::before {
       content: "";

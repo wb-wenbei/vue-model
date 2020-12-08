@@ -1,5 +1,5 @@
 <template>
-  <div class="visual" id="map">
+  <div class="visual" :class="mapStatus === 2 ? 'hide-marker' : ''" id="map">
     <div v-if="!hasToken">暂无访问权限！</div>
     <div class="header">智慧社区评价大数据平台</div>
     <div ref="info-window" class="info-window"></div>
@@ -45,6 +45,12 @@
     </div>
     <div class="bottom-card">
       <card title="近三个月案件变化趋势">
+        <template v-slot:right-header>
+          <div>
+            <i class="el-icon-arrow-left page-btn" @click.stop="prePage"></i>
+            <i class="el-icon-arrow-right page-btn" @click.stop="nextPage"></i>
+          </div>
+        </template>
         <div style="height: 240px">
           <common-chart
             :loading="loading.communityCase"
@@ -67,6 +73,7 @@
       <info-window ref="info-window">
         <div class="info-window">
           <div class="info-item">
+            <div class="top-border"></div>
             <div class="icon">
               <div class="icon-image icon-3"></div>
             </div>
@@ -76,6 +83,7 @@
             </div>
           </div>
           <div class="info-item">
+            <div class="top-border"></div>
             <div class="icon">
               <div class="icon-image icon-2"></div>
             </div>
@@ -87,6 +95,7 @@
             </div>
           </div>
           <div class="info-item">
+            <div class="top-border"></div>
             <div class="icon">
               <div class="icon-image icon-1"></div>
             </div>
@@ -157,7 +166,8 @@ export default {
       },
       pageParams: {
         pageSize: 8,
-        page: 1
+        page: 1,
+        total: 0
       },
       markers: [],
       hoverIndex: 0,
@@ -198,7 +208,7 @@ export default {
       };
       this.map = new AMap.Map("map", options);
       this.loadMarkers();
-      // this.initHeatMap();
+      this.initHeatMap();
     },
     onSearch() {
       this.loadMarkers();
@@ -269,11 +279,29 @@ export default {
       let params = Object.assign({}, this.params, this.pageParams);
       queryThreeMonthCaseNumberAPI(params)
         .then(res => {
+          this.pageParams.total = res.totalCount;
           this.chartOptions.communityCase = getLinesChart(res.data);
         })
         .finally(() => {
           this.loading.communityCase = false;
         });
+    },
+    prePage() {
+      if (this.pageParams.page === 1) {
+        return;
+      }
+      this.pageParams.page--;
+      this.getCommunityCaseChart();
+    },
+    nextPage() {
+      if (
+        this.pageParams.page * this.pageParams.pageSize >=
+        this.pageParams.total
+      ) {
+        return;
+      }
+      this.pageParams.page++;
+      this.getCommunityCaseChart();
     },
     onMarkerHover(marker) {
       if (marker !== this.hoverMarker) {
@@ -283,8 +311,10 @@ export default {
         marker.setOffset(
           new AMap.Pixel(-PIXEL_HOVER_X / 2, -PIXEL_HOVER_Y / 2)
         );
-        this.map.setCenter(marker.getPosition());
-        this.openInfoWindow(marker);
+        if (this.mapStatus === 1) {
+          this.map.setCenter(marker.getPosition());
+          this.openInfoWindow(marker);
+        }
       }
       if (this.timeout) {
         clearTimeout(this.timeout);
@@ -342,16 +372,26 @@ export default {
     },
     initHeatMap() {
       this.heatmap = new AMap.Heatmap(this.map, {
-        radius: 25,
         opacity: [0, 0.8],
-        visible: false
+        gradient: {
+          0.2: "#3DE1E1",
+          0.5: "#80C16B",
+          0.8: "#F5C120",
+          1.0: "#F04735"
+        }
       });
+      this.heatmap.hide();
     },
     setHeatMapData() {
       if (this.heatmap && this.markers.length) {
         let heatmapData = [];
         this.markers.forEach(v => {
-          heatmapData.push({ lng: v.lng, lat: v.lat, count: v.caseCount || 5 });
+          let item = v.getExtData();
+          heatmapData.push({
+            lng: item.lng,
+            lat: item.lat,
+            count: item.caseCount || 5
+          });
         });
         this.heatmap.setDataSet({
           data: heatmapData,
@@ -463,8 +503,8 @@ export default {
     .left-bottom-card {
       flex: 1;
       min-height: 0;
-      ::v-deep{
-        .el-scrollbar__wrap{
+      ::v-deep {
+        .el-scrollbar__wrap {
           overflow-x: hidden;
         }
       }
@@ -485,6 +525,21 @@ export default {
     left: 360px;
     right: 360px;
     z-index: 500;
+
+    .page-btn {
+      display: inline-block;
+      padding: 3px 5px;
+      margin: 0 5px;
+      border: 1px solid #19b0ae;
+      border-radius: 4px;
+
+      &:hover {
+        background: #19b0ae;
+      }
+      &:active {
+        background: #169b99;
+      }
+    }
   }
 
   .info-window {
@@ -501,6 +556,21 @@ export default {
       display: flex;
       align-items: center;
       box-sizing: border-box;
+      position: relative;
+
+      .top-border {
+        position: absolute;
+        width: 100%;
+        height: 1px;
+        top: -1px;
+        left: 0;
+        background: linear-gradient(
+          to right,
+          rgba(0, 0, 0, 0) 30%,
+          #84e2d8 50%,
+          rgba(0, 0, 0, 0) 70%
+        );
+      }
 
       .icon-image {
         height: 24px;
@@ -550,6 +620,18 @@ export default {
 
     .el-loading-mask {
       background: rgba(0, 68, 83, 0.8);
+    }
+  }
+}
+
+.hide-marker {
+  .info-window {
+    display: none;
+  }
+
+  ::v-deep {
+    .amap-icon {
+      display: none;
     }
   }
 }
