@@ -90,7 +90,7 @@
             </div>
             <div class="detail">
               <div class="title title-blue">
-                {{ infoData.caseNumber || "--" }}
+                {{ infoData.caseCount || "--" }}
               </div>
               <div class="sub-title">案件数量</div>
             </div>
@@ -104,7 +104,7 @@
               <div class="title title-blue">
                 {{ infoData.score || "--" }} /
                 <span style="font-size: 12px">
-                  {{ infoData.levelName || "--" }}
+                  {{ infoData.evaluateName || "--" }}
                 </span>
               </div>
               <div class="sub-title">评分/评价等级</div>
@@ -137,10 +137,9 @@ import {
 import { radarAPI } from "@/api/examine/index";
 
 const markerIcons = {
-  1: require("./images/marker_1.png"),
-  2: require("./images/marker_2.png"),
-  3: require("./images/marker_3.png"),
-  4: require("./images/marker_4.png")
+  1: require("./images/marker_1.png"), //优秀
+  2: require("./images/marker_3.png"), //中等
+  3: require("./images/marker_4.png") //差
 };
 
 const PIXEL_X = 24;
@@ -387,7 +386,7 @@ export default {
           heatmapData.push({
             lng: item.lng,
             lat: item.lat,
-            count: item.caseCount || 5
+            count: item.caseCount || 0
           });
         });
         this.heatmap.setDataSet({
@@ -430,7 +429,7 @@ export default {
     text-shadow: 0 0 2px #fff, 0 0 40px #27abaf, 0.1em 0.1em #333;
   }
 
-  .weather{
+  .weather {
     position: absolute;
     top: 30px;
     right: 20px;
