@@ -1,19 +1,12 @@
 <template>
   <div class="select-list">
     <div v-for="(item, index) in currentValue" :key="index">
-      <!--      <span>{{ "标准" + (index + 1) + "：" }}</span>-->
       <el-input
         class="short-width item"
-        v-model="item.standard"
-        placeholder="请输入物业标准"
-      ></el-input>
-      <el-input
-        class="short-width item"
-        type="number"
-        v-model="item.amount"
-        placeholder="请输入物业费"
+        v-model="item.year"
+        placeholder="请输入建成年份"
       >
-        <template slot="append">元/m²</template>
+        <template slot="append">年</template>
       </el-input>
       <el-button
         class="item"
@@ -37,7 +30,7 @@
 
 <script>
 export default {
-  name: "address-select",
+  name: "year-select",
   props: {
     value: {}
   },
@@ -64,13 +57,10 @@ export default {
   },
   methods: {
     loadData() {
-      this.currentValue = this.value || [{ standard: "", amount: "" }];
+      this.currentValue = this.value || [{ year: "" }];
     },
     addItem() {
-      this.currentValue.push({
-        standard: "标准" + (this.currentValue.length + 1),
-        amount: ""
-      });
+      this.currentValue.push({ year: "" });
     },
     deleteItem(index) {
       this.currentValue.splice(index, 1);

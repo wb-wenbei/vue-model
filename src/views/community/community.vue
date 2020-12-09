@@ -37,6 +37,9 @@
           <template v-slot:propertyFee="{ form }">
             <property-select v-model="form.propertyFee"></property-select>
           </template>
+          <template v-slot:buildingYear="{ form }">
+            <year-select v-model="form.buildingYear"></year-select>
+          </template>
         </edit-dialog>
       </el-tab-pane>
     </el-tabs>
@@ -49,6 +52,7 @@ import EditDialog from "@/components/commonTable/editDialog";
 import TableSearch from "@/components/commonTable/tableSearch.vue";
 import PropertySelect from "./components/property-select";
 import AddressSelect from "./components/address-select";
+import YearSelect from "./components/year-select";
 import { getTypeList } from "@/utils/index";
 
 import { pageAPI, deleteAPI, addAPI, updateAPI } from "@/api/community/index";
@@ -60,7 +64,8 @@ export default {
     EditDialog,
     TableSearch,
     PropertySelect,
-    AddressSelect
+    AddressSelect,
+    YearSelect
   },
   data() {
     return {
@@ -98,7 +103,7 @@ export default {
         { prop: "communityTypeName", label: "社区类型" },
         { prop: "communityLevelName", label: "社区等级" },
         { prop: "buildingArea", label: "建筑面积" },
-        { prop: "buildingYear", label: "建成年份" },
+        { prop: "buildingYear", label: "建成年份", filter: this.getYear },
         { prop: "householdsNumber", label: "人口户数" },
         { prop: "updateTime", label: "更新时间", type: "date" },
         { prop: "action", label: "操作", width: 100, fixed: "right" }
@@ -154,12 +159,6 @@ export default {
           required: true
         },
         {
-          prop: "buildingYear",
-          label: "建成年份",
-          type: "text",
-          required: true
-        },
-        {
           prop: "peopleEngagedNumber",
           label: "从业人数",
           type: "num",
@@ -171,6 +170,7 @@ export default {
           type: "num",
           required: true
         },
+        { prop: "buildingYear", label: "建成年份", required: true, cols: 4 },
         { prop: "propertyFee", label: "物业费", required: true, cols: 4 },
         {
           prop: "isSpecCommunityFacilities",
@@ -224,7 +224,10 @@ export default {
     add() {
       this.type = "add";
       this.title = "新增社区";
-      this.form = { isSpecCommunityFacilities: 0 };
+      this.form = {
+        isSpecCommunityFacilities: 0,
+        propertyFee: [{ standard: "标准1" }]
+      };
       this.visibleDialog = true;
     },
     submit(form) {
@@ -245,6 +248,13 @@ export default {
             this.loading = false;
           });
       }
+    },
+    getYear(e) {
+      return e
+        .map(v => {
+          return v.year;
+        })
+        .toString();
     },
     checkForm(form) {
       if (!form.communityAddress || !form.communityAddress.length) {
@@ -274,6 +284,22 @@ export default {
         });
         if (!check) {
           this.$message.error("请至少完整填写一项物业费！");
+          return false;
+        }
+      }
+
+      if (!form.buildingYear || !form.buildingYear.length) {
+        this.$message.error("请至少完整填写一项建成年份！");
+        return false;
+      } else {
+        let check = false;
+        form.buildingYear.forEach(v => {
+          if (v.year) {
+            check = true;
+          }
+        });
+        if (!check) {
+          this.$message.error("请至少完整填写一项建成年份！");
           return false;
         }
       }
