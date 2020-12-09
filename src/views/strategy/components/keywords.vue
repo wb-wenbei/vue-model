@@ -67,6 +67,7 @@ export default {
       type: "add",
       title: "新增关键词",
       case: [],
+      allCaseReasons: [],
       params: {
         caseDimensionId: ""
       },
@@ -153,6 +154,7 @@ export default {
         caseReasons = await getTypeChildren(typeCode);
       } else {
         caseReasons = await getTypeList("CASE_REASON");
+        this.allCaseReasons = [...caseReasons];
       }
       if (type === "form") {
         this.columns[1].options = caseReasons;
@@ -167,6 +169,7 @@ export default {
       this.type = "edit";
       this.title = "编辑关键词";
       this.form = row;
+      this.columns[1].options = this.allCaseReasons;
       this.visibleDialog = true;
     },
     add() {
