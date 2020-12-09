@@ -145,7 +145,7 @@ export default {
     getMenus(menus) {
       let result = [];
       menus.forEach(menu => {
-        result.push(menu.name);
+        result.push(menu.name.replace("虹桥-", ""));
       });
       return result.toString();
     }
