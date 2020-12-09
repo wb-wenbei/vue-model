@@ -1,139 +1,140 @@
 <template>
   <div class="tabs-box">
-    <el-tabs v-model="activeName">
+    <!--<el-tabs v-model="activeName">
       <el-tab-pane name="examine" @click.native="activeName = 'examine'">
         <span slot="label" style="padding: 0 6px">考核记录</span>
-        <common-table
-          ref="table"
-          :headers="headers"
-          :api="pageAPI"
-          :params="params"
-          :columns="columns"
-          :settings="['setting']"
-          :canEdit="false"
-          :canDelete="false"
-          @add="add"
-        >
-          <template v-slot:table-header>
-            <table-search
-              v-model="params"
-              resettable
-              :columns="searchColumns"
-              @search="search"
-            >
-              <template v-slot:monthTime="{ form }">
-                <el-date-picker
-                  v-model="form.monthTime"
-                  class="short-width"
-                  type="month"
-                  value-format="timestamp"
-                  placeholder="选择考核月份"
-                >
-                </el-date-picker>
-              </template>
-            </table-search>
-          </template>
-          <template v-slot:action="{ row }">
-            <el-button @click="showDetail(row)" type="text">查看明细</el-button>
-          </template>
-        </common-table>
-        <edit-dialog
-          :visibleDialog.sync="visibleDialog"
-          :title="title"
-          :columns="columns"
-          :loading="loading"
-          :form="form"
-          @save="submit"
-          @formUpdate="formUpdate"
-        >
-        </edit-dialog>
-        <detail-dialog
-          v-if="detailVisible"
-          :visibleDialog.sync="detailVisible"
-          title="考核明细"
-          :loading="detailLoading"
-          :data="detailData.list"
-          :headers="detailHeaders"
-        >
-          <template v-slot:detail-header>
-            <div class="detail-header">
-              <div class="detail-content">
-                <div>考核对象：{{ detailData.communityName }}</div>
-                <div>归属物业：{{ detailData.orgName }}</div>
-                <div>考核策略：{{ detailData.policyName }}</div>
-                <div>考核次数：{{ detailData.assessmentTimes }}</div>
-                <div>考核成绩：{{ detailData.assessmentScore }}</div>
-                <div>考核评价：{{ detailData.assessmentLevelName }}</div>
-              </div>
-              <div class="detail-chart">
-                <common-chart
-                  v-if="chartOptions"
-                  :loading="chartLoading"
-                  :options="chartOptions"
-                ></common-chart>
-              </div>
-            </div>
-          </template>
-          <template v-slot:assessmentTime="{ row }">
-            {{ row.assessmentTime | formatDate }}
-          </template>
-          <template v-slot:action="{ row }">
-            <template
-              v-if="
-                row.assessmentTime >=
-                  new Date(new Date().setDate(1)).setHours(0, 0, 0, 0)
-              "
-            >
-              <el-button
-                v-if="row.assessmentWay === 1"
-                @click="exemptionRow(row)"
-                type="text"
-                >豁免</el-button
-              >
-              <el-button
-                v-if="row.assessmentWay === 2"
-                @click="exemptionRow(row)"
-                type="text"
-                >取消</el-button
-              >
-              <el-button @click="deleteRow(row)" type="text">删除</el-button>
-            </template>
-            <el-button @click="showRow(row)" type="text">查看</el-button>
-          </template>
-        </detail-dialog>
-        <detail-dialog
-          v-if="showDetailRow"
-          :visibleDialog.sync="showDetailRow"
-          title="查看明细"
-        >
-          <template v-slot:detail-content>
-            <el-row :gutter="10">
-              <el-col :span="6" class="detail-row-item"
-                >考核对象：{{ detailRow.communityName }}</el-col
-              >
-              <el-col :span="6" class="detail-row-item"
-                >考核时间：{{ detailRow.assessmentTime | formatDate }}</el-col
-              >
-              <el-col :span="6" class="detail-row-item"
-                >考核维度：{{ detailRow.caseDimensionName }}</el-col
-              >
-              <el-col :span="6" class="detail-row-item"
-                >报案缘由：{{ detailRow.caseReasonName }}</el-col
-              >
-              <el-col :span="6" class="detail-row-item"
-                >考核方式：{{ detailRow.assessmentWayName }}</el-col
-              >
-              <el-col :span="6" class="detail-row-item"
-                >阈值：{{ detailRow.singleThreshold }}</el-col
-              >
-              <el-col :span="24" class="detail-row-item"
-                >备注：{{ detailRow.remark }}</el-col
-              >
-            </el-row>
-          </template>
-        </detail-dialog>
+
       </el-tab-pane>
-    </el-tabs>
+    </el-tabs>-->
+    <common-table
+      ref="table"
+      :headers="headers"
+      :api="pageAPI"
+      :params="params"
+      :columns="columns"
+      :settings="['setting']"
+      :canEdit="false"
+      :canDelete="false"
+      @add="add"
+    >
+      <template v-slot:table-header>
+        <table-search
+          v-model="params"
+          resettable
+          :columns="searchColumns"
+          @search="search"
+        >
+          <template v-slot:monthTime="{ form }">
+            <el-date-picker
+              v-model="form.monthTime"
+              class="short-width"
+              type="month"
+              value-format="timestamp"
+              placeholder="选择考核月份"
+            >
+            </el-date-picker>
+          </template>
+        </table-search>
+      </template>
+      <template v-slot:action="{ row }">
+        <el-button @click="showDetail(row)" type="text">查看明细</el-button>
+      </template>
+    </common-table>
+    <edit-dialog
+      :visibleDialog.sync="visibleDialog"
+      :title="title"
+      :columns="columns"
+      :loading="loading"
+      :form="form"
+      @save="submit"
+      @formUpdate="formUpdate"
+    >
+    </edit-dialog>
+    <detail-dialog
+      v-if="detailVisible"
+      :visibleDialog.sync="detailVisible"
+      title="考核明细"
+      :loading="detailLoading"
+      :data="detailData.list"
+      :headers="detailHeaders"
+    >
+      <template v-slot:detail-header>
+        <div class="detail-header">
+          <div class="detail-content">
+            <div>考核对象：{{ detailData.communityName }}</div>
+            <div>归属物业：{{ detailData.orgName }}</div>
+            <div>考核策略：{{ detailData.policyName }}</div>
+            <div>考核次数：{{ detailData.assessmentTimes }}</div>
+            <div>考核成绩：{{ detailData.assessmentScore }}</div>
+            <div>考核评价：{{ detailData.assessmentLevelName }}</div>
+          </div>
+          <div class="detail-chart">
+            <common-chart
+              v-if="chartOptions"
+              :loading="chartLoading"
+              :options="chartOptions"
+            ></common-chart>
+          </div>
+        </div>
+      </template>
+      <template v-slot:assessmentTime="{ row }">
+        {{ row.assessmentTime | formatDate }}
+      </template>
+      <template v-slot:action="{ row }">
+        <template
+          v-if="
+            row.assessmentTime >=
+              new Date(new Date().setDate(1)).setHours(0, 0, 0, 0)
+          "
+        >
+          <el-button
+            v-if="row.assessmentWay === 1"
+            @click="exemptionRow(row)"
+            type="text"
+            >豁免</el-button
+          >
+          <el-button
+            v-if="row.assessmentWay === 2"
+            @click="exemptionRow(row)"
+            type="text"
+            >取消</el-button
+          >
+          <el-button @click="deleteRow(row)" type="text">删除</el-button>
+        </template>
+        <el-button @click="showRow(row)" type="text">查看</el-button>
+      </template>
+    </detail-dialog>
+    <detail-dialog
+      v-if="showDetailRow"
+      :visibleDialog.sync="showDetailRow"
+      title="查看明细"
+    >
+      <template v-slot:detail-content>
+        <el-row :gutter="10">
+          <el-col :span="6" class="detail-row-item"
+            >考核对象：{{ detailRow.communityName }}</el-col
+          >
+          <el-col :span="6" class="detail-row-item"
+            >考核时间：{{ detailRow.assessmentTime | formatDate }}</el-col
+          >
+          <el-col :span="6" class="detail-row-item"
+            >考核维度：{{ detailRow.caseDimensionName }}</el-col
+          >
+          <el-col :span="6" class="detail-row-item"
+            >报案缘由：{{ detailRow.caseReasonName }}</el-col
+          >
+          <el-col :span="6" class="detail-row-item"
+            >考核方式：{{ detailRow.assessmentWayName }}</el-col
+          >
+          <el-col :span="6" class="detail-row-item"
+            >阈值：{{ detailRow.singleThreshold }}</el-col
+          >
+          <el-col :span="24" class="detail-row-item"
+            >备注：{{ detailRow.remark }}</el-col
+          >
+        </el-row>
+      </template>
+    </detail-dialog>
   </div>
 </template>
 

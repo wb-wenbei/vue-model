@@ -1,37 +1,38 @@
 <template>
   <div class="tabs-box">
-    <el-tabs v-model="activeName">
+    <!--<el-tabs v-model="activeName">
       <el-tab-pane name="roles" @click.native="activeName = 'roles'">
         <span slot="label" style="padding: 0 6px">角色管理</span>
-        <common-table
-          ref="table"
-          :headers="headers"
-          :api="pageAPI"
-          :deleteApi="deleteAPI"
-          :settings="['setting']"
-          @editRow="editRow"
-          @add="add"
-        ></common-table>
-        <edit-dialog
-          :visibleDialog.sync="visibleDialog"
-          :title="title"
-          :columns="columns"
-          :loading="loading"
-          :form="form"
-          @save="submit"
-        >
-          <template v-slot:menuDtos>
-            <el-form-item label="角色权限" required style="padding-top: 5px">
-              <select-group
-                :menuOptionsOrg="totalMenus"
-                :mactchMenus="matchMenu"
-                v-model="menuDtos"
-              ></select-group>
-            </el-form-item>
-          </template>
-        </edit-dialog>
+
       </el-tab-pane>
-    </el-tabs>
+    </el-tabs>-->
+    <common-table
+      ref="table"
+      :headers="headers"
+      :api="pageAPI"
+      :deleteApi="deleteAPI"
+      :settings="['setting']"
+      @editRow="editRow"
+      @add="add"
+    ></common-table>
+    <edit-dialog
+      :visibleDialog.sync="visibleDialog"
+      :title="title"
+      :columns="columns"
+      :loading="loading"
+      :form="form"
+      @save="submit"
+    >
+      <template v-slot:menuDtos>
+        <el-form-item label="角色权限" required style="padding-top: 5px">
+          <select-group
+            :menuOptionsOrg="totalMenus"
+            :mactchMenus="matchMenu"
+            v-model="menuDtos"
+          ></select-group>
+        </el-form-item>
+      </template>
+    </edit-dialog>
   </div>
 </template>
 

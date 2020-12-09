@@ -2,7 +2,7 @@
   <div class="tabs-box">
     <el-tabs v-model="activeName">
       <el-tab-pane name="strategy" @click.native="activeName = 'strategy'">
-        <span slot="label" style="padding: 0 6px">策略管理</span>
+        <span slot="label" style="padding: 0 6px">策略维护</span>
         <common-table
           ref="table"
           :headers="headers"
@@ -69,7 +69,7 @@
         ></concat-setting>
       </el-tab-pane>
       <el-tab-pane name="keywords" @click.native="activeName = 'keywords'">
-        <span slot="label" style="padding: 0 6px">关键词管理</span>
+        <span slot="label" style="padding: 0 6px">关键词维护</span>
         <keywords></keywords>
       </el-tab-pane>
     </el-tabs>

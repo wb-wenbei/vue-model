@@ -1,132 +1,125 @@
 <template>
   <div class="tabs-box">
-    <el-tabs v-model="activeName">
+    <!--<el-tabs v-model="activeName">
       <el-tab-pane
         name="dataStatistics"
         @click.native="activeName = 'dataStatistics'"
       >
         <span slot="label" style="padding: 0 6px">月度数据统计</span>
-        <el-form
-          ref="form"
-          class="form-content"
-          :model="form"
-          label-width="70px"
-        >
-          <el-form-item label="考核日期">
-            <el-date-picker
-              v-model="form.monthTime"
-              type="month"
-              value-format="timestamp"
-              placeholder="选择月"
-            ></el-date-picker>
-          </el-form-item>
-        </el-form>
-        <div class="count-content">
-          <div class="flex-3 pr-2">
-            <count-card title="小区排名">
-              <el-table :data="rankData" style="width: 100%">
-                <el-table-column type="index" label="排名" width="60">
-                  <template slot-scope="scope">
-                    <div
-                      class="rank-index"
-                      :class="'rank-index-' + scope.$index"
-                    >
-                      {{ scope.$index + 1 }}
-                    </div>
-                  </template>
-                </el-table-column>
-                <el-table-column
-                  prop="communityName"
-                  show-overflow-tooltip
-                  label="社区名称"
-                >
-                </el-table-column>
-                <el-table-column
-                  prop="assessmentScore"
-                  label="评分"
-                  width="60"
-                ></el-table-column>
-              </el-table>
-            </count-card>
-          </div>
-          <div class="flex-5 pr-2">
-            <count-card title="考核评价占比">
-              <common-chart
-                :loading="loading.evaluate"
-                :options="chartOptions.evaluate"
-              ></common-chart>
-            </count-card>
-          </div>
-          <div class="flex-5">
-            <count-card title="考核策略考核评价占比">
-              <div class="examine-content">
-                <el-scrollbar style="height: 100%">
-                  <strategy-card
-                    v-for="(item, index) in evaluateData"
-                    :key="index"
-                    :title="item.name"
-                    :data="item.data"
-                  ></strategy-card>
-                </el-scrollbar>
-              </div>
-            </count-card>
-          </div>
-        </div>
-        <div class="count-content">
-          <div class="flex-3">
-            <count-card title="各社区近12个月分值变化趋势">
-              <div class="flex-1" v-loading="loading.score">
-                <common-chart
-                  v-if="!loading.score"
-                  :options="chartOptions.score"
-                ></common-chart>
-              </div>
-              <community-check
-                v-model="communityIds"
-                @loadComplete="initCommunityIds"
-                @change="getTwelveMonthData"
-              ></community-check>
-            </count-card>
-          </div>
-        </div>
-        <div class="count-content">
-          <div class="flex-5 pr-2">
-            <count-card title="近12个月案件变化趋势">
-              <common-chart
-                :loading="loading.case"
-                :options="chartOptions.case"
-              ></common-chart>
-            </count-card>
-          </div>
-          <div class="flex-3">
-            <count-card title="近3个月各纬度案件数量">
-              <common-chart
-                :loading="loading.radar"
-                :options="chartOptions.radar"
-              ></common-chart>
-            </count-card>
-          </div>
-        </div>
-        <div class="count-content">
-          <div class="flex-3">
-            <count-card title="近12个月各社区案件数量变化趋势">
-              <div class="flex-1">
-                <common-chart
-                  :loading="loading.caseCount"
-                  :options="chartOptions.caseCount"
-                ></common-chart>
-              </div>
-              <community-check
-                v-model="communityId"
-                single
-                @loadComplete="initCommunityId"
-                @change="getTwelveMonthCaseDataByCommunity"
-              ></community-check>
-            </count-card>
-          </div>
-        </div>
+
       </el-tab-pane>
-    </el-tabs>
+    </el-tabs>-->
+    <el-form ref="form" class="form-content" :model="form" label-width="70px">
+      <el-form-item label="考核日期">
+        <el-date-picker
+          v-model="form.monthTime"
+          type="month"
+          value-format="timestamp"
+          placeholder="选择月"
+        ></el-date-picker>
+      </el-form-item>
+    </el-form>
+    <div class="count-content">
+      <div class="flex-3 pr-2">
+        <count-card title="小区排名">
+          <el-table :data="rankData" style="width: 100%">
+            <el-table-column type="index" label="排名" width="60">
+              <template slot-scope="scope">
+                <div class="rank-index" :class="'rank-index-' + scope.$index">
+                  {{ scope.$index + 1 }}
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="communityName"
+              show-overflow-tooltip
+              label="社区名称"
+            >
+            </el-table-column>
+            <el-table-column
+              prop="assessmentScore"
+              label="评分"
+              width="60"
+            ></el-table-column>
+          </el-table>
+        </count-card>
+      </div>
+      <div class="flex-5 pr-2">
+        <count-card title="考核评价占比">
+          <common-chart
+            :loading="loading.evaluate"
+            :options="chartOptions.evaluate"
+          ></common-chart>
+        </count-card>
+      </div>
+      <div class="flex-5">
+        <count-card title="考核策略考核评价占比">
+          <div class="examine-content">
+            <el-scrollbar style="height: 100%">
+              <strategy-card
+                v-for="(item, index) in evaluateData"
+                :key="index"
+                :title="item.name"
+                :data="item.data"
+              ></strategy-card>
+            </el-scrollbar>
+          </div>
+        </count-card>
+      </div>
+    </div>
+    <div class="count-content">
+      <div class="flex-3">
+        <count-card title="各社区近12个月分值变化趋势">
+          <div class="flex-1" v-loading="loading.score">
+            <common-chart
+              v-if="!loading.score"
+              :options="chartOptions.score"
+            ></common-chart>
+          </div>
+          <community-check
+            v-model="communityIds"
+            @loadComplete="initCommunityIds"
+            @change="getTwelveMonthData"
+          ></community-check>
+        </count-card>
+      </div>
+    </div>
+    <div class="count-content">
+      <div class="flex-5 pr-2">
+        <count-card title="近12个月案件变化趋势">
+          <common-chart
+            :loading="loading.case"
+            :options="chartOptions.case"
+          ></common-chart>
+        </count-card>
+      </div>
+      <div class="flex-3">
+        <count-card title="近3个月各纬度案件数量">
+          <common-chart
+            :loading="loading.radar"
+            :options="chartOptions.radar"
+          ></common-chart>
+        </count-card>
+      </div>
+    </div>
+    <div class="count-content">
+      <div class="flex-3">
+        <count-card title="近12个月各社区案件数量变化趋势">
+          <div class="flex-1">
+            <common-chart
+              :loading="loading.caseCount"
+              :options="chartOptions.caseCount"
+            ></common-chart>
+          </div>
+          <community-check
+            v-model="communityId"
+            single
+            @loadComplete="initCommunityId"
+            @change="getTwelveMonthCaseDataByCommunity"
+          ></community-check>
+        </count-card>
+      </div>
+    </div>
   </div>
 </template>
 

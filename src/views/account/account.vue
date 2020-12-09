@@ -1,98 +1,94 @@
 <template>
   <div class="tabs-box">
-    <el-tabs v-model="activeName">
+    <!--<el-tabs v-model="activeName">
       <el-tab-pane name="account" @click.native="activeName = 'account'">
         <span slot="label" style="padding: 0 6px">账号管理</span>
-        <common-table
-          ref="table"
-          :headers="headers"
-          :api="getUserListAPI"
-          :params="params"
-          :settings="['setting']"
-          @editRow="editRow"
-          @deleteRow="deleteRow"
-          @add="add"
-        >
-          <template v-slot:table-header>
-            <table-search
-              v-model="params"
-              resettable
-              :columns="searchColumns"
-              @search="search"
-            ></table-search>
-          </template>
-        </common-table>
-        <edit-dialog
-          :visibleDialog.sync="visibleDialog"
-          :title="title"
-          :loading="loading"
-          @save="submit"
-        >
-          <template v-slot:form-content>
-            <div class="account-form">
-              <el-form
-                ref="form"
-                style="position: relative"
-                :model="form"
-                :rules="accountRules"
-                label-width="80px"
-              >
-                <el-form-item label="用户名" prop="userName">
-                  <el-input
-                    class="medium-width"
-                    v-model="form.userName"
-                  ></el-input>
-                </el-form-item>
-                <div
-                  style="position: absolute;top: 8px;left: 400px;width: 100px;"
-                >
-                  <el-link
-                    v-if="type === 'edit'"
-                    :underline="false"
-                    type="primary"
-                    @click="showPassword = !showPassword"
-                    >修改密码</el-link
-                  >
-                </div>
 
-                <el-form-item v-if="showPassword" label="密码" prop="password">
-                  <el-input
-                    class="medium-width"
-                    show-password
-                    v-model="form.password"
-                  ></el-input>
-                </el-form-item>
-                <el-form-item
-                  v-if="showPassword"
-                  label="确认密码"
-                  prop="checkPassword"
-                >
-                  <el-input
-                    class="medium-width"
-                    show-password
-                    v-model="form.checkPassword"
-                  ></el-input>
-                </el-form-item>
-                <el-form-item label="组织架构" prop="orgId">
-                  <form-organize
-                    v-model="form.orgId"
-                    class="medium-width"
-                  ></form-organize>
-                </el-form-item>
-                <el-form-item label="角色权限" prop="roleIds">
-                  <form-select
-                    v-model="form.roleIds"
-                    class="medium-width"
-                    multiple
-                    :options="options.roles"
-                  ></form-select>
-                </el-form-item>
-              </el-form>
-            </div>
-          </template>
-        </edit-dialog>
       </el-tab-pane>
-    </el-tabs>
+    </el-tabs>-->
+    <common-table
+      ref="table"
+      :headers="headers"
+      :api="getUserListAPI"
+      :params="params"
+      :settings="['setting']"
+      @editRow="editRow"
+      @deleteRow="deleteRow"
+      @add="add"
+    >
+      <template v-slot:table-header>
+        <table-search
+          v-model="params"
+          resettable
+          :columns="searchColumns"
+          @search="search"
+        ></table-search>
+      </template>
+    </common-table>
+    <edit-dialog
+      :visibleDialog.sync="visibleDialog"
+      :title="title"
+      :loading="loading"
+      @save="submit"
+    >
+      <template v-slot:form-content>
+        <div class="account-form">
+          <el-form
+            ref="form"
+            style="position: relative"
+            :model="form"
+            :rules="accountRules"
+            label-width="80px"
+          >
+            <el-form-item label="用户名" prop="userName">
+              <el-input class="medium-width" v-model="form.userName"></el-input>
+            </el-form-item>
+            <div style="position: absolute;top: 8px;left: 400px;width: 100px;">
+              <el-link
+                v-if="type === 'edit'"
+                :underline="false"
+                type="primary"
+                @click="showPassword = !showPassword"
+                >修改密码</el-link
+              >
+            </div>
+
+            <el-form-item v-if="showPassword" label="密码" prop="password">
+              <el-input
+                class="medium-width"
+                show-password
+                v-model="form.password"
+              ></el-input>
+            </el-form-item>
+            <el-form-item
+              v-if="showPassword"
+              label="确认密码"
+              prop="checkPassword"
+            >
+              <el-input
+                class="medium-width"
+                show-password
+                v-model="form.checkPassword"
+              ></el-input>
+            </el-form-item>
+            <el-form-item label="组织架构" prop="orgId">
+              <form-organize
+                v-model="form.orgId"
+                class="medium-width"
+              ></form-organize>
+            </el-form-item>
+            <el-form-item label="角色权限" prop="roleIds">
+              <form-select
+                v-model="form.roleIds"
+                class="medium-width"
+                multiple
+                :options="options.roles"
+              ></form-select>
+            </el-form-item>
+          </el-form>
+        </div>
+      </template>
+    </edit-dialog>
   </div>
 </template>
 

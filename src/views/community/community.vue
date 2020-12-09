@@ -1,48 +1,49 @@
 <template>
   <div class="tabs-box">
-    <el-tabs v-model="activeName">
+    <!--<el-tabs v-model="activeName">
       <el-tab-pane name="community" @click.native="activeName = 'community'">
         <span slot="label" style="padding: 0 6px">社区管理</span>
-        <common-table
-          ref="table"
-          :headers="headers"
-          :api="pageAPI"
-          :params="params"
-          :columns="columns"
-          :deleteApi="deleteAPI"
-          :settings="['setting']"
-          @editRow="editRow"
-          @add="add"
-        >
-          <template v-slot:table-header>
-            <table-search
-              v-model="params"
-              resettable
-              :columns="searchColumns"
-              @search="search"
-            ></table-search>
-          </template>
-        </common-table>
-        <edit-dialog
-          :visibleDialog.sync="visibleDialog"
-          :title="title"
-          :columns="columns"
-          :loading="loading"
-          :form="form"
-          @save="submit"
-        >
-          <template v-slot:communityAddress="{ form }">
-            <address-select v-model="form.communityAddress"></address-select>
-          </template>
-          <template v-slot:propertyFee="{ form }">
-            <property-select v-model="form.propertyFee"></property-select>
-          </template>
-          <template v-slot:buildingYear="{ form }">
-            <year-select v-model="form.buildingYear"></year-select>
-          </template>
-        </edit-dialog>
+
       </el-tab-pane>
-    </el-tabs>
+    </el-tabs>-->
+    <common-table
+      ref="table"
+      :headers="headers"
+      :api="pageAPI"
+      :params="params"
+      :columns="columns"
+      :deleteApi="deleteAPI"
+      :settings="['setting']"
+      @editRow="editRow"
+      @add="add"
+    >
+      <template v-slot:table-header>
+        <table-search
+          v-model="params"
+          resettable
+          :columns="searchColumns"
+          @search="search"
+        ></table-search>
+      </template>
+    </common-table>
+    <edit-dialog
+      :visibleDialog.sync="visibleDialog"
+      :title="title"
+      :columns="columns"
+      :loading="loading"
+      :form="form"
+      @save="submit"
+    >
+      <template v-slot:communityAddress="{ form }">
+        <address-select v-model="form.communityAddress"></address-select>
+      </template>
+      <template v-slot:propertyFee="{ form }">
+        <property-select v-model="form.propertyFee"></property-select>
+      </template>
+      <template v-slot:buildingYear="{ form }">
+        <year-select v-model="form.buildingYear"></year-select>
+      </template>
+    </edit-dialog>
   </div>
 </template>
 

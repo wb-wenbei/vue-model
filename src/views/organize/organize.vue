@@ -1,53 +1,54 @@
 <template>
   <div class="tabs-box">
-    <el-tabs v-model="activeName">
+    <!--<el-tabs v-model="activeName">
       <el-tab-pane
         name="organization"
         @click.native="activeName = 'organization'"
       >
         <span slot="label" style="padding: 0 6px">组织架构</span>
-        <div style="display: flex">
-          <div style="width: 300px">
-            <tide-combination
-              v-if="options"
-              :showCheckbox="false"
-              nodeKey="id"
-              :expandAll="true"
-              @export="getSelect"
-              ref="tideCombination"
-              :options="options"
-              children="sub_organizationDto"
-            ></tide-combination>
-          </div>
-          <div
-            style="padding-left: 20px;margin-left: 20px;flex: 1;border-left: 1px solid #eee"
-          >
-            <common-table
-              ref="table"
-              :headers="headers"
-              :data="orgData"
-              :canDelete="false"
-              @editRow="editRow"
-              @deleteComplete="deleteComplete"
-            >
-              <template v-slot:header-left>
-                <el-button type="primary" size="small" @click="add">
-                  <i class="el-icon-plus"></i>新增下级
-                </el-button>
-              </template>
-            </common-table>
-          </div>
-        </div>
-        <edit-dialog
-          :columns="columns"
-          :form="form"
-          :options="editOptions"
-          :visibleDialog.sync="visibleDialog"
-          :title="title"
-          @save="save"
-        ></edit-dialog>
+
       </el-tab-pane>
-    </el-tabs>
+    </el-tabs>-->
+    <div style="display: flex">
+      <div style="width: 300px">
+        <tide-combination
+          v-if="options"
+          :showCheckbox="false"
+          nodeKey="id"
+          :expandAll="true"
+          @export="getSelect"
+          ref="tideCombination"
+          :options="options"
+          children="sub_organizationDto"
+        ></tide-combination>
+      </div>
+      <div
+        style="padding-left: 20px;margin-left: 20px;flex: 1;border-left: 1px solid #eee"
+      >
+        <common-table
+          ref="table"
+          :headers="headers"
+          :data="orgData"
+          :canDelete="false"
+          @editRow="editRow"
+          @deleteComplete="deleteComplete"
+        >
+          <template v-slot:header-left>
+            <el-button type="primary" size="small" @click="add">
+              <i class="el-icon-plus"></i>新增下级
+            </el-button>
+          </template>
+        </common-table>
+      </div>
+    </div>
+    <edit-dialog
+      :columns="columns"
+      :form="form"
+      :options="editOptions"
+      :visibleDialog.sync="visibleDialog"
+      :title="title"
+      @save="save"
+    ></edit-dialog>
   </div>
 </template>
 

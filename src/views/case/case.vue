@@ -1,77 +1,78 @@
 <template>
   <div class="tabs-box">
-    <el-tabs v-model="activeName">
+    <!--<el-tabs v-model="activeName">
       <el-tab-pane name="case" @click.native="activeName = 'case'">
         <span slot="label" style="padding: 0 6px">案件管理</span>
-        <common-table
-          ref="table"
-          :headers="headers"
-          :api="pageAPI"
-          :params="params"
-          :columns="columns"
-          :deleteApi="deleteAPI"
-          uploadURL="/api-customer/community/case/import"
-          modelUrl=""
-          :settings="['setting', 'upload']"
-          @editRow="editRow"
-          @add="add"
-        >
-          <template v-slot:table-header>
-            <table-search
-              v-model="params"
-              resettable
-              :columns="searchColumns"
-              @search="search"
-            ></table-search>
-          </template>
-        </common-table>
-        <edit-dialog
-          v-if="visibleDialog"
-          :visibleDialog.sync="visibleDialog"
-          :title="title"
-          :columns="columns"
-          :loading="loading"
-          :form="form"
-          @save="submit"
-        >
-          <template v-slot:caseAddress="{ form }">
-            <span style="display: inline-block;margin-right: 10px"
-              >上海市 上海市 闵行区</span
-            >
-            <el-input
-              class="short-width"
-              v-model="form.caseAddress"
-              placeholder="请输入案件地址"
-            ></el-input>
-          </template>
-          <template v-slot:caseContent="{ form }">
-            <el-input
-              type="textarea"
-              v-model="form.caseContent"
-              :rows="10"
-              placeholder="注：字数限制1500"
-              :maxlength="1500"
-              showWordLimit
-              @blur="getKeyWordsByContent(form.caseContent)"
-            ></el-input>
-          </template>
-          <template v-slot:caseDimensionId="{ form }">
-            <form-select
-              v-model="form.caseDimensionId"
-              :options="columns[9].options"
-              @change="dimensionChange($event, 'form')"
-            ></form-select>
-          </template>
-          <template v-slot:caseReasonId="{ form }">
-            <form-select
-              v-model="form.caseReasonId"
-              :options="columns[10].options"
-              @change="ReasonChange"
-            ></form-select>
-          </template>
-        </edit-dialog>
+
       </el-tab-pane>
-    </el-tabs>
+    </el-tabs>-->
+    <common-table
+      ref="table"
+      :headers="headers"
+      :api="pageAPI"
+      :params="params"
+      :columns="columns"
+      :deleteApi="deleteAPI"
+      uploadURL="/api-customer/community/case/import"
+      modelUrl=""
+      :settings="['setting', 'upload']"
+      @editRow="editRow"
+      @add="add"
+    >
+      <template v-slot:table-header>
+        <table-search
+          v-model="params"
+          resettable
+          :columns="searchColumns"
+          @search="search"
+        ></table-search>
+      </template>
+    </common-table>
+    <edit-dialog
+      v-if="visibleDialog"
+      :visibleDialog.sync="visibleDialog"
+      :title="title"
+      :columns="columns"
+      :loading="loading"
+      :form="form"
+      @save="submit"
+    >
+      <template v-slot:caseAddress="{ form }">
+        <span style="display: inline-block;margin-right: 10px"
+          >上海市 上海市 闵行区</span
+        >
+        <el-input
+          class="short-width"
+          v-model="form.caseAddress"
+          placeholder="请输入案件地址"
+        ></el-input>
+      </template>
+      <template v-slot:caseContent="{ form }">
+        <el-input
+          type="textarea"
+          v-model="form.caseContent"
+          :rows="10"
+          placeholder="注：字数限制1500"
+          :maxlength="1500"
+          showWordLimit
+          @blur="getKeyWordsByContent(form.caseContent)"
+        ></el-input>
+      </template>
+      <template v-slot:caseDimensionId="{ form }">
+        <form-select
+          v-model="form.caseDimensionId"
+          :options="columns[9].options"
+          @change="dimensionChange($event, 'form')"
+        ></form-select>
+      </template>
+      <template v-slot:caseReasonId="{ form }">
+        <form-select
+          v-model="form.caseReasonId"
+          :options="columns[10].options"
+          @change="ReasonChange"
+        ></form-select>
+      </template>
+    </edit-dialog>
   </div>
 </template>
 
