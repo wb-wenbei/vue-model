@@ -127,7 +127,7 @@ export default {
         },
         { prop: "orgId", label: "归属物业", type: "org", required: true },
         {
-          prop: "projectNature",
+          prop: "projectNatureId",
           label: "项目性质",
           type: "select",
           required: true,

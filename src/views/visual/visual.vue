@@ -9,6 +9,7 @@
         <el-radio-button :label="2">热力图模式</el-radio-button>
       </el-radio-group>
     </div>
+    <weather class="weather"></weather>
     <div class="left-card">
       <div class="left-search-card">
         <div class="month-range">近三月</div>
@@ -121,6 +122,7 @@ import Card from "./components/card";
 import InfoWindow from "./components/infoWindow";
 import RankCard from "./components/rankData";
 import CommonChart from "@/components/commonChart/chart";
+import Weather from "@/components/weather/index";
 import {
   getLinesChart,
   getPieChart,
@@ -151,7 +153,7 @@ const hoverIcon = require("./images/marker_hover.gif");
 
 export default {
   name: "visual",
-  components: { Card, InfoWindow, RankCard, CommonChart },
+  components: { Card, InfoWindow, RankCard, CommonChart, Weather },
   data() {
     return {
       hasToken: true,
@@ -410,6 +412,7 @@ export default {
   position: relative;
   user-select: none;
   min-height: 700px;
+  background: #033447;
 
   .header {
     position: absolute;
@@ -425,6 +428,13 @@ export default {
     background-image: url("./images/header_bg.png");
     background-size: 100% 100%;
     text-shadow: 0 0 2px #fff, 0 0 40px #27abaf, 0.1em 0.1em #333;
+  }
+
+  .weather{
+    position: absolute;
+    top: 30px;
+    right: 20px;
+    z-index: 500;
   }
 
   .map-status {
