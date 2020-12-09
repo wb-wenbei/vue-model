@@ -35,6 +35,7 @@
       :columns="columns"
       :loading="loading"
       :form="form"
+      @formUpdate="formUpdate"
       @save="submit"
     >
       <template v-slot:caseAddress="{ form }">
@@ -227,7 +228,8 @@ export default {
         caseDimensionId: "",
         caseReasonId: "",
         caseKeyword: ""
-      }
+      },
+      formData: {}
     };
   },
   watch: {
@@ -330,6 +332,9 @@ export default {
         return true;
       }
     },
+    formUpdate(form) {
+      this.formData = form;
+    },
     dimensionChange(v, type) {
       this.getCaseReasons(v, type);
       if (type === "form") {
@@ -351,6 +356,7 @@ export default {
       this.form.caseDimensionId = res.dimensionId;
       this.form.caseReasonId = res.reasonId;
       this.form.caseKeyword = res.keywordId;
+      this.form = Object.assign(this.formData, this.form);
     }
   }
 };
