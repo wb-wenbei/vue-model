@@ -83,6 +83,7 @@ import EditDialog from "@/components/commonTable/editDialog";
 import FormSelect from "@/components/form/select";
 import TableSearch from "@/components/commonTable/tableSearch.vue";
 import { getTypeList, getTypeChildren } from "@/utils/index";
+import cloneDeep from "lodash/cloneDeep";
 
 import {
   pageAPI,
@@ -338,27 +339,30 @@ export default {
     dimensionChange(v, type) {
       this.getCaseReasons(v, type);
       if (type === "form") {
-        this.form.caseDimensionId = v;
-        this.form.caseReasonId = "";
-        this.form.caseKeyword = [];
+        let form = cloneDeep(this.formData);
+        form.caseDimensionId = v;
+        form.caseReasonId = "";
+        form.caseKeyword = [];
+        this.form = form;
       } else if (type === "search") {
         this.params.caseReasonId = "";
       }
     },
     ReasonChange(v) {
       this.getKeywords(v);
-      this.form.caseReasonId = v;
-      this.form.caseKeyword = [];
+      let form = cloneDeep(this.formData);
+      form.caseReasonId = v;
+      form.caseKeyword = [];
+      this.form = form;
     },
     async getKeyWordsByContent(content) {
       let res = await matchKeyWordAPI({ content: content });
-      let form = {
-        caseContent: content,
-        caseDimensionId: res.dimensionId,
-        caseReasonId: res.reasonId,
-        caseKeyword: res.keywordId
-      };
-      this.form = Object.assign(this.form, this.formData, form);
+      let form = cloneDeep(this.formData);
+      form.caseContent = content;
+      form.caseDimensionId = res.dimensionId;
+      form.caseReasonId = res.reasonId;
+      form.caseKeyword = res.keywordId;
+      this.form = form;
     }
   }
 };
