@@ -225,8 +225,7 @@ export default {
       this.type = "add";
       this.title = "新增社区";
       this.form = {
-        isSpecCommunityFacilities: 0,
-        propertyFee: [{ standard: "标准1" }]
+        isSpecCommunityFacilities: 0
       };
       this.visibleDialog = true;
     },
