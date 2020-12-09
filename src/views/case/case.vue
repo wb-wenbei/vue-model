@@ -351,12 +351,14 @@ export default {
       this.form.caseKeyword = [];
     },
     async getKeyWordsByContent(content) {
-      this.form.caseContent = content;
       let res = await matchKeyWordAPI({ content: content });
-      this.form.caseDimensionId = res.dimensionId;
-      this.form.caseReasonId = res.reasonId;
-      this.form.caseKeyword = res.keywordId;
-      this.form = Object.assign(this.formData, this.form);
+      let form = {
+        caseContent: content,
+        caseDimensionId: res.dimensionId,
+        caseReasonId: res.reasonId,
+        caseKeyword: res.keywordId
+      };
+      this.form = Object.assign(this.form, this.formData, form);
     }
   }
 };
