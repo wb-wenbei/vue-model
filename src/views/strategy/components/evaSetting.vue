@@ -21,7 +21,7 @@
               v-model="scope.row.scoreFrom"
               :min="
                 form.evaluate[scope.$index + 1]
-                  ? form.evaluate[scope.$index + 1].scoreTo + 1
+                  ? form.evaluate[scope.$index + 1].scoreTo
                   : 0
               "
               :max="scope.row.scoreTo"
@@ -32,7 +32,7 @@
               :min="scope.row.scoreFrom"
               :max="
                 form.evaluate[scope.$index - 1]
-                  ? form.evaluate[scope.$index - 1].scoreFrom - 1
+                  ? form.evaluate[scope.$index - 1].scoreFrom
                   : form.totalScore
               "
             ></el-input-number>
@@ -127,14 +127,14 @@ export default {
     },
     checkScore(evaluate, totalScore) {
       evaluate.forEach((item, index) => {
-        let max = index === 0 ? totalScore : evaluate[index - 1].scoreFrom - 1;
+        let max = index === 0 ? totalScore : evaluate[index - 1].scoreFrom;
         this.checkItem(item, max);
       });
     },
     checkItem(item, max) {
-      item.scoreTo = item.scoreTo > max ? max : item.scoreTo;
+      item.scoreTo = item.scoreTo >= max ? max : item.scoreTo;
       item.scoreFrom =
-        item.scoreFrom > item.scoreTo ? item.scoreTo : item.scoreFrom;
+        item.scoreFrom >= item.scoreTo ? item.scoreTo : item.scoreFrom;
     }
   }
 };
