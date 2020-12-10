@@ -223,7 +223,7 @@ export default {
       let form = JSON.parse(JSON.stringify(row));
       if (form.assessmentPolicyDetail && form.assessmentPolicyDetail.length) {
         form.assessmentPolicyDetail.forEach(v => {
-          v.percent = v.scoresPercentage * 100;
+          v.percent = (v.scoresPercentage * 100).toFixed(2);
           v.isEdit = 0;
           v.options = { caseReasonId: this.caseReasons };
         });
