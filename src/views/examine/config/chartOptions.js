@@ -8,7 +8,7 @@ export function getRadarChart(data) {
   let seriesData = [];
   data.forEach((item, index) => {
     let value = [];
-    let max = 0;
+    let max = 1;
     item.data.forEach(v => {
       value.push(v.value);
       max = Math.max(max, v.value * 1.2);
