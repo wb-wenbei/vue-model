@@ -230,7 +230,10 @@ export default {
         caseReasonId: "",
         caseKeyword: ""
       },
-      formData: {}
+      formData: {},
+      allCaseDimensions: [],
+      allCaseReasons: [],
+      allKeywords: []
     };
   },
   watch: {
@@ -252,6 +255,7 @@ export default {
       let caseDimensions = await getTypeList("CASE_DIMENSION");
       this.searchColumns[1].options = caseDimensions;
       this.columns[9].options = caseDimensions;
+      this.allCaseDimensions = [...caseDimensions];
     },
     async getCaseReasons(typeCode, type) {
       let caseReasons = [];
@@ -261,6 +265,7 @@ export default {
         caseReasons = await getTypeList("CASE_REASON");
       }
       if (!type) {
+        this.allCaseReasons = [...caseReasons];
         this.columns[10].options = caseReasons;
         this.searchColumns[2].options = caseReasons;
       }
@@ -277,6 +282,9 @@ export default {
     },
     async getKeywords(parentCode) {
       let keywords = await keywordListAPI({ parentCode: parentCode });
+      if (!parentCode) {
+        this.allKeywords = keywords;
+      }
       this.columns[11].options = keywords;
     },
     search() {
@@ -356,6 +364,9 @@ export default {
       this.form = form;
     },
     async getKeyWordsByContent(content) {
+      this.columns[9].options = this.allCaseDimensions;
+      this.columns[10].options = this.allCaseReasons;
+      this.columns[11].options = this.allKeywords;
       let res = await matchKeyWordAPI({ content: content });
       let form = cloneDeep(this.formData);
       form.caseContent = content;
