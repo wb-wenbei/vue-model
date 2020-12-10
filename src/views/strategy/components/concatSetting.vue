@@ -77,8 +77,16 @@ export default {
       };
       this.loading = true;
       updateRelevanceAPI(form)
-        .then(() => {
-          this.$message.success("策略关联更新成功！");
+        .then(res => {
+          if (res.errorList && res.errorList.length) {
+            res.errorList.forEach((v, index) => {
+              setTimeout(() => {
+                this.$message.error(v.message);
+              }, index * 100);
+            });
+          } else {
+            this.$message.success("策略关联更新成功！");
+          }
           this.visible = false;
         })
         .catch(err => {
