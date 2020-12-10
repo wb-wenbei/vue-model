@@ -15,7 +15,7 @@
         >
           <template v-slot:header-left>
             <el-button type="primary" @click="add">
-              <i class="el-icon-plus"></i>{{ title }}
+              <i class="el-icon-plus"></i>新增策略
             </el-button>
             <el-button @click="setEva">
               评价设置
@@ -49,7 +49,7 @@
         >
           <template v-slot:assessmentPolicyDetail>
             <form-table
-              v-model="form.assessmentPolicyDetail"
+              v-model="assessmentPolicyDetail"
               :columns="formColumns"
               :defaultRow="defaultRow"
               :required="[
@@ -160,11 +160,11 @@ export default {
           index: 1,
           prop: "assessmentPolicyDetail",
           label: "策略设置",
-          required: true,
           cols: 4
         }
       ],
       form: { assessmentPolicyDetail: [] },
+      assessmentPolicyDetail: [],
       defaultRow: {
         assessmentType: 1,
         options: { caseReasonId: [] }
@@ -228,13 +228,15 @@ export default {
           v.options = { caseReasonId: this.caseReasons };
         });
       }
-      this.form = form;
+      this.form = Object.assign({}, form, { assessmentPolicyDetail: [] });
+      this.assessmentPolicyDetail = form.assessmentPolicyDetail;
       this.visibleDialog = true;
     },
     add() {
       this.type = "add";
       this.title = "新增策略";
       this.form = { isSpecCommunityFacilities: 0 };
+      this.assessmentPolicyDetail = [];
       this.visibleDialog = true;
     },
     concatRow(row) {
@@ -256,6 +258,7 @@ export default {
     },
     submit(form) {
       let saveForm = Object.assign({}, form);
+      saveForm.assessmentPolicyDetail = this.assessmentPolicyDetail;
       if (this.checkForm(saveForm)) {
         let api = this.type === "add" ? addAPI : updateAPI;
         this.loading = true;
@@ -275,6 +278,7 @@ export default {
     },
     checkForm(form) {
       if (!form.assessmentPolicyDetail || !form.assessmentPolicyDetail.length) {
+        this.$message.error("请先填写策略设置明细！");
         return false;
       }
       let percentCount = 0;
