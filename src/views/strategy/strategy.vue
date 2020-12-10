@@ -122,13 +122,7 @@ export default {
       headers: [
         { prop: "index", label: "序号" },
         { prop: "policyName", label: "策略名称" },
-        {
-          prop: "assessmentPolicyDetail",
-          label: "关联社区",
-          filter: v => {
-            return v ? v.length : 0;
-          }
-        },
+        { prop: "relationCommunityNumber", label: "关联社区" },
         /*{
           prop: "isEnabled",
           label: "状态",
