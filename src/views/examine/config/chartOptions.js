@@ -6,12 +6,16 @@ export function getRadarChart(data) {
   let legend = [];
   let indicator = [];
   let seriesData = [];
+  let max = 1;
+  data.forEach(item => {
+    item.data.forEach(v => {
+      max = Math.max(max, v.value * 1.2);
+    });
+  });
   data.forEach((item, index) => {
     let value = [];
-    let max = 1;
     item.data.forEach(v => {
       value.push(v.value);
-      max = Math.max(max, v.value * 1.2);
       if (index === 0) {
         indicator.push({
           name: v.name,
