@@ -1,7 +1,7 @@
 <template>
   <el-container class="layout-wrap">
     <el-header height="50" class="header">
-      <router-link id="logo" tag="div" class="logo" to="/home">
+      <router-link id="logo" tag="div" class="logo" to="/">
         <span class="gray_white">虹桥镇智慧社区评价系统</span>
       </router-link>
       <div>
