@@ -30,7 +30,7 @@
         id="address-map"
         style="width: 100%;height: 100%;min-height: 500px;position: relative"
       >
-        <div style="position: absolute;top: 20px;left: 20px;z-index: 500">
+        <!--<div style="position: absolute;top: 20px;left: 20px;z-index: 500">
           <el-input
             v-model="keyword"
             id="tipInput"
@@ -39,7 +39,7 @@
             placeholder="关键字查询"
             @clear="clearKeyword"
           ></el-input>
-        </div>
+        </div>-->
       </div>
       <div slot="footer" class="dialog-footer">
         <slot name="form-action">
@@ -120,7 +120,7 @@ export default {
         zoom: 14
       });
       this.marker = new AMap.Marker();
-      this.inputOptions();
+      // this.inputOptions();
       if (this.currentValue && this.currentValue.length) {
         this.map.add(this.marker);
         this.marker.setPosition(this.currentValue);
