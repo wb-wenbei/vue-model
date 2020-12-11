@@ -28,9 +28,9 @@
       </div>
       <div class="left-top-card">
         <card title="评估维度">
-          <div style="height: 240px">
+          <div v-loading="loading.radar" style="height: 240px">
             <common-chart
-              :loading="loading.radar"
+              v-if="!loading.radar"
               :options="chartOptions.radar"
             ></common-chart>
           </div>
@@ -53,9 +53,9 @@
             <i class="el-icon-arrow-right page-btn" @click.stop="nextPage"></i>
           </div>
         </template>
-        <div style="height: 240px">
+        <div v-loading="loading.communityCase" style="height: 240px">
           <common-chart
-            :loading="loading.communityCase"
+            v-if="!loading.communityCase"
             :options="chartOptions.communityCase"
           ></common-chart>
         </div>
@@ -63,9 +63,9 @@
     </div>
     <div class="right-card">
       <card title="案件类型">
-        <div style="height: 240px">
+        <div v-loading="loading.caseType" style="height: 240px">
           <common-chart
-            :loading="loading.caseType"
+            v-if="!loading.caseType"
             :options="chartOptions.caseType"
           ></common-chart>
         </div>
@@ -511,6 +511,10 @@ export default {
       ::v-deep {
         .el-scrollbar__wrap {
           overflow-x: hidden;
+        }
+
+        .el-table--enable-row-hover .el-table__body tr:hover>td{
+          background-color: #005A6F !important;
         }
       }
     }
