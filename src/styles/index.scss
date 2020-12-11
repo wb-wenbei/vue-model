@@ -52,3 +52,8 @@ a {
 .el-table--border:after, .el-table--group:after {
   width: 0;
 }
+
+//处理表格列fixed时样式错乱问题
+.el-table__fixed::before, .el-table__fixed-right::before{
+  height: 0;
+}
