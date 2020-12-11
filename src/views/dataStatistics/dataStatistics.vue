@@ -333,14 +333,21 @@ export default {
     background: #3b7cef;
     border-radius: 2px;
 
+    &.rank-index-0,&.rank-index-1,&.rank-index-2{
+      height: 24px;
+      width: 24px;
+      position: relative;
+      left: -4px;
+    }
+
     &.rank-index-0 {
-      background: #ff6161;
+      background: url("../../assets/icon/first.png") center / contain;
     }
     &.rank-index-1 {
-      background: #ff7428;
+      background: url("../../assets/icon/second.png") center / contain;
     }
     &.rank-index-2 {
-      background: #f6a93b;
+      background: url("../../assets/icon/third.png") center / contain;
     }
   }
 

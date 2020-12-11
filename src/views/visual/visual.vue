@@ -57,6 +57,7 @@
           <common-chart
             v-if="!loading.communityCase"
             :options="chartOptions.communityCase"
+            @loadComplete="communityChartAnimate"
           ></common-chart>
         </div>
       </card>
@@ -67,6 +68,7 @@
           <common-chart
             v-if="!loading.caseType"
             :options="chartOptions.caseType"
+            @loadComplete="caseChartAnimate"
           ></common-chart>
         </div>
       </card>
@@ -186,7 +188,9 @@ export default {
         radar: false,
         caseType: false,
         communityCase: false
-      }
+      },
+      caseInterval: null,
+      communityInterval: null
     };
   },
   created() {
@@ -400,6 +404,75 @@ export default {
       if (this.heatmap) {
         v === 2 ? this.heatmap.show() : this.heatmap.hide();
       }
+    },
+    caseChartAnimate(chart, options) {
+      if (this.caseInterval) {
+        clearInterval(this.caseInterval);
+      }
+      let currentIndex = 0;
+      this.caseInterval = setInterval(function() {
+        let dataLen = options.series[0].data.length;
+        // 取消之前高亮的图形
+        chart.dispatchAction({
+          type: "downplay",
+          seriesIndex: 0,
+          dataIndex: currentIndex
+        });
+        currentIndex = (currentIndex + 1) % dataLen;
+        // 高亮当前图形
+        chart.dispatchAction({
+          type: "highlight",
+          seriesIndex: 0,
+          dataIndex: currentIndex
+        });
+        // 显示 tooltip
+        chart.dispatchAction({
+          type: "showTip",
+          seriesIndex: 0,
+          dataIndex: currentIndex
+        });
+      }, 3000);
+    },
+    communityChartAnimate(chart, options) {
+      if (this.communityInterval) {
+        clearInterval(this.communityInterval);
+      }
+      let currentIndex = 0;
+      let seriesIndex = 0;
+      this.communityInterval = setInterval(function() {
+        let dataLen = options.dataset.source.length;
+        let seriesLen = options.series.length;
+        // 取消之前高亮的图形
+        chart.dispatchAction({
+          type: "downplay",
+          seriesIndex: seriesIndex,
+          dataIndex: currentIndex
+        });
+        seriesIndex = (seriesIndex + 1) % seriesLen;
+        if (seriesIndex === 0) {
+          currentIndex = (currentIndex + 1) % dataLen;
+        }
+        // 高亮当前图形
+        chart.dispatchAction({
+          type: "highlight",
+          seriesIndex: seriesIndex,
+          dataIndex: currentIndex
+        });
+        // 显示 tooltip
+        chart.dispatchAction({
+          type: "showTip",
+          seriesIndex: seriesIndex,
+          dataIndex: currentIndex
+        });
+      }, 1000);
+    }
+  },
+  beforeDestroy() {
+    if (this.caseInterval) {
+      clearInterval(this.caseInterval);
+    }
+    if (this.communityInterval) {
+      clearInterval(this.communityInterval);
     }
   }
 };
@@ -513,8 +586,8 @@ export default {
           overflow-x: hidden;
         }
 
-        .el-table--enable-row-hover .el-table__body tr:hover>td{
-          background-color: #005A6F !important;
+        .el-table--enable-row-hover .el-table__body tr:hover > td {
+          background-color: #005a6f !important;
         }
       }
     }

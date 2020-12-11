@@ -8,7 +8,9 @@
     <el-table-column type="index" label="排名" width="60">
       <template slot-scope="scope">
         <div class="rank-index" :class="'rank-index-' + scope.$index">
-          {{ scope.$index + 1 }}
+          <span v-if="scope.$index > 2">
+            {{ scope.$index + 1 }}
+          </span>
         </div>
       </template>
     </el-table-column>
@@ -18,11 +20,11 @@
       label="社区名称"
     >
     </el-table-column>
-    <el-table-column
-      prop="assessmentScore"
-      label="评分"
-      width="60"
-    ></el-table-column>
+    <el-table-column prop="assessmentScore" label="评分" width="60">
+      <template slot-scope="scope">
+        {{ scope.row.assessmentScore.toFixed(2) }}
+      </template>
+    </el-table-column>
   </el-table>
 </template>
 
@@ -92,14 +94,21 @@ export default {
   background: #3b7cef;
   border-radius: 2px;
 
+  &.rank-index-0,&.rank-index-1,&.rank-index-2{
+    height: 24px;
+    width: 24px;
+    position: relative;
+    left: -4px;
+  }
+
   &.rank-index-0 {
-    background: #ff6161;
+    background: url("../../../assets/icon/first.png") center / contain;
   }
   &.rank-index-1 {
-    background: #ff7428;
+    background: url("../../../assets/icon/second.png") center / contain;
   }
   &.rank-index-2 {
-    background: #f6a93b;
+    background: url("../../../assets/icon/third.png") center / contain;
   }
 }
 
