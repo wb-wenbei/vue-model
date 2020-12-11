@@ -48,6 +48,9 @@ export default {
     loadOptions() {
       this.chartOptions = cloneDeep(this.options) || {};
       this.chart.setOption(this.chartOptions);
+      this.$nextTick(() => {
+        this.$emit("loadComplete", this.chart, this.chartOptions);
+      });
     },
     ObjectResize(fn) {
       if (window.addEventListener) {
