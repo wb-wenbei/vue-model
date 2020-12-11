@@ -144,7 +144,7 @@ import EditDialog from "@/components/commonTable/editDialog";
 import DetailDialog from "@/components/commonTable/detailDialog";
 import TableSearch from "@/components/commonTable/tableSearch.vue";
 import CommonChart from "@/components/commonChart/chart.vue";
-import { getAssessmentTypes } from "@/config/dictionary";
+import { getAssessmentType2 } from "@/config/dictionary";
 import { getRadarChart } from "./config/chartOptions";
 
 import {
@@ -249,7 +249,7 @@ export default {
           label: "考核方式",
           type: "select",
           required: true,
-          options: getAssessmentTypes()
+          options: getAssessmentType2()
         },
         {
           prop: "singleThreshold",
