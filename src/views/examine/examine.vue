@@ -88,13 +88,13 @@
           "
         >
           <el-button
-            v-if="row.assessmentWay === 1"
+            v-if="row.assessmentWay === 1 && row.assessmentType === 1"
             @click="exemptionRow(row)"
             type="text"
             >豁免</el-button
           >
           <el-button
-            v-if="row.assessmentWay === 2"
+            v-if="row.assessmentWay === 1 && row.assessmentType === 2"
             @click="exemptionRow(row)"
             type="text"
             >取消</el-button
