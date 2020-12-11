@@ -19,6 +19,7 @@
           value-format="timestamp"
           :clearable="false"
           placeholder="选择月"
+          @change="onSearch"
         >
         </el-date-picker>
         <div class="icon">
