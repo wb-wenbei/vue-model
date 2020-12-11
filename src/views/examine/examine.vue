@@ -245,7 +245,7 @@ export default {
           options: []
         },
         {
-          prop: "assessmentWay",
+          prop: "assessmentType",
           label: "考核方式",
           type: "select",
           required: true,
