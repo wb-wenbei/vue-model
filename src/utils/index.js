@@ -1,7 +1,7 @@
 import { typeListAPI, getChildrenAPI } from "@/api/common/dictionary";
 
 const types = {
-  CASE_REASON: 20, //报案缘由
+  CASE_REASON: 32, //报案缘由
   CASE_DIMENSION: 31, //案件维度
   COMMUNITY_LEVEL: 11, //社区等级
   COMMUNITY_TYPE: 12, //社区类型
