@@ -11,7 +11,6 @@
       :headers="headers"
       :api="pageAPI"
       :params="params"
-      :columns="columns"
       :deleteApi="deleteAPI"
       uploadURL="/api-customer/community/case/import"
       modelUrl=""
@@ -62,14 +61,14 @@
       <template v-slot:caseDimensionId="{ form }">
         <form-select
           v-model="form.caseDimensionId"
-          :options="columns[9].options"
+          :options="columns[8].options"
           @change="dimensionChange($event, 'form')"
         ></form-select>
       </template>
       <template v-slot:caseReasonId="{ form }">
         <form-select
           v-model="form.caseReasonId"
-          :options="columns[10].options"
+          :options="columns[9].options"
           @change="ReasonChange"
         ></form-select>
       </template>
@@ -153,15 +152,13 @@ export default {
           index: 1,
           prop: "caseName",
           label: "案件名称",
-          type: "text",
-          required: true
+          type: "text"
         },
         {
           index: 2,
           prop: "caseNumber",
           label: "案件编号",
-          type: "text",
-          required: true
+          type: "text"
         },
         {
           index: 3,
@@ -181,42 +178,35 @@ export default {
         },
         {
           index: 5,
-          prop: "orgId",
-          label: "归属物业",
-          type: "org",
-          required: true
-        },
-        {
-          index: 6,
           prop: "caseAddress",
           label: "案件地址",
           required: true,
           cols: 4
         },
         {
-          index: 7,
+          index: 6,
           prop: "caseContent",
           label: "案件内容",
           required: true,
           cols: 2
         },
-        { index: 8, prop: "assessInfo", label: "归类信息", type: "title" },
+        { index: 7, prop: "assessInfo", label: "归类信息", type: "title" },
         {
-          index: 9,
+          index: 8,
           prop: "caseDimensionId",
           label: "案件维度",
           required: true,
           options: []
         },
         {
-          index: 10,
+          index: 9,
           prop: "caseReasonId",
           label: "报案缘由",
           required: true,
           options: []
         },
         {
-          index: 11,
+          index: 10,
           prop: "caseKeyword",
           label: "案件关键词",
           type: "select",
@@ -254,7 +244,7 @@ export default {
     async getCaseDimensions() {
       let caseDimensions = await getTypeList("CASE_DIMENSION");
       this.searchColumns[1].options = caseDimensions;
-      this.columns[9].options = caseDimensions;
+      this.columns[8].options = caseDimensions;
       this.allCaseDimensions = [...caseDimensions];
     },
     async getCaseReasons(typeCode, type) {
@@ -266,11 +256,11 @@ export default {
       }
       if (!type) {
         this.allCaseReasons = [...caseReasons];
-        this.columns[10].options = caseReasons;
+        this.columns[9].options = caseReasons;
         this.searchColumns[2].options = caseReasons;
       }
       if (type === "form") {
-        this.columns[10].options = caseReasons;
+        this.columns[9].options = caseReasons;
       } else if (type === "search") {
         this.searchColumns[2].options = caseReasons;
       }
@@ -285,7 +275,7 @@ export default {
       if (!parentCode) {
         this.allKeywords = keywords;
       }
-      this.columns[11].options = keywords;
+      this.columns[10].options = keywords;
     },
     search() {
       this.$refs.table.onQuery();
@@ -364,9 +354,9 @@ export default {
       this.form = form;
     },
     async getKeyWordsByContent(content) {
-      this.columns[9].options = this.allCaseDimensions;
-      this.columns[10].options = this.allCaseReasons;
-      this.columns[11].options = this.allKeywords;
+      this.columns[8].options = this.allCaseDimensions;
+      this.columns[9].options = this.allCaseReasons;
+      this.columns[10].options = this.allKeywords;
       let res = await matchKeyWordAPI({ content: content });
       let form = cloneDeep(this.formData);
       form.caseContent = content;
