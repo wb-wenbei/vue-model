@@ -112,7 +112,7 @@
       <template v-slot:detail-content>
         <el-row :gutter="10">
           <el-col :span="6" class="detail-row-item"
-            >考核对象：{{ detailRow.communityName }}</el-col
+            >考核对象：{{ detailData.communityName }}</el-col
           >
           <el-col :span="6" class="detail-row-item"
             >考核时间：{{ detailRow.assessmentTime | formatDate }}</el-col
@@ -268,10 +268,10 @@ export default {
         { prop: "index", label: "序号" },
         { prop: "caseDimensionName", label: "考核维度" },
         { prop: "caseReasonName", label: "报案缘由" },
-        { prop: "assessmentWayName", label: "考核方式" },
+        { prop: "assessmentTypeName", label: "考核方式" },
         { prop: "singleThreshold", label: "单次阈值" },
         { prop: "assessmentTime", label: "考核时间" },
-        { prop: "assessmentTypeName", label: "考核类型" },
+        { prop: "assessmentWayName", label: "考核类型" },
         { prop: "action", label: "操作", width: 140, fixed: "right" }
       ],
       form: {},
