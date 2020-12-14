@@ -383,7 +383,7 @@ export default {
       });
     },
     exemptionRow(row) {
-      let text = row.assessmentWay === 1 ? "豁免" : "取消豁免";
+      let text = row.assessmentType === 1 ? "豁免" : "取消豁免";
       this.$confirm(`确定${text}该条记录？`).then(() => {
         detailExemptionAPI({ id: row.id })
           .then(() => {

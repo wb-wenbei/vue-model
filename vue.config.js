@@ -19,8 +19,8 @@ module.exports = {
     },
     proxy: {
       "/api": {
-        // target: "http://rc.hq.huanwei.tidecloud.com/",
-        target: "http://192.168.0.110:13200",
+        target: "http://hongqiao.shequpingjia.tidecloud.com/",
+        // target: "http://192.168.0.110:13200",
         changeOrigin: true,
         pathRewrite: {}
       }
