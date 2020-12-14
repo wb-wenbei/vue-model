@@ -8,9 +8,7 @@
     <el-table-column type="index" label="排名" width="60">
       <template slot-scope="scope">
         <div class="rank-index" :class="'rank-index-' + scope.$index">
-          <span v-if="scope.$index > 2">
-            {{ scope.$index + 1 }}
-          </span>
+          {{ scope.$index + 1 }}
         </div>
       </template>
     </el-table-column>
@@ -85,30 +83,26 @@ export default {
 }
 
 .rank-index {
-  height: 16px;
-  line-height: 16px;
-  width: 16px;
+  height: 24px;
+  width: 24px;
+  line-height: 19px;
+  position: relative;
+  left: -4px;
   text-align: center;
   font-size: 12px;
   color: white;
   background: #3b7cef;
   border-radius: 2px;
-
-  &.rank-index-0,&.rank-index-1,&.rank-index-2{
-    height: 24px;
-    width: 24px;
-    position: relative;
-    left: -4px;
-  }
+  background: url("../../../assets/icon/勋章4@3x.png") center / contain;
 
   &.rank-index-0 {
-    background: url("../../../assets/icon/first.png") center / contain;
+    background: url("../../../assets/icon/勋章1@3x.png") center / contain;
   }
   &.rank-index-1 {
-    background: url("../../../assets/icon/second.png") center / contain;
+    background: url("../../../assets/icon/勋章2@3x.png") center / contain;
   }
   &.rank-index-2 {
-    background: url("../../../assets/icon/third.png") center / contain;
+    background: url("../../../assets/icon/勋章3@3x.png") center / contain;
   }
 }
 
