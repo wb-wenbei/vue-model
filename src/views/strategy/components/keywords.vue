@@ -8,7 +8,7 @@
       :columns="columns"
       :deleteApi="deleteAPI"
       uploadURL="/api-customer/community/keyword/import"
-      modelUrl=""
+      :modelUrl="modelUrl"
       :settings="['setting', 'upload']"
       @editRow="editRow"
       @add="add"
@@ -67,6 +67,7 @@ export default {
       type: "add",
       title: "新增关键词",
       case: [],
+      modelUrl: "",
       allCaseReasons: [],
       params: {
         caseDimensionId: ""
@@ -137,6 +138,8 @@ export default {
   },
   created() {
     this.getOptions();
+    let token = this.$store.state.auth.token;
+    this.modelUrl = `/api-customer/community/getFile?token=${token}&type=1`;
   },
   methods: {
     getOptions() {

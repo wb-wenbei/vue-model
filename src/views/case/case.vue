@@ -13,7 +13,7 @@
       :params="params"
       :deleteApi="deleteAPI"
       uploadURL="/api-customer/community/case/import"
-      modelUrl=""
+      :modelUrl="modelUrl"
       :settings="['setting', 'upload']"
       @editRow="editRow"
       @add="add"
@@ -111,6 +111,7 @@ export default {
       loading: false,
       type: "add",
       title: "新增案件",
+      modelUrl: "",
       case: [],
       params: {},
       searchColumns: [
@@ -233,6 +234,8 @@ export default {
   },
   created() {
     this.getOptions();
+    let token = this.$store.state.auth.token;
+    this.modelUrl = `/api-customer/community/getFile?token=${token}&type=2`;
   },
   methods: {
     getOptions() {
