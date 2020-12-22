@@ -93,14 +93,14 @@
             v-if="row.assessmentWay === 1 && row.assessmentType === 1"
             @click="exemptionRow(row)"
             type="text"
-            >豁免</el-button
-          >
+            >豁免
+          </el-button>
           <el-button
             v-if="row.assessmentWay === 1 && row.assessmentType === 2"
             @click="exemptionRow(row)"
             type="text"
-            >取消</el-button
-          >
+            >取消
+          </el-button>
           <el-button @click="deleteRow(row)" type="text">删除</el-button>
         </template>
         <el-button @click="showRow(row)" type="text">查看</el-button>
@@ -114,26 +114,26 @@
       <template v-slot:detail-content>
         <el-row :gutter="10">
           <el-col :span="6" class="detail-row-item"
-            >考核对象：{{ detailData.communityName }}</el-col
-          >
+            >考核对象：{{ detailData.communityName }}
+          </el-col>
           <el-col :span="6" class="detail-row-item"
-            >考核时间：{{ detailRow.assessmentTime | formatDate }}</el-col
-          >
+            >考核时间：{{ detailRow.assessmentTime | formatDate }}
+          </el-col>
           <el-col :span="6" class="detail-row-item"
-            >考核维度：{{ detailRow.caseDimensionName }}</el-col
-          >
+            >考核维度：{{ detailRow.caseDimensionName }}
+          </el-col>
           <el-col :span="6" class="detail-row-item"
-            >报案缘由：{{ detailRow.caseReasonName }}</el-col
-          >
+            >报案缘由：{{ detailRow.caseReasonName }}
+          </el-col>
           <el-col :span="6" class="detail-row-item"
-            >考核方式：{{ detailRow.assessmentWayName }}</el-col
-          >
+            >考核方式：{{ detailRow.assessmentWayName }}
+          </el-col>
           <el-col :span="6" class="detail-row-item"
-            >阈值：{{ detailRow.singleThreshold }}</el-col
-          >
+            >阈值：{{ detailRow.singleThreshold }}
+          </el-col>
           <el-col :span="24" class="detail-row-item"
-            >备注：{{ detailRow.remark }}</el-col
-          >
+            >备注：{{ detailRow.remark }}
+          </el-col>
         </el-row>
       </template>
     </detail-dialog>
@@ -316,6 +316,9 @@ export default {
   },
   methods: {
     checkCommunity(search) {
+      this.params.communityIdArr = [];
+      this.params.communityIds = "";
+      this.params.monthTime = Date.now();
       if (this.$route.query.monthTime && this.$route.query.communityId) {
         this.params.monthTime =
           Number(this.$route.query.monthTime) || Date.now();

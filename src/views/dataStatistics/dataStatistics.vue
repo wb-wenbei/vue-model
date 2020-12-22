@@ -249,6 +249,9 @@ export default {
         let result = [];
         if (res && res.length) {
           res.forEach(v => {
+            if (v.assessmentScore.toString().indexOf(".") > -1) {
+              v.assessmentScore = v.assessmentScore.toFixed(2);
+            }
             result.push(Object.assign(v, { active: false }));
           });
         }
@@ -331,42 +334,49 @@ export default {
           this.loading.score = false;
         });
     },
-    chartAnimate(chart, options) {
-      if (this.chartInterval) {
-        clearInterval(this.chartInterval);
-      }
-      this.currentIndex = 0;
-      this.chartAnimateItem(chart, options);
-      this.chartInterval = setInterval(() => {
-        this.chartAnimateItem(chart, options);
-      }, 10000);
-    },
-    chartAnimateItem(chart, options) {
-      if (!options || !options.series) {
-        return;
-      }
-      let dataLen = options.series[0].data.length;
-      for (let i = 0; i < dataLen; i++) {
-        // 取消之前高亮的图形
-        chart.dispatchAction({
-          type: "downplay",
-          seriesIndex: 0,
-          dataIndex: i
-        });
-      }
-      // 高亮当前图形
+    chartAnimate(chart) {
+      let setTime = null;
       chart.dispatchAction({
         type: "highlight",
         seriesIndex: 0,
-        dataIndex: this.currentIndex
+        dataIndex: 0
       });
       // 显示 tooltip
       chart.dispatchAction({
         type: "showTip",
         seriesIndex: 0,
-        dataIndex: this.currentIndex
+        dataIndex: 0
       });
-      this.currentIndex = (this.currentIndex + 1) % dataLen;
+      chart.on("mouseover", params => {
+        if (setTime) {
+          clearTimeout(setTime);
+          setTime = null;
+        }
+        if (params.dataIndex !== 0) {
+          chart.dispatchAction({
+            type: "downplay",
+            seriesIndex: 0,
+            dataIndex: 0
+          });
+        }
+      });
+      chart.on("mouseout", () => {
+        setTime = setTimeout(() => {
+          this.$nextTick(() => {
+            chart.dispatchAction({
+              type: "highlight",
+              seriesIndex: 0,
+              dataIndex: 0
+            });
+            // 显示 tooltip
+            chart.dispatchAction({
+              type: "showTip",
+              seriesIndex: 0,
+              dataIndex: 0
+            });
+          });
+        }, 500);
+      });
     },
     rowClick(row) {
       this.$router.push({
@@ -449,6 +459,9 @@ export default {
       }
       .el-table__row {
         cursor: pointer;
+        & td:nth-child(2) {
+          color: #3b7cef;
+        }
       }
     }
   }
