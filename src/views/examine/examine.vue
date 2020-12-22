@@ -198,17 +198,17 @@ export default {
           label: "考核日期"
         },
         {
+          prop: "policyId",
+          label: "考核策略",
+          type: "select",
+          options: []
+        },
+        {
           prop: "communityIdArr",
           label: "社区名称",
           type: "select",
           options: [],
           props: { multiple: true }
-        },
-        {
-          prop: "policyId",
-          label: "考核策略",
-          type: "select",
-          options: []
         },
         {
           prop: "evaluate",
