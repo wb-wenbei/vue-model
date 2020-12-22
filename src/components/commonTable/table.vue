@@ -275,6 +275,9 @@ export default {
             } else {
               this.tableData = [];
             }
+            this.$nextTick(() => {
+              this.$emit("loadComplete", this.tableData);
+            });
           })
           .finally(() => {
             this.isLoading = false;

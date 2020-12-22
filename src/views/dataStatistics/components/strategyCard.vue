@@ -53,15 +53,15 @@ export default {
   }
 
   .item-0 {
-    color: #4a90e2;
+    color: #19b0ae;
   }
 
   .item-1 {
-    color: #f6a93b;
+    color: #4a90e2;
   }
 
   .item-2 {
-    color: #19b0ae;
+    color: #f6a93b;
   }
 
   .item {

@@ -24,6 +24,7 @@
           ref="multipleTable"
           :data="tableData"
           v-loading="loading"
+          :max-height="maxTableHeight"
           border
           style="width: 100%"
           @selection-change="handleSelectionChange"
@@ -89,6 +90,7 @@ export default {
   props: {
     width: { type: String, default: "80%" },
     top: { type: String, default: "10vh" },
+    maxTableHeight: {},
     visibleDialog: { type: Boolean, default: false },
     title: { type: String, default: "信息明细" },
     selection: { type: Boolean, default: false },

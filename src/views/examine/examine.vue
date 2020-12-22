@@ -16,6 +16,7 @@
       :canEdit="false"
       :canDelete="false"
       @add="add"
+      @loadComplete="loadComplete"
     >
       <template v-slot:table-header>
         <table-search
@@ -57,6 +58,7 @@
       :loading="detailLoading"
       :data="detailData.list"
       :headers="detailHeaders"
+      max-table-height="300"
     >
       <template v-slot:detail-header>
         <div class="detail-header">
@@ -178,6 +180,7 @@ export default {
       showDetailRow: false,
       detailLoading: false,
       chartLoading: false,
+      showDetailNow: false,
       loading: false,
       type: "add",
       title: "新增考核记录",
@@ -185,12 +188,21 @@ export default {
       totalMenus: [],
       matchMenu: [],
       params: {
-        monthTime: Date.now()
+        monthTime: Date.now(),
+        communityIdArr: [],
+        communityIds: ""
       },
       searchColumns: [
         {
           prop: "monthTime",
           label: "考核日期"
+        },
+        {
+          prop: "communityIdArr",
+          label: "社区名称",
+          type: "select",
+          options: [],
+          props: { multiple: true }
         },
         {
           prop: "policyId",
@@ -284,12 +296,43 @@ export default {
   watch: {
     caseDimensionId(v) {
       this.getCaseReasons(v);
+    },
+    "params.communityIdArr": {
+      deep: true,
+      immediate: true,
+      handler(v) {
+        this.params.communityIds = v.toString();
+      }
     }
   },
   created() {
     this.getOptions();
+    this.checkCommunity();
+  },
+  activated() {
+    if (!this.showDetailNow) {
+      this.checkCommunity(true);
+    }
   },
   methods: {
+    checkCommunity(search) {
+      if (this.$route.query.monthTime && this.$route.query.communityId) {
+        this.params.monthTime =
+          Number(this.$route.query.monthTime) || Date.now();
+        this.params.communityIdArr = [Number(this.$route.query.communityId)];
+        this.params.communityIds = this.$route.query.communityId;
+        this.showDetailNow = true;
+        this.$nextTick(() => {
+          search && this.search();
+        });
+      }
+    },
+    loadComplete(tableData) {
+      if (this.showDetailNow) {
+        this.showDetailNow = false;
+        this.showDetail(tableData[0]);
+      }
+    },
     getOptions() {
       this.getCommunities();
       this.getCaseDimensions();
@@ -299,10 +342,11 @@ export default {
     async getCommunities() {
       let communities = await communityAllAPI();
       this.columns[1].options = communities;
+      this.searchColumns[2].options = communities;
     },
     async getEvaluates() {
       let evaluates = await evaluateAllAPI();
-      this.searchColumns[2].options = evaluates;
+      this.searchColumns[3].options = evaluates;
     },
     async getStrategies() {
       let strategies = await strategyAllAPI();
@@ -353,10 +397,12 @@ export default {
     },
     showDetail(row) {
       this.detailData = row;
-      this.detailData.list = [];
-      this.getDetailList(row);
-      this.getChart(row);
-      this.detailVisible = true;
+      if (row) {
+        this.detailData.list = [];
+        this.getDetailList(row);
+        this.getChart(row);
+        this.detailVisible = true;
+      }
     },
     getDetailList(row) {
       this.detailLoading = true;

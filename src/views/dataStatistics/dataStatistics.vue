@@ -12,17 +12,36 @@
     <el-form ref="form" class="form-content" :model="form" label-width="70px">
       <el-form-item label="考核日期">
         <el-date-picker
-          v-model="form.monthTime"
-          type="month"
+          v-model="timeRange"
+          type="monthrange"
           value-format="timestamp"
-          placeholder="选择月"
-        ></el-date-picker>
+          range-separator="至"
+          start-placeholder="开始月份"
+          end-placeholder="结束月份"
+        >
+        </el-date-picker>
       </el-form-item>
     </el-form>
     <div class="count-content">
       <div class="flex-3 pr-2">
-        <count-card title="小区排名">
-          <el-table :data="rankData" style="width: 100%">
+        <count-card title="小区排名" style="position: relative">
+          <div class="search-form">
+            <el-input
+              v-model="searchCommunityName"
+              placeholder="请输入小区名称"
+              size="mini"
+            >
+              <i slot="prefix" class="el-input__icon el-icon-search"></i>
+            </el-input>
+          </div>
+          <el-table
+            :data="rankData"
+            class="rank-table"
+            max-height="362"
+            style="width: 100%"
+            :row-class-name="activeRow"
+            @row-click="rowClick"
+          >
             <el-table-column type="index" label="排名" width="60">
               <template slot-scope="scope">
                 <div class="rank-index" :class="'rank-index-' + scope.$index">
@@ -41,6 +60,11 @@
               label="评分"
               width="60"
             ></el-table-column>
+            <el-table-column
+              prop="evaluate"
+              label="评价"
+              width="60"
+            ></el-table-column>
           </el-table>
         </count-card>
       </div>
@@ -49,11 +73,12 @@
           <common-chart
             :loading="loading.evaluate"
             :options="chartOptions.evaluate"
+            @loadComplete="chartAnimate"
           ></common-chart>
         </count-card>
       </div>
       <div class="flex-5">
-        <count-card title="考核策略考核评价占比">
+        <count-card title="考核策略评价占比">
           <div class="examine-content">
             <el-scrollbar style="height: 100%">
               <strategy-card
@@ -135,7 +160,7 @@ import {
   getLineBarOptions
 } from "./config/chartOptions";
 import {
-  communityScoreRankAPI,
+  communityScoreRankAllAPI,
   evaluateRatioAPI,
   policyEvaluateRatioAPI,
   queryTwelveMonthCaseDataAPI,
@@ -150,9 +175,12 @@ export default {
   data() {
     return {
       activeName: "dataStatistics",
+      timeRange: [Date.now(), Date.now()],
       form: {
-        monthTime: Date.now()
+        startTime: Date.now(),
+        endTime: Date.now()
       },
+      searchCommunityName: "",
       communityIds: [],
       communityId: [],
       chartOptions: {
@@ -170,12 +198,22 @@ export default {
         caseCount: false
       },
       rankData: [],
-      evaluateData: []
+      evaluateData: [],
+      currentIndex: 0,
+      chartInterval: null
     };
   },
   watch: {
-    "form.monthTime"() {
-      this.getData();
+    timeRange: {
+      deep: true,
+      handler(v) {
+        [this.form.startTime, this.form.endTime] = v;
+        this.form.nowTime = this.form.endTime;
+        this.getData();
+      }
+    },
+    searchCommunityName(name) {
+      this.rankSearch(name);
     }
   },
   created() {
@@ -204,13 +242,17 @@ export default {
       }
     },
     getCommunityRank() {
-      communityScoreRankAPI({
-        pageSize: 10,
-        page: 1,
-        monthTime: this.form.monthTime,
-        isOneMonth: true
+      communityScoreRankAllAPI({
+        startTime: this.form.startTime,
+        endTime: this.form.endTime
       }).then(res => {
-        this.rankData = res.data || [];
+        let result = [];
+        if (res && res.length) {
+          res.forEach(v => {
+            result.push(Object.assign(v, { active: false }));
+          });
+        }
+        this.rankData = result;
       });
     },
     getEvaluateRatio() {
@@ -227,7 +269,7 @@ export default {
     getRadarChart() {
       this.chartOptions.radar = {};
       this.loading.radar = true;
-      radarAPI(this.form)
+      radarAPI({ monthTime: this.form.endTime })
         .then(res => {
           this.chartOptions.radar = getRadarChart(res);
         })
@@ -244,7 +286,7 @@ export default {
     getTwelveMonthCaseData() {
       this.chartOptions.case = {};
       this.loading.case = true;
-      queryTwelveMonthCaseDataAPI(this.form)
+      queryTwelveMonthCaseDataAPI({ nowTime: this.form.endTime })
         .then(res => {
           let data = [{ communityName: "", data: res }];
           this.chartOptions.case = getLineOptions(data, "数量");
@@ -258,7 +300,7 @@ export default {
         return {};
       }
       let form = {
-        monthTime: this.form.monthTime,
+        nowTime: this.form.endTime,
         communityId: this.communityId.toString()
       };
       this.chartOptions.caseCount = {};
@@ -276,7 +318,7 @@ export default {
         return {};
       }
       let form = {
-        monthTime: this.form.monthTime,
+        nowTime: this.form.endTime,
         communityIds: this.communityIds.toString()
       };
       this.chartOptions.score = {};
@@ -288,6 +330,83 @@ export default {
         .finally(() => {
           this.loading.score = false;
         });
+    },
+    chartAnimate(chart, options) {
+      if (this.chartInterval) {
+        clearInterval(this.chartInterval);
+      }
+      this.currentIndex = 0;
+      this.chartAnimateItem(chart, options);
+      this.chartInterval = setInterval(() => {
+        this.chartAnimateItem(chart, options);
+      }, 10000);
+    },
+    chartAnimateItem(chart, options) {
+      if (!options || !options.series) {
+        return;
+      }
+      let dataLen = options.series[0].data.length;
+      for (let i = 0; i < dataLen; i++) {
+        // 取消之前高亮的图形
+        chart.dispatchAction({
+          type: "downplay",
+          seriesIndex: 0,
+          dataIndex: i
+        });
+      }
+      // 高亮当前图形
+      chart.dispatchAction({
+        type: "highlight",
+        seriesIndex: 0,
+        dataIndex: this.currentIndex
+      });
+      // 显示 tooltip
+      chart.dispatchAction({
+        type: "showTip",
+        seriesIndex: 0,
+        dataIndex: this.currentIndex
+      });
+      this.currentIndex = (this.currentIndex + 1) % dataLen;
+    },
+    rowClick(row) {
+      this.$router.push({
+        path: "/examine",
+        query: { communityId: row.id, monthTime: this.form.endTime }
+      });
+    },
+    rankSearch(name) {
+      if (this.rankData.length) {
+        let rankIndex = 0;
+        this.rankData.forEach((item, index) => {
+          item.active = false;
+          if (name) {
+            if (item.communityName.indexOf(name) > -1) {
+              if (index !== 0) {
+                rankIndex = index;
+              }
+              item.active = true;
+            }
+          }
+        });
+        if (name) {
+          let eleHeight = 33;
+          let scrollBar = document.querySelector(
+            ".rank-table .el-table__body-wrapper"
+          );
+          scrollBar.scrollTo({
+            top: eleHeight * rankIndex,
+            behavior: "smooth"
+          });
+        }
+      }
+    },
+    activeRow({ row }) {
+      return row.active ? "active-row" : "";
+    }
+  },
+  beforeDestroy() {
+    if (this.chartInterval) {
+      clearInterval(this.chartInterval);
     }
   }
 };
@@ -323,6 +442,17 @@ export default {
     padding-right: 20px;
   }
 
+  ::v-deep {
+    .el-table {
+      .active-row {
+        background: oldlace;
+      }
+      .el-table__row {
+        cursor: pointer;
+      }
+    }
+  }
+
   .rank-index {
     height: 24px;
     width: 24px;
@@ -345,6 +475,13 @@ export default {
     &.rank-index-2 {
       background: url("../../assets/icon/勋章3@3x.png") center / contain;
     }
+  }
+
+  .search-form {
+    position: absolute;
+    right: 10px;
+    top: 5px;
+    width: 160px;
   }
 
   ::v-deep {

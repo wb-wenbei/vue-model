@@ -1,7 +1,7 @@
 <template>
   <div class="visual" :class="mapStatus === 2 ? 'hide-marker' : ''" id="map">
     <div v-if="!hasToken">暂无访问权限！</div>
-    <div class="header">智慧社区评价大数据平台</div>
+    <div class="header">社区评价监测大屏</div>
     <div ref="info-window" class="info-window"></div>
     <div class="map-status">
       <el-radio-group v-model="mapStatus" @change="showHeatMap">

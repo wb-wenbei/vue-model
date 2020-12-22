@@ -250,11 +250,21 @@ export default {
       }
     },
     getYear(e) {
-      return e
-        .map(v => {
-          return v.year;
-        })
-        .toString();
+      let result = "--";
+      if (e && e.length) {
+        if (e.length === 1) {
+          result = e[0].year;
+        } else {
+          let min = e[0].year,
+            max = e[0].year;
+          e.forEach(v => {
+            min = Math.min(v.year, min);
+            max = Math.max(v.year, max);
+          });
+          result = min + " - " + max;
+        }
+      }
+      return result;
     },
     checkForm(form) {
       if (!form.communityAddress || !form.communityAddress.length) {

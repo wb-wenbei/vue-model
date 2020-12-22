@@ -10,6 +10,15 @@ export const communityScoreRankAPI = params => {
   });
 };
 
+//小区排名查询（不分页）
+export const communityScoreRankAllAPI = params => {
+  return http({
+    url: "/api-customer/community/dataStatistics/communityScoreRankList",
+    method: "GET",
+    params
+  });
+};
+
 //考核评价占比
 export const evaluateRatioAPI = params => {
   return http({

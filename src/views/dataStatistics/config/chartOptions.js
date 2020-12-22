@@ -19,7 +19,7 @@ export function getPieChart(data) {
   data.forEach(v => {
     legendData.push(v.name);
   });
-  const color = ["#4A90E2", "#7A95E5", "#50E3C2", "#F6A93B"];
+  const color = ["#50E3C2", "#4A90E2", "#F6A93B"];
   return {
     color: color,
     tooltip: {

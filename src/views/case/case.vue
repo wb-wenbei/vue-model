@@ -22,6 +22,7 @@
         <table-search
           v-model="params"
           resettable
+          labelWidth="90px"
           :columns="searchColumns"
           @search="search"
         ></table-search>
@@ -116,6 +117,7 @@ export default {
       params: {},
       searchColumns: [
         { prop: "caseName", label: "案件名称", type: "input" },
+        { prop: "caseNumber", label: "接警单编号", type: "input" },
         {
           prop: "caseDimension",
           label: "案件维度",
@@ -139,6 +141,7 @@ export default {
       headers: [
         { prop: "index", label: "序号" },
         { prop: "caseName", label: "案件名称" },
+        { prop: "caseNumber", label: "接警单编号" },
         { prop: "communityName", label: "社区名称" },
         { prop: "communityTypeName", label: "社区类型" },
         { prop: "orgName", label: "归属物业" },
@@ -158,7 +161,7 @@ export default {
         {
           index: 2,
           prop: "caseNumber",
-          label: "案件编号",
+          label: "接警单编号",
           type: "text"
         },
         {
