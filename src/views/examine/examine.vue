@@ -181,6 +181,7 @@ export default {
       detailLoading: false,
       chartLoading: false,
       showDetailNow: false,
+      firstLoad: false,
       loading: false,
       type: "add",
       title: "新增考核记录",
@@ -306,8 +307,8 @@ export default {
     }
   },
   created() {
+    this.firstLoad = true;
     this.getOptions();
-    this.checkCommunity();
   },
   activated() {
     if (!this.showDetailNow) {
@@ -331,6 +332,10 @@ export default {
       }
     },
     loadComplete(tableData) {
+      if (this.firstLoad) {
+        this.firstLoad = false;
+        return;
+      }
       if (this.showDetailNow) {
         this.showDetailNow = false;
         this.showDetail(tableData[0]);

@@ -263,6 +263,12 @@ export default {
     },
     loadData() {
       if (this.api) {
+        if (this.isLoading) {
+          setTimeout(() => {
+            this.loadData();
+          }, 100);
+          return;
+        }
         this.isLoading = true;
         let data = Object.assign(this.pageParams, this.params);
         this.api(data)
