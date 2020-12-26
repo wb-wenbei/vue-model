@@ -57,3 +57,8 @@ a {
 .el-table__fixed::before, .el-table__fixed-right::before{
   height: 0;
 }
+
+//高德地图POI搜索提示框显示层级提升
+.amap-sug-result{
+  z-index: 9999;
+}
