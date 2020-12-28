@@ -162,6 +162,7 @@ import FormRadio from "@/components/form/radio.vue";
 import FormAddress from "@/components/form/address";
 import FormUploadImage from "@/components/form/uploadImage";
 import FormOrganize from "@/components/form/organize";
+import cloneDeep from "lodash/cloneDeep";
 
 import "./css/index.scss";
 
@@ -334,7 +335,7 @@ export default {
           }
         });
       }
-      this.defaultForm = Object.assign(defaultForm, this.form);
+      this.defaultForm = Object.assign(defaultForm, cloneDeep(this.form));
     },
     canSave() {
       let result = false;
