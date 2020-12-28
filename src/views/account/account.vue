@@ -26,6 +26,7 @@
       </template>
     </common-table>
     <edit-dialog
+      v-if="visibleDialog"
       :visibleDialog.sync="visibleDialog"
       :title="title"
       :loading="loading"
@@ -175,7 +176,7 @@ export default {
     editRow(row) {
       this.type = "edit";
       this.title = "编辑账号";
-      this.form = row;
+      this.form = Object.assign({}, row);
       this.showPassword = false;
       this.visibleDialog = true;
     },

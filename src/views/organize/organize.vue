@@ -42,6 +42,7 @@
       </div>
     </div>
     <edit-dialog
+      v-if="visibleDialog"
       :columns="columns"
       :form="form"
       :options="editOptions"

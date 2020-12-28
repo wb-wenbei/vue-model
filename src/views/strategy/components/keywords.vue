@@ -23,6 +23,7 @@
       </template>
     </common-table>
     <edit-dialog
+      v-if="visibleDialog"
       :visibleDialog.sync="visibleDialog"
       :title="title"
       :columns="columns"

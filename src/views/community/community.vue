@@ -28,6 +28,7 @@
     </common-table>
     <edit-dialog
       :visibleDialog.sync="visibleDialog"
+      v-if="visibleDialog"
       :title="title"
       :columns="columns"
       :loading="loading"
@@ -220,13 +221,15 @@ export default {
       if (row.lng && row.lat) {
         this.form.lngLat = [row.lng, row.lat];
       }
+      console.log(this.form);
       this.visibleDialog = true;
     },
     add() {
       this.type = "add";
       this.title = "新增社区";
       this.form = {
-        isSpecCommunityFacilities: 0
+        isSpecCommunityFacilities: 0,
+        propertyFee: [{ standard: "标准1" }]
       };
       this.visibleDialog = true;
     },
