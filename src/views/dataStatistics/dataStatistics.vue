@@ -175,10 +175,13 @@ export default {
   data() {
     return {
       activeName: "dataStatistics",
-      timeRange: [Date.now(), Date.now()],
+      timeRange: [
+        new Date().setMonth(new Date().getMonth() - 1),
+        new Date().setMonth(new Date().getMonth() - 1)
+      ],
       form: {
-        startTime: Date.now(),
-        endTime: Date.now()
+        startTime: new Date().setMonth(new Date().getMonth() - 1),
+        endTime: new Date().setMonth(new Date().getMonth() - 1)
       },
       searchCommunityName: "",
       communityIds: [],
@@ -249,9 +252,7 @@ export default {
         let result = [];
         if (res && res.length) {
           res.forEach(v => {
-            if (v.assessmentScore.toString().indexOf(".") > -1) {
-              v.assessmentScore = v.assessmentScore.toFixed(2);
-            }
+            v.assessmentScore = v.assessmentScore.toFixed(2);
             result.push(Object.assign(v, { active: false }));
           });
         }
