@@ -82,6 +82,18 @@ export default {
               this.$store.commit("SET_USER_INFO", res);
               this.$store.commit("SET_CUSTOMER_ID", res.rootGroupId);
               this.getPermissions();
+              if (window.gtag) {
+                // console.log("window_gtag_login", res);
+                /*window.gtag("config", "G-KE8X8D0BRP", {
+                  user_id: res.userName
+                });*/
+                window.gtag("event", "user_login", {
+                  user_id: res.id,
+                  user_name: res.userName,
+                  customer_id: res.groupId,
+                  customer_name: res.groupName
+                });
+              }
             })
             .catch(err => {
               this.$message.error("登录失败：" + err);
@@ -117,6 +129,7 @@ export default {
     border-radius: 45px;
     padding: 80px 30px;
     display: flex;
+
     & > div {
       flex: 1;
       padding: 20px 5% 20px 15%;

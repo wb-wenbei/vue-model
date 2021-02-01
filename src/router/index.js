@@ -248,4 +248,19 @@ router.beforeEach((to, from, next) => {
   }
 });
 
+router.afterEach(to => {
+  if (window.gtag) {
+    const userInfo = store.state.userInfo || {};
+    console.log("window_gtag_route_change", to);
+    window.gtag("event", "route_change", {
+      route_name: to.meta.title,
+      route_path: to.path,
+      user_id: userInfo.id,
+      user_name: userInfo.userName,
+      customer_id: userInfo.groupId,
+      customer_name: userInfo.groupName
+    });
+  }
+});
+
 export default router;
