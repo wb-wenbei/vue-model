@@ -46,6 +46,7 @@ export default {
       }
     },
     loadOptions() {
+      this.chart.clear();
       this.chartOptions = cloneDeep(this.options) || {};
       this.chart.setOption(this.chartOptions);
       this.$nextTick(() => {
