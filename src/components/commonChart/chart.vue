@@ -10,6 +10,7 @@ export default {
   name: "chart",
   props: {
     theme: { type: String, default: "" },
+    clear: { type: Boolean, default: true },
     options: { type: Object },
     loading: { type: Boolean, default: false }
   },
@@ -46,7 +47,9 @@ export default {
       }
     },
     loadOptions() {
-      this.chart.clear();
+      if (this.clear) {
+        this.chart.clear();
+      }
       this.chartOptions = cloneDeep(this.options) || {};
       this.chart.setOption(this.chartOptions);
       this.$nextTick(() => {
