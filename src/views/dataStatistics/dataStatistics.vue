@@ -515,6 +515,7 @@ export default {
     ::v-deep {
       .el-scrollbar__view {
         display: flex;
+        justify-content: space-around;
         flex-wrap: wrap;
       }
     }
