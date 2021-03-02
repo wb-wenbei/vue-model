@@ -1,5 +1,6 @@
 "use strict";
 const path = require("path");
+const CompressionPlugin = require("compression-webpack-plugin");
 
 function resolve(dir) {
   return path.join(__dirname, dir);
@@ -33,6 +34,16 @@ module.exports = {
         "@": resolve("src")
       }
     },
+    plugins: [
+      new CompressionPlugin({
+        test: /\.(js|css|ttf)?$/i, // 哪些文件要压缩
+        filename: "[path].gz[query]", // 压缩后的文件名
+        algorithm: "gzip", // 使用gzip压缩
+        threshold: 10240, //对超过10k的数据压缩
+        minRatio: 1, // 压缩率小于1才会压缩
+        deleteOriginalAssets: false // 删除未压缩的文件，谨慎设置，如果希望提供非gzip的资源，可不设置或者设置为false
+      })
+    ],
     externals: {
       AMap: "AMap"
     }
