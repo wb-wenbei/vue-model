@@ -8,6 +8,32 @@ function resolve(dir) {
   return path.join(__dirname, dir);
 }
 
+let plugins = [
+  new CompressionPlugin({
+    test: /\.(js|css|ttf)?$/i, // 哪些文件要压缩
+    filename: "[path].gz[query]", // 压缩后的文件名
+    algorithm: "gzip", // 使用gzip压缩
+    threshold: 10240, //对超过10k的数据压缩
+    minRatio: 1, // 压缩率小于1才会压缩
+    deleteOriginalAssets: false // 删除未压缩的文件，谨慎设置，如果希望提供非gzip的资源，可不设置或者设置为false
+  })
+];
+if (process.env.NODE_ENV === "production") {
+  plugins.push(
+    new PrerenderSPAPlugin({
+      staticDir: path.join(__dirname, "dist"),
+      routes: ["/", "/login"],
+      renderer: new Renderer({
+        inject: {
+          foo: "bar"
+        },
+        headless: false,
+        renderAfterDocumentEvent: "render-event"
+      })
+    })
+  );
+}
+
 module.exports = {
   publicPath: "/",
   outputDir: "dist",
@@ -36,27 +62,7 @@ module.exports = {
         "@": resolve("src")
       }
     },
-    plugins: [
-      new CompressionPlugin({
-        test: /\.(js|css|ttf)?$/i, // 哪些文件要压缩
-        filename: "[path].gz[query]", // 压缩后的文件名
-        algorithm: "gzip", // 使用gzip压缩
-        threshold: 10240, //对超过10k的数据压缩
-        minRatio: 1, // 压缩率小于1才会压缩
-        deleteOriginalAssets: false // 删除未压缩的文件，谨慎设置，如果希望提供非gzip的资源，可不设置或者设置为false
-      }),
-      new PrerenderSPAPlugin({
-        staticDir: path.join(__dirname, "dist"),
-        routes: ["/", "/login"],
-        renderer: new Renderer({
-          inject: {
-            foo: "bar"
-          },
-          headless: false,
-          renderAfterDocumentEvent: "render-event"
-        })
-      })
-    ],
+    plugins: plugins,
     externals: {
       AMap: "AMap"
     }
