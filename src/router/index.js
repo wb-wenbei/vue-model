@@ -223,6 +223,7 @@ const router = new VueRouter({
 
 const whiteList = [
   "/login",
+  "/login/",
   "/mine/revisePwd",
   "/visual",
   "/error/403",
