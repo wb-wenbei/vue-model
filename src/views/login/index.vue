@@ -11,7 +11,7 @@
           :hide-required-asterisk="true"
           auto-complete="on"
         >
-          <h2 class="title">{{ title }}</h2>
+          <h2 class="title">虹桥镇智慧社区大数据平台</h2>
           <el-form-item prop="userName" label="用户名">
             <el-input
               ref="username"
@@ -51,7 +51,6 @@ export default {
   name: "index",
   data() {
     return {
-      title: "虹桥镇智慧社区大数据平台",
       loginForm: {
         userName: "",
         password: ""
