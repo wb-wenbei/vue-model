@@ -12,11 +12,12 @@
       :api="pageAPI"
       :params="params"
       :columns="columns"
-      :settings="['setting']"
+      :settings="['setting', 'download']"
       :canEdit="false"
       :canDelete="false"
       @add="add"
       @loadComplete="loadComplete"
+      @download="downloadDialog = true"
     >
       <template v-slot:table-header>
         <table-search
@@ -138,17 +139,58 @@
         </el-row>
       </template>
     </detail-dialog>
+    <el-dialog
+      :visible.sync="downloadDialog"
+      append-to-body
+      custom-class="download-dialog"
+      width="600px"
+      center
+    >
+      <div style="text-align: center;padding-bottom: 20px">
+        考核记录详情下载
+      </div>
+      <el-form class="demo-form-inline" :model="downLoadParams">
+        <el-form-item v-show="false" label="下载类型">
+          <form-select
+            v-model="downLoadParams.type"
+            :clearable="false"
+            :options="[
+              { id: 1, name: '历年考核排名' },
+              { id: 2, name: '根据月份区间选择' }
+            ]"
+          ></form-select>
+        </el-form-item>
+        <el-form-item v-show="downLoadParams.type === 2" label="月份区间">
+          <el-date-picker
+            v-model="downLoadParams.timeRange"
+            :clearable="false"
+            type="monthrange"
+            value-format="timestamp"
+            range-separator="至"
+            start-placeholder="开始月份"
+            end-placeholder="结束月份"
+            :picker-options="pickerOptions"
+          ></el-date-picker>
+        </el-form-item>
+        <el-form-item style="text-align: center">
+          <el-button type="primary" @click="exportExcel">下载</el-button>
+          <el-button @click.stop="downloadDialog = false">取消</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import CommonTable from "@/components/commonTable/table";
 import EditDialog from "@/components/commonTable/editDialog";
+import FormSelect from "@/components/form/select";
 import DetailDialog from "@/components/commonTable/detailDialog";
 import TableSearch from "@/components/commonTable/tableSearch.vue";
 import CommonChart from "@/components/commonChart/chart.vue";
 import { getAssessmentType2 } from "@/config/dictionary";
 import { getRadarChart } from "./config/chartOptions";
+import { getExportParams } from "@/utils/index";
 
 import {
   pageAPI,
@@ -168,6 +210,7 @@ export default {
   components: {
     CommonTable,
     EditDialog,
+    FormSelect,
     DetailDialog,
     TableSearch,
     CommonChart
@@ -177,6 +220,7 @@ export default {
       pageAPI,
       activeName: "examine",
       visibleDialog: false,
+      downloadDialog: false,
       detailVisible: false,
       showDetailRow: false,
       detailLoading: false,
@@ -193,6 +237,12 @@ export default {
         monthTime: Date.now(),
         communityIdArr: [],
         communityIds: ""
+      },
+      downLoadParams: {
+        type: 2,
+        timeRange: [],
+        startTime: "",
+        endTime: ""
       },
       searchColumns: [
         {
@@ -288,6 +338,11 @@ export default {
         { prop: "assessmentWayName", label: "考核类型" },
         { prop: "action", label: "操作", width: 140, fixed: "right" }
       ],
+      pickerOptions: {
+        disabledDate(v) {
+          return v > Date.now();
+        }
+      },
       form: {},
       caseDimensionId: "",
       detailData: {},
@@ -304,6 +359,19 @@ export default {
       immediate: true,
       handler(v) {
         this.params.communityIds = v.toString();
+      }
+    },
+    "downLoadParams.timeRange": {
+      deep: true,
+      immediate: true,
+      handler(v) {
+        [this.downLoadParams.startTime, this.downLoadParams.endTime] = ["", ""];
+        if (v && v.length) {
+          this.downLoadParams.startTime = v[0];
+          this.downLoadParams.endTime = new Date(v[1]).setMonth(
+            new Date(v[1]).getMonth() + 1
+          );
+        }
       }
     }
   },
@@ -465,6 +533,23 @@ export default {
     showRow(row) {
       this.detailRow = row;
       this.showDetailRow = true;
+    },
+    exportExcel() {
+      let searchData = {
+        token: this.$store.state.userInfo.token
+      };
+      if (this.downLoadParams.type === 2) {
+        if (this.downLoadParams.startTime && this.downLoadParams.endTime) {
+          searchData.startTime = this.downLoadParams.startTime;
+          searchData.endTime = this.downLoadParams.endTime;
+        } else {
+          this.$message.error("请先选择下载月份区间！");
+          return;
+        }
+      }
+      let str = getExportParams(searchData);
+      window.location.href = `/api-customer/community/assessment/Excel?${str}`;
+      this.downloadDialog = false;
     }
   }
 };
@@ -490,5 +575,13 @@ export default {
 
 .detail-row-item {
   padding: 10px !important;
+}
+
+::v-deep {
+  .download-dialog {
+    .el-dialog__header {
+      padding: 0;
+    }
+  }
 }
 </style>
