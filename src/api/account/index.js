@@ -4,7 +4,7 @@ import http from "@/server/http.js";
 export const getUserListAPI = params => {
   return http({
     method: "GET",
-    url: "/api-customer/account/user/queryUserBounds",
+    url: "/api-customer/entity/user/queryUserBounds",
     params
   });
 };
