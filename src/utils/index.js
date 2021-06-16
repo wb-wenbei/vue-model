@@ -21,3 +21,21 @@ export async function getTypeList(type) {
 export async function getTypeChildren(typeCode) {
   return await getChildrenAPI({ typeCode: typeCode });
 }
+
+/**
+ * @description: object 转为 string key=value
+ * @param {Object}
+ * @return: string
+ */
+export function getExportParams(paramsObj) {
+  if (!paramsObj) return "";
+  let result = Object.keys(paramsObj)
+    .reduce((a, k) => {
+      if (paramsObj[k]) {
+        a.push(k + "=" + encodeURIComponent(paramsObj[k]));
+      }
+      return a;
+    }, [])
+    .join("&");
+  return result;
+}
