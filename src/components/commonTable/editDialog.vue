@@ -69,6 +69,7 @@
               <el-date-picker
                 v-else-if="column.type === 'date'"
                 v-model="defaultForm[column.prop]"
+                value-format="timestamp"
                 v-bind="column.props"
               >
               </el-date-picker>
@@ -115,6 +116,12 @@
                 v-bind="column.props"
               >
               </form-address>
+              <form-province
+                v-else-if="column.type === 'province'"
+                v-model="defaultForm[column.prop]"
+                v-bind="column.props"
+              >
+              </form-province>
               <slot v-else :name="column.prop" v-bind:form="defaultForm"></slot>
             </el-form-item>
           </el-col>
@@ -125,7 +132,12 @@
     <div slot="footer" class="dialog-footer">
       <slot name="form-action" v-bind:form="defaultForm">
         <slot name="action-prepend"></slot>
-        <el-button type="primary" @click="save" :disabled="loading">
+        <el-button
+          v-if="showSave"
+          type="primary"
+          @click="save"
+          :disabled="loading"
+        >
           {{ saveBtn }}
         </el-button>
         <el-button
@@ -162,6 +174,7 @@ import FormRadio from "@/components/form/radio.vue";
 import FormAddress from "@/components/form/address";
 import FormUploadImage from "@/components/form/uploadImage";
 import FormOrganize from "@/components/form/organize";
+import FormProvince from "@/components/form/province";
 import cloneDeep from "lodash/cloneDeep";
 
 import "./css/index.scss";
@@ -221,6 +234,7 @@ export default {
     columns: { type: Array },
     form: { type: Object },
     options: { type: Object },
+    showSave: { type: Boolean, default: true },
     saveBtn: { type: String, default: "保 存" },
     cancelBtn: { type: String, default: "取 消" }
   },
@@ -230,7 +244,8 @@ export default {
     FormRadio,
     FormUploadImage,
     FormAddress,
-    FormOrganize
+    FormOrganize,
+    FormProvince
   },
   data() {
     return {
@@ -262,6 +277,13 @@ export default {
   created() {
     Object.assign(this.defaultOptions, this.options);
     this.resetForm();
+  },
+  mounted() {
+    this.fullscreen = document.body.clientWidth < 800 ? true : false;
+  },
+  deactivated() {
+    if (!this.visibleDialog) return;
+    this.$emit("update:visibleDialog", false);
   },
   methods: {
     save() {

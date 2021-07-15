@@ -306,6 +306,7 @@ export default {
         row.editRow = {};
         this.getRowName(row);
         this.isAdding = false;
+        this.$emit('saveRow',row)
       } else {
         this.$message.error("请将信息填写完整后保存！");
       }
@@ -326,6 +327,7 @@ export default {
         .then(() => {
           this.tableData.splice(index, 1);
           this.isAdding = false;
+          this.$emit('deleteRow',row)
         })
         .catch(() => {
           this.isAdding = false;

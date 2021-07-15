@@ -13,3 +13,11 @@ export const getChildrenAPI = params => {
     method: "GET"
   });
 };
+
+export const getAdministrativeTreeAPI = params => {
+  return http({
+    method: "GET",
+    url: `/api-customer/green-account/greenAccount/getAdministrativeTree`,
+    params
+  });
+};

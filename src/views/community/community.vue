@@ -1,19 +1,15 @@
 <template>
   <div class="tabs-box">
-    <!--<el-tabs v-model="activeName">
-      <el-tab-pane name="community" @click.native="activeName = 'community'">
-        <span slot="label" style="padding: 0 6px">社区管理</span>
-
-      </el-tab-pane>
-    </el-tabs>-->
     <common-table
       ref="table"
       :headers="headers"
       :api="pageAPI"
       :params="params"
       :columns="columns"
+      :modelUrl="modelUrl"
+      :uploadURL="uploadURL"
+      :settings="['setting', 'upload']"
       :deleteApi="deleteAPI"
-      :settings="['setting']"
       @editRow="editRow"
       @add="add"
     >
@@ -36,7 +32,10 @@
       @save="submit"
     >
       <template v-slot:communityAddress="{ form }">
-        <address-select v-model="form.communityAddress"></address-select>
+        <address-select
+          v-model="form.communityAddress"
+          :limit="1"
+        ></address-select>
       </template>
       <template v-slot:propertyFee="{ form }">
         <property-select v-model="form.propertyFee"></property-select>
@@ -55,9 +54,16 @@ import TableSearch from "@/components/commonTable/tableSearch.vue";
 import PropertySelect from "./components/property-select";
 import AddressSelect from "./components/address-select";
 import YearSelect from "./components/year-select";
-import { getTypeList } from "@/utils/index";
+import { getTypeList, getEntityType } from "@/utils/index";
 
-import { pageAPI, deleteAPI, addAPI, updateAPI } from "@/api/community/index";
+import {
+  pageAPI,
+  deleteAPI,
+  addAPI,
+  updateAPI,
+  getPoliceAPI
+} from "@/api/community";
+import { getAllAPI } from "@/api/committee/index";
 
 export default {
   name: "Community",
@@ -78,30 +84,26 @@ export default {
       loading: false,
       type: "add",
       title: "新增社区",
+      modelUrl: "",
+      uploadURL: "/api-customer/service-wisdom-town/committee/import",
       community: [],
       totalMenus: [],
       matchMenu: [],
       params: {},
-      searchColumns: [
-        { prop: "communityName", label: "社区名称", type: "input" },
-        { prop: "orgId", label: "归属物业", type: "org" },
-        {
-          prop: "communityLevel",
-          label: "社区等级",
-          type: "select",
-          options: []
-        },
-        {
-          prop: "communityType",
-          label: "社区类型",
-          type: "select",
-          options: []
-        }
-      ],
+      commonOptions: {
+        communityLevels: [],
+        communityTypes: [],
+        projectNatures: [],
+        committees: [],
+        properties: [],
+        polices: []
+      },
       headers: [
         { prop: "index", label: "序号" },
         { prop: "communityName", label: "社区名称" },
-        { prop: "orgName", label: "归属物业" },
+        { prop: "propertyName", label: "归属物业" },
+        { prop: "committeeName", label: "归属居委" },
+        { prop: "policeName", label: "管理民警" },
         { prop: "communityTypeName", label: "社区类型" },
         { prop: "communityLevelName", label: "社区等级" },
         { prop: "buildingArea", label: "建筑面积" },
@@ -110,7 +112,41 @@ export default {
         { prop: "updateTime", label: "更新时间", type: "date" },
         { prop: "action", label: "操作", width: 100, fixed: "right" }
       ],
-      columns: [
+      form: {}
+    };
+  },
+  computed: {
+    searchColumns() {
+      return [
+        { prop: "communityName", label: "社区名称", type: "input" },
+        {
+          prop: "propertyId",
+          label: "归属物业",
+          type: "select",
+          options: this.commonOptions.properties
+        },
+        {
+          prop: "committeeId",
+          label: "归属居委",
+          type: "select",
+          options: this.commonOptions.committees
+        },
+        {
+          prop: "communityLevel",
+          label: "社区等级",
+          type: "select",
+          options: this.commonOptions.communityLevels
+        },
+        {
+          prop: "communityType",
+          label: "社区类型",
+          type: "select",
+          options: this.commonOptions.communityTypes
+        }
+      ];
+    },
+    columns() {
+      return [
         { prop: "basicInfo", label: "基础信息", type: "title" },
         {
           prop: "communityName",
@@ -123,22 +159,40 @@ export default {
           label: "社区类型",
           type: "select",
           required: true,
-          options: []
+          options: this.commonOptions.communityTypes
         },
         {
           prop: "communityLevelId",
           label: "社区等级",
           type: "select",
           required: true,
-          options: []
+          options: this.commonOptions.communityLevels
         },
-        { prop: "orgId", label: "归属物业", type: "org", required: true },
+        {
+          prop: "propertyId",
+          label: "归属物业",
+          type: "select",
+          required: true,
+          options: this.commonOptions.properties
+        },
+        {
+          prop: "committeeId",
+          label: "归属居委",
+          type: "select",
+          options: this.commonOptions.committees
+        },
         {
           prop: "projectNatureId",
           label: "项目性质",
           type: "select",
           required: true,
-          options: []
+          options: this.commonOptions.projectNatures
+        },
+        {
+          prop: "policeId",
+          label: "管理民警",
+          type: "select",
+          options: this.commonOptions.polices
         },
         {
           prop: "communityAddress",
@@ -184,9 +238,8 @@ export default {
             { id: 0, name: "否" }
           ]
         }
-      ],
-      form: {}
-    };
+      ];
+    }
   },
   created() {
     this.getOptions();
@@ -196,20 +249,31 @@ export default {
       this.getLevels();
       this.getTypes();
       this.getNatures();
+      this.getPolices();
+      this.getCommittees();
+      this.getProperties();
     },
     async getLevels() {
-      let communityLevels = await getTypeList("COMMUNITY_LEVEL");
-      this.searchColumns[2].options = communityLevels;
-      this.columns[3].options = communityLevels;
+      this.commonOptions.communityLevels = await getTypeList("COMMUNITY_LEVEL");
     },
     async getTypes() {
-      let communityTypes = await getTypeList("COMMUNITY_TYPE");
-      this.searchColumns[3].options = communityTypes;
-      this.columns[2].options = communityTypes;
+      this.commonOptions.communityTypes = await getTypeList("COMMUNITY_TYPE");
     },
     async getNatures() {
-      let projectNatures = await getTypeList("PROJECT_NATURE");
-      this.columns[5].options = projectNatures;
+      this.commonOptions.projectNatures = await getTypeList("PROJECT_NATURE");
+    },
+    async getPolices() {
+      this.commonOptions.polices = await getPoliceAPI();
+    },
+    async getCommittees() {
+      this.commonOptions.committees = await getAllAPI({
+        entityType: getEntityType("COMMITTEE")
+      });
+    },
+    async getProperties() {
+      this.commonOptions.properties = await getAllAPI({
+        entityType: getEntityType("PROPERTY")
+      });
     },
     search() {
       this.$refs.table.onQuery();
@@ -221,7 +285,6 @@ export default {
       if (row.lng && row.lat) {
         this.form.lngLat = [row.lng, row.lat];
       }
-      console.log(this.form);
       this.visibleDialog = true;
     },
     add() {

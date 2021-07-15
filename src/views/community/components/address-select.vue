@@ -19,7 +19,7 @@
       ></el-button>
       <el-button
         class="item"
-        v-if="index === currentValue.length - 1"
+        v-if="index === currentValue.length - 1 && limit > currentValue.length"
         type="primary"
         icon="el-icon-plus"
         circle
@@ -33,7 +33,8 @@
 export default {
   name: "property-select",
   props: {
-    value: {}
+    value: {},
+    limit: { type: Number, default: 5 }
   },
   data() {
     return {

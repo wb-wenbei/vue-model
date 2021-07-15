@@ -1,18 +1,12 @@
 <template>
   <div class="tabs-box">
-    <!--<el-tabs v-model="activeName">
-      <el-tab-pane name="case" @click.native="activeName = 'case'">
-        <span slot="label" style="padding: 0 6px">案件管理</span>
-
-      </el-tab-pane>
-    </el-tabs>-->
     <common-table
       ref="table"
       :headers="headers"
       :api="pageAPI"
       :params="params"
       :deleteApi="deleteAPI"
-      uploadURL="/api-customer/community/case/import"
+      :uploadURL="uploadURL"
       :modelUrl="modelUrl"
       :settings="['setting', 'upload']"
       @editRow="editRow"
@@ -39,39 +33,14 @@
       @save="submit"
     >
       <template v-slot:caseAddress="{ form }">
-        <span style="display: inline-block;margin-right: 10px"
-          >上海市 上海市 闵行区</span
-        >
+        <span style="display: inline-block;margin-right: 10px">
+          上海市 上海市 闵行区
+        </span>
         <el-input
           class="short-width"
           v-model="form.caseAddress"
           placeholder="请输入案件地址"
         ></el-input>
-      </template>
-      <template v-slot:caseContent="{ form }">
-        <el-input
-          type="textarea"
-          v-model="form.caseContent"
-          :rows="10"
-          placeholder="注：字数限制1500"
-          :maxlength="1500"
-          showWordLimit
-          @blur="getKeyWordsByContent(form.caseContent)"
-        ></el-input>
-      </template>
-      <template v-slot:caseDimensionId="{ form }">
-        <form-select
-          v-model="form.caseDimensionId"
-          :options="columns[8].options"
-          @change="dimensionChange($event, 'form')"
-        ></form-select>
-      </template>
-      <template v-slot:caseReasonId="{ form }">
-        <form-select
-          v-model="form.caseReasonId"
-          :options="columns[9].options"
-          @change="ReasonChange"
-        ></form-select>
       </template>
     </edit-dialog>
   </div>
@@ -80,17 +49,14 @@
 <script>
 import CommonTable from "@/components/commonTable/table";
 import EditDialog from "@/components/commonTable/editDialog";
-import FormSelect from "@/components/form/select";
 import TableSearch from "@/components/commonTable/tableSearch.vue";
-import { getTypeList, getTypeChildren } from "@/utils/index";
-import cloneDeep from "lodash/cloneDeep";
 
 import {
   pageAPI,
   deleteAPI,
   addAPI,
   updateAPI,
-  matchKeyWordAPI
+  queryCaseDimensionsCascadeAPI
 } from "@/api/case/index";
 import { getAllAPI as communityListAPI } from "@/api/community/index";
 import { getAllAPI as keywordListAPI } from "@/api/keywords/index";
@@ -100,139 +66,160 @@ export default {
   components: {
     CommonTable,
     EditDialog,
-    FormSelect,
     TableSearch
   },
   data() {
     return {
       pageAPI,
       deleteAPI,
-      activeName: "case",
       visibleDialog: false,
       loading: false,
       type: "add",
       title: "新增案件",
       modelUrl: "",
+      uploadURL: "/api-customer/community/case/import",
       case: [],
       params: {},
-      searchColumns: [
-        { prop: "caseName", label: "案件名称", type: "input" },
+      dimensionTree: [],
+      headers: [
+        { prop: "index", label: "序号" },
+        { prop: "caseNumber", label: "接警单编号" },
+        { prop: "communityName", label: "社区名称" },
+        { prop: "communityTypeName", label: "社区类型" },
+        { prop: "orgName", label: "归属物业" },
+        { prop: "caseDimensionName", label: "案件维度" },
+        { prop: "caseReasonName", label: "一级案由" },
+        { prop: "subCaseReasonName", label: "二级案由" },
+        { prop: "caseTime", label: "报案时间", type: "date" },
+        { prop: "action", label: "操作", width: 100, fixed: "right" }
+      ],
+      commonOptions: {
+        communities: [],
+        caseDimensions: [],
+        caseReasons: [],
+        subCaseReasons: [],
+        keywords: []
+      },
+      searchOptions: {
+        caseReasons: [],
+        subCaseReasons: []
+      },
+      form: {},
+      formData: {}
+    };
+  },
+  computed: {
+    searchColumns() {
+      return [
         { prop: "caseNumber", label: "接警单编号", type: "input" },
         {
           prop: "caseDimension",
           label: "案件维度",
           type: "select",
-          options: []
+          options: this.commonOptions.caseDimensions
         },
         {
           prop: "caseReasonId",
-          label: "报案缘由",
+          label: "一级案由",
           type: "select",
-          options: []
+          options: this.searchOptions.caseReasons
+        },
+        {
+          prop: "subCaseReasonId",
+          label: "二级案由",
+          type: "select",
+          options: this.searchOptions.subCaseReasons
         },
         {
           prop: "communityId",
           label: "社区名称",
           type: "select",
-          options: []
+          options: this.commonOptions.communities
         },
         { prop: "orgId", label: "归属物业", type: "org" }
-      ],
-      headers: [
-        { prop: "index", label: "序号" },
-        { prop: "caseName", label: "案件名称" },
-        { prop: "caseNumber", label: "接警单编号" },
-        { prop: "communityName", label: "社区名称" },
-        { prop: "communityTypeName", label: "社区类型" },
-        { prop: "orgName", label: "归属物业" },
-        { prop: "caseReasonName", label: "报案缘由" },
-        { prop: "caseDimensionName", label: "案件维度" },
-        { prop: "caseTime", label: "报案时间", type: "date" },
-        { prop: "action", label: "操作", width: 100, fixed: "right" }
-      ],
-      columns: [
-        { index: 0, prop: "basicInfo", label: "基础信息", type: "title" },
+      ];
+    },
+    columns() {
+      return [
+        { prop: "basicInfo", label: "基础信息", type: "title" },
         {
-          index: 1,
-          prop: "caseName",
-          label: "案件名称",
-          type: "text"
-        },
-        {
-          index: 2,
           prop: "caseNumber",
           label: "接警单编号",
           type: "text"
         },
         {
-          index: 3,
           prop: "caseTime",
           label: "报案时间",
           type: "date",
-          required: true,
-          options: []
+          required: true
         },
         {
-          index: 4,
           prop: "communityId",
           label: "社区名称",
           type: "select",
           required: true,
-          options: []
+          options: this.commonOptions.communities
         },
         {
-          index: 5,
           prop: "caseAddress",
           label: "案件地址",
           required: true,
           cols: 4
         },
         {
-          index: 6,
           prop: "caseContent",
-          label: "案件内容",
-          required: true,
+          label: "备注",
+          type: "textArea",
           cols: 2
         },
-        { index: 7, prop: "assessInfo", label: "归类信息", type: "title" },
+        { prop: "assessInfo", label: "归类信息", type: "title" },
         {
-          index: 8,
           prop: "caseDimensionId",
           label: "案件维度",
+          type: "select",
           required: true,
-          options: []
+          options: this.commonOptions.caseDimensions
         },
         {
-          index: 9,
           prop: "caseReasonId",
-          label: "报案缘由",
+          label: "一级案由",
+          type: "select",
           required: true,
-          options: []
+          options: this.commonOptions.caseReasons
         },
         {
-          index: 10,
+          prop: "subCaseReasonId",
+          label: "二级案由",
+          type: "select",
+          required: true,
+          options: this.commonOptions.subCaseReasons
+        },
+        {
           prop: "caseKeyword",
           label: "案件关键词",
           type: "select",
           required: true,
-          options: [],
+          options: this.commonOptions.keywords,
           props: { multiple: true }
         }
-      ],
-      form: {
-        caseDimensionId: "",
-        caseReasonId: "",
-        caseKeyword: ""
-      },
-      formData: {},
-      allCaseDimensions: [],
-      allCaseReasons: [],
-      allKeywords: []
-    };
+      ];
+    }
   },
   watch: {
     "params.caseDimension"(v) {
       this.dimensionChange(v, "search");
+    },
+    "params.caseReasonId"(v) {
+      this.caseReasonChange(v, "search");
+    },
+    "formData.caseDimensionId"(v) {
+      this.dimensionChange(v);
+    },
+    "formData.caseReasonId"(v) {
+      this.caseReasonChange(v);
+    },
+    "formData.subCaseReasonId"(v) {
+      this.subCaseReasonChange(v);
     }
   },
   created() {
@@ -244,44 +231,22 @@ export default {
     getOptions() {
       this.getCaseDimensions();
       this.getCommunities();
-      this.getCaseReasons();
-      this.getKeywords();
     },
     async getCaseDimensions() {
-      let caseDimensions = await getTypeList("CASE_DIMENSION");
-      this.searchColumns[1].options = caseDimensions;
-      this.columns[8].options = caseDimensions;
-      this.allCaseDimensions = [...caseDimensions];
-    },
-    async getCaseReasons(typeCode, type) {
-      let caseReasons = [];
-      if (typeCode) {
-        caseReasons = await getTypeChildren(typeCode);
-      } else {
-        caseReasons = await getTypeList("CASE_REASON");
-      }
-      if (!type) {
-        this.allCaseReasons = [...caseReasons];
-        this.columns[9].options = caseReasons;
-        this.searchColumns[2].options = caseReasons;
-      }
-      if (type === "form") {
-        this.columns[9].options = caseReasons;
-      } else if (type === "search") {
-        this.searchColumns[2].options = caseReasons;
-      }
+      this.dimensionTree = await queryCaseDimensionsCascadeAPI();
+      this.commonOptions.caseDimensions = (this.dimensionTree || []).map(
+        item => {
+          return { id: item.code, name: item.name };
+        }
+      );
     },
     async getCommunities() {
-      let communities = await communityListAPI();
-      this.searchColumns[3].options = communities;
-      this.columns[4].options = communities;
+      this.commonOptions.communities = await communityListAPI();
     },
     async getKeywords(parentCode) {
-      let keywords = await keywordListAPI({ parentCode: parentCode });
-      if (!parentCode) {
-        this.allKeywords = keywords;
-      }
-      this.columns[10].options = keywords;
+      this.commonOptions.keywords = await keywordListAPI({
+        code: parentCode
+      });
     },
     search() {
       this.$refs.table.onQuery();
@@ -293,16 +258,21 @@ export default {
       if (this.form.caseAddress && this.form.caseAddress.length) {
         this.form.caseAddress = this.form.caseAddress[0].address;
       }
+      this.commonOptions.caseReasons = this.getTreeChildByCode(
+        this.form.caseDimensionId,
+        1
+      );
+      this.commonOptions.subCaseReasons = this.getTreeChildByCode(
+        this.form.caseReasonId,
+        2
+      );
+      this.getKeywords(this.form.subCaseReasonId);
       this.visibleDialog = true;
     },
     add() {
       this.type = "add";
       this.title = "新增案件";
-      this.form = {
-        caseDimensionId: "",
-        caseReasonId: "",
-        caseKeyword: ""
-      };
+      this.form = {};
       this.visibleDialog = true;
     },
     submit(form) {
@@ -340,36 +310,56 @@ export default {
     formUpdate(form) {
       this.formData = form;
     },
-    dimensionChange(v, type) {
-      this.getCaseReasons(v, type);
-      if (type === "form") {
-        let form = cloneDeep(this.formData);
-        form.caseDimensionId = v;
-        form.caseReasonId = "";
-        form.caseKeyword = [];
-        this.form = form;
-      } else if (type === "search") {
+    dimensionChange(id, type) {
+      if (type === "search") {
         this.params.caseReasonId = "";
+        this.params.subCaseReasonId = "";
+        this.searchOptions.caseReasons = this.getTreeChildByCode(id, 1);
+      } else {
+        this.formData.caseReasonId = "";
+        this.formData.subCaseReasonId = "";
+        this.formData.caseKeyword = [];
+        this.commonOptions.caseReasons = this.getTreeChildByCode(id, 1);
       }
     },
-    ReasonChange(v) {
-      this.getKeywords(v);
-      let form = cloneDeep(this.formData);
-      form.caseReasonId = v;
-      form.caseKeyword = [];
-      this.form = form;
+    caseReasonChange(id, type) {
+      if (type === "search") {
+        this.params.subCaseReasonId = "";
+        this.searchOptions.subCaseReasons = this.getTreeChildByCode(id, 2);
+      } else {
+        this.formData.subCaseReasonId = "";
+        this.formData.caseKeyword = [];
+        this.commonOptions.subCaseReasons = this.getTreeChildByCode(id, 2);
+      }
     },
-    async getKeyWordsByContent(content) {
-      this.columns[8].options = this.allCaseDimensions;
-      this.columns[9].options = this.allCaseReasons;
-      this.columns[10].options = this.allKeywords;
-      let res = await matchKeyWordAPI({ content: content });
-      let form = cloneDeep(this.formData);
-      form.caseContent = content;
-      form.caseDimensionId = res.dimensionId;
-      form.caseReasonId = res.reasonId;
-      form.caseKeyword = res.keywordId;
-      this.form = form;
+    subCaseReasonChange(id) {
+      this.formData.caseKeyword = [];
+      this.getKeywords(id);
+    },
+    getTreeChildByCode(code, level) {
+      if (!code && code !== 0) {
+        return [];
+      }
+      let list = [];
+      switch (level) {
+        case 1:
+          list = this.dimensionTree;
+          break;
+        case 2:
+          (this.dimensionTree || []).forEach(item => {
+            list.push(...(item.child || []));
+          });
+          break;
+      }
+      let result = [];
+      list.forEach(item => {
+        if (code === item.code) {
+          result = (item.child || []).map(v => {
+            return { id: v.code, name: v.name };
+          });
+        }
+      });
+      return result;
     }
   }
 };

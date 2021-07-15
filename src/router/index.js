@@ -74,6 +74,46 @@ const routes = [
     ]
   },
   {
+    path: "/committee",
+    component: Layout,
+    meta: {
+      title: "居委管理",
+      icon: "shequ",
+      code: "hongqiao.community"
+    },
+    children: [
+      {
+        path: "/committee",
+        name: "Committee",
+        component: () => import("../views/committee/committee"),
+        meta: {
+          title: "居委管理",
+          code: "hongqiao.community"
+        }
+      }
+    ]
+  },
+  {
+    path: "/property",
+    component: Layout,
+    meta: {
+      title: "物业管理",
+      icon: "shequ",
+      code: "hongqiao.community"
+    },
+    children: [
+      {
+        path: "/property",
+        name: "Property",
+        component: () => import("../views/property/property"),
+        meta: {
+          title: "物业管理",
+          code: "hongqiao.community"
+        }
+      }
+    ]
+  },
+  {
     path: "/strategy",
     name: "strategy",
     component: Layout,
@@ -116,6 +156,27 @@ const routes = [
     ]
   },
   {
+    path: "/caseAddress",
+    name: "caseAddress",
+    component: Layout,
+    meta: {
+      title: "地址匹配",
+      icon: "guanli",
+      code: "hongqiao.case"
+    },
+    children: [
+      {
+        path: "/caseAddress",
+        name: "CaseAddress",
+        component: () => import("../views/caseAddress/caseAddress"),
+        meta: {
+          title: "地址匹配",
+          code: "hongqiao.case"
+        }
+      }
+    ]
+  },
+  {
     path: "/examine",
     name: "examine",
     component: Layout,
@@ -132,6 +193,26 @@ const routes = [
         meta: {
           title: "考核记录",
           code: "hongqiao.examine"
+        }
+      }
+    ]
+  },
+  {
+    path: "/address",
+    component: Layout,
+    meta: {
+      title: "地址管理",
+      icon: "shequ",
+      code: "hongqiao.community"
+    },
+    children: [
+      {
+        path: "/address",
+        name: "Address",
+        component: () => import("../views/address/address"),
+        meta: {
+          title: "地址管理",
+          code: "hongqiao.community"
         }
       }
     ]

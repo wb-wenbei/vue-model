@@ -1,10 +1,10 @@
-/*社区管理api*/
+/*居委管理api*/
 import http from "@/server/http.js";
 
 //列表（分页）
 export const pageAPI = params => {
   return http({
-    url: "/api-customer/service-wisdom-town/community/list",
+    url: "/api-customer/service-wisdom-town/propertyCommittee/query",
     method: "GET",
     params
   });
@@ -13,7 +13,7 @@ export const pageAPI = params => {
 //列表
 export const getAllAPI = params => {
   return http({
-    url: "/api-customer/service-wisdom-town/community/getAll",
+    url: "/api-customer/service-wisdom-town/propertyCommittee/queryAll",
     method: "GET",
     params
   });
@@ -23,7 +23,7 @@ export const getAllAPI = params => {
 export const addAPI = data => {
   return http({
     method: "POST",
-    url: `/api-customer/service-wisdom-town/community/add`,
+    url: `/api-customer/service-wisdom-town/propertyCommittee/insert`,
     data
   });
 };
@@ -32,7 +32,7 @@ export const addAPI = data => {
 export const updateAPI = data => {
   return http({
     method: "PUT",
-    url: `/api-customer/service-wisdom-town/community/update`,
+    url: `/api-customer/service-wisdom-town/propertyCommittee/update`,
     data
   });
 };
@@ -41,15 +41,6 @@ export const updateAPI = data => {
 export const deleteAPI = params => {
   return http({
     method: "DELETE",
-    url: `/api-customer/service-wisdom-town/community/delete?id=${params.id}`
-  });
-};
-
-//管理民警查询
-export const getPoliceAPI = params => {
-  return http({
-    url: "/api-customer/service-wisdom-town/community/getPolice",
-    method: "GET",
-    params
+    url: `/api-customer/service-wisdom-town/propertyCommittee/delete?id=${params.id}`
   });
 };

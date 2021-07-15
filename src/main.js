@@ -8,6 +8,7 @@ import ElementUI from "element-ui";
 import "./styles/element-variables.scss";
 import "./styles/index.scss";
 import "./filters/index";
+import "./utils/basic";
 
 Vue.use(ElementUI, { size: "small" });
 

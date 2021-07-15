@@ -44,3 +44,21 @@ export const matchKeyWordAPI = data => {
     data
   });
 };
+
+// 案件纬度查询
+export const queryCaseDimensionsMapAPI = params => {
+  return http({
+    method: "GET",
+    url: `/api-customer/community/queryCaseDimensionsMap`,
+    params
+  });
+};
+
+// 案件纬度查询(树形结构)
+export const queryCaseDimensionsCascadeAPI = params => {
+  return http({
+    method: "GET",
+    url: `/api-customer/community/queryCaseDimensions/cascade`,
+    params
+  });
+};

@@ -14,12 +14,22 @@ const types = {
   security:19,  //车辆管理*/
 };
 
+// 物业/居委
+const entity_type = {
+  PROPERTY: 2, //物业
+  COMMITTEE: 1 //居委
+};
+
+export function getEntityType(type) {
+  return entity_type[type];
+}
+
 export async function getTypeList(type) {
-  return await typeListAPI({ typeCode: types[type] });
+  return typeListAPI({ typeCode: types[type] });
 }
 
 export async function getTypeChildren(typeCode) {
-  return await getChildrenAPI({ typeCode: typeCode });
+  return getChildrenAPI({ typeCode: typeCode });
 }
 
 /**
@@ -38,4 +48,30 @@ export function getExportParams(paramsObj) {
     }, [])
     .join("&");
   return result;
+}
+
+/**
+ * 数组格式转树形格式
+ * @param list
+ * @returns {[]}
+ */
+export function listToTree(list) {
+  let map = {},
+    root = [],
+    i;
+  for (i = 0; i < list.length; i++) {
+    map[list[i].id] = i;
+  }
+  for (i = 0; i < list.length; i++) {
+    let node = list[i];
+    if (list[i].parentId !== 1 && list[map[node.parentId]]) {
+      if (!list[map[node.parentId]].children) {
+        list[map[node.parentId]].children = [];
+      }
+      list[map[node.parentId]].children.push(node);
+    } else {
+      root.push(node);
+    }
+  }
+  return root;
 }

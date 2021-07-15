@@ -44,8 +44,10 @@
         v-bind="$attrs"
         v-on="$listeners"
         :data="tableData"
+        :row-key="rowKey"
         border
         style="width: 100%"
+        @select-all="selectAll"
         @selection-change="handleSelectionChange"
       >
         <!--        多选-->
@@ -190,6 +192,7 @@ export default {
     params: { type: Object },
     loading: { type: Boolean, default: false },
     selection: { type: Boolean, default: false },
+    rowKey: { type: String, default: "id" },
     addTitle: { type: String, default: "新增" },
     deleteTitle: { type: String, default: "删除" },
     deleteMessage: { type: String, default: "确定要删除吗？" },
@@ -219,6 +222,8 @@ export default {
       currentHeaders: [],
       tableData: [],
       selects: [],
+      cacheSelects: {},
+      cacheSelectState: 1, // 0：清除选择，1:默认，2：全部选择
       pageParams: {
         pageSize: 10,
         page: 1
@@ -270,6 +275,9 @@ export default {
           return;
         }
         this.isLoading = true;
+        this.cacheSelects[this.page.currentPage] = this.selects.map(item => {
+          return item[this.rowKey];
+        });
         let data = Object.assign(this.pageParams, this.params);
         this.api(data)
           .then(res => {
@@ -282,6 +290,7 @@ export default {
               this.tableData = [];
             }
             this.$nextTick(() => {
+              // this.setCacheSelect();
               this.$emit("loadComplete", this.tableData);
             });
           })
@@ -361,8 +370,26 @@ export default {
       this.pageParams.page = v;
       this.loadData();
     },
+    selectAll(v) {
+      this.cacheSelectState = v.length > 0;
+    },
     handleSelectionChange(v) {
       this.selects = v;
+    },
+    setCacheSelect() {
+      if (
+        this.cacheSelects[this.page.currentPage] &&
+        this.cacheSelects[this.page.currentPage].length
+      ) {
+        let rows = this.tableData.filter(item => {
+          return this.cacheSelects[this.page.currentPage].includes(
+            item[this.rowKey]
+          );
+        });
+        rows.forEach(row => {
+          this.$refs.multipleTable.toggleRowSelection(row, true);
+        });
+      }
     }
   }
 };
@@ -389,13 +416,14 @@ export default {
 .table-select-box {
   text-align: left;
   line-height: 40px;
-  color: rgb(19, 168, 168);
+  color: #3b7cef;
   border-radius: 4px;
   border-width: 1px;
   border-style: solid;
-  border-color: rgb(19, 168, 168);
+  border-color: #3b7cef;
   border-image: initial;
   padding: 0 20px;
+  margin-top: 8px;
 
   span {
     cursor: pointer;
@@ -405,7 +433,7 @@ export default {
   }
 
   span:hover {
-    color: #13a8a8;
+    color: #3b7cef;
   }
 
   span.delete:hover {

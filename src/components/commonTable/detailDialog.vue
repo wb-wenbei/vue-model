@@ -124,6 +124,13 @@ export default {
   created() {
     this.tableData = this.data.data || this.data || [];
   },
+  mounted() {
+    this.fullscreen = document.body.clientWidth < 800 ? true : false;
+  },
+  deactivated() {
+    if (!this.visibleDialog) return;
+    this.closeDialog();
+  },
   methods: {
     changePage() {
       this.$emit("changePage", this.page);
