@@ -86,6 +86,7 @@ export default {
             });
           } else {
             this.$message.success("策略关联更新成功！");
+            this.$emit("success");
           }
           this.visible = false;
         })

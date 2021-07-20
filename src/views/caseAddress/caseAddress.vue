@@ -248,8 +248,12 @@ export default {
     submitBatch(selects) {
       this.$confirm("确定要提交至案件管理？").then(() => {
         submitAPI(selects)
-          .then(() => {
-            this.$message.success("提交成功！");
+          .then(res => {
+            if (res > 0) {
+              this.$message.success(`本次提交成功${res}条！`);
+            } else {
+              this.$message.error(`本次提交成功${res}条！`);
+            }
             this.search();
           })
           .catch(err => {

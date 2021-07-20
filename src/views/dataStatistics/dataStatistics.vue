@@ -93,6 +93,63 @@
       </div>
     </div>
     <div class="count-content">
+      <div
+        v-for="(item, index) in caseRange"
+        :key="index"
+        class="flex-1"
+        :class="index === 0 ? 'pr-2' : ''"
+      >
+        <count-card :title="item.title" style="position: relative">
+          <div class="search-form large">
+            <form-cascader
+              v-model="item.params.subCaseReasonIds"
+              size="mini"
+              collapse-tags
+              :show-all-levels="false"
+              :options="dimensionTree"
+              placeholder="请选择案由类型"
+              :props="{
+                value: 'code',
+                label: 'name',
+                children: 'child',
+                multiple: true
+              }"
+              @change="getCaseRange(item.id)"
+            ></form-cascader>
+          </div>
+          <el-table
+            :data="item.data"
+            class="rank-table"
+            max-height="362"
+            style="width: 100%"
+          >
+            <el-table-column type="index" label="排名" width="60">
+              <template slot-scope="scope">
+                <div class="rank-index" :class="'rank-index-' + scope.$index">
+                  {{ scope.$index + 1 }}
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column
+              v-for="header in item.headers"
+              :key="header.prop"
+              :prop="header.prop"
+              show-overflow-tooltip
+              :label="header.label"
+            >
+            </el-table-column>
+            <el-table-column type="action" label="详情" width="60">
+              <template slot-scope="scope">
+                <el-button @click="showDetail(scope.row)" type="text"
+                  >编辑</el-button
+                >
+              </template>
+            </el-table-column>
+          </el-table>
+        </count-card>
+      </div>
+    </div>
+    <div class="count-content">
       <div class="flex-3">
         <count-card title="各社区近12个月分值变化趋势">
           <div class="flex-1" v-loading="loading.score">
@@ -110,7 +167,7 @@
       </div>
     </div>
     <div class="count-content">
-      <div class="flex-5 pr-2">
+      <div class="flex-5">
         <count-card title="近12个月案件变化趋势">
           <common-chart
             :loading="loading.case"
@@ -118,14 +175,14 @@
           ></common-chart>
         </count-card>
       </div>
-      <div class="flex-3">
+      <!--      <div class="flex-3">
         <count-card title="近3个月各纬度案件数量">
           <common-chart
             :loading="loading.radar"
             :options="chartOptions.radar"
           ></common-chart>
         </count-card>
-      </div>
+      </div>-->
     </div>
     <div class="count-content">
       <div class="flex-3">
@@ -145,6 +202,13 @@
         </count-card>
       </div>
     </div>
+    <detail-dialog
+      :visible-dialog="detailVisible"
+      :data="rankDetailData"
+      :headers="rankDetailHeaders"
+      :page="detailPage"
+      @changePage="showDetail(detailRow, $event)"
+    ></detail-dialog>
   </div>
 </template>
 
@@ -153,6 +217,8 @@ import CountCard from "./components/countCard";
 import StrategyCard from "./components/strategyCard";
 import CommunityCheck from "./components/communityCheck";
 import CommonChart from "@/components/commonChart/chart";
+import FormCascader from "@/components/form/cascader";
+import DetailDialog from "@/components/commonTable/detailDialog";
 import {
   getPieChart,
   getRadarChart,
@@ -165,13 +231,25 @@ import {
   policyEvaluateRatioAPI,
   queryTwelveMonthCaseDataAPI,
   queryTwelveMonthCaseDataByCommunityAPI,
-  queryTwelveMonthDataAPI
+  queryTwelveMonthDataAPI,
+  propertyCommitteeRankAPI,
+  propertyCommitteeRankByIdAPI
 } from "@/api/dataStatistics/index";
 import { radarAPI } from "@/api/examine/index";
+import { getEntityType, deleteNullChild } from "@/utils";
+import { queryCaseDimensionsCascadeAPI } from "@/api/case";
+import { getAssessmentTypes } from "@/config/dictionary";
 
 export default {
   name: "DataStatistics",
-  components: { CountCard, StrategyCard, CommonChart, CommunityCheck },
+  components: {
+    CountCard,
+    StrategyCard,
+    CommonChart,
+    CommunityCheck,
+    FormCascader,
+    DetailDialog
+  },
   data() {
     return {
       activeName: "dataStatistics",
@@ -200,7 +278,54 @@ export default {
         case: false,
         caseCount: false
       },
+      detailVisible: false,
+      detailRow: {},
+      detailPage: {
+        pageSize: 10,
+        totalCount: 0,
+        currentPage: 1
+      },
+      rankDetailHeaders: [
+        { prop: "index", label: "序号" },
+        { prop: "assessmentTime", label: "考核日期" },
+        { prop: "caseReasonName", label: "一级案由" },
+        { prop: "subCaseReasonName", label: "二级案由" },
+        { prop: "communityName", label: "社区名称" },
+        { prop: "scoreReport", label: "扣分记录" }
+      ],
       rankData: [],
+      dimensionTree: [],
+      rankDetailData: [],
+      caseRange: [
+        {
+          id: 1,
+          title: "物业排名",
+          params: {
+            entityType: getEntityType("PROPERTY"),
+            subCaseReasonIds: []
+          },
+          data: [],
+          headers: [
+            { prop: "entityName", label: "物业名称" },
+            { prop: "caseNumber", label: "警情量" },
+            { prop: "score", label: "考核得分" }
+          ]
+        },
+        {
+          id: 2,
+          title: "居委排名",
+          params: {
+            entityType: getEntityType("COMMITTEE"),
+            subCaseReasonIds: []
+          },
+          data: [],
+          headers: [
+            { prop: "entityName", label: "居委名称" },
+            { prop: "caseNumber", label: "警情量" },
+            { prop: "score", label: "考核得分" }
+          ]
+        }
+      ],
       evaluateData: [],
       currentIndex: 0,
       chartInterval: null
@@ -221,6 +346,7 @@ export default {
   },
   created() {
     this.getData();
+    this.getCaseDimensions();
   },
   methods: {
     getData() {
@@ -231,6 +357,7 @@ export default {
       this.getTwelveMonthCaseData();
       this.getTwelveMonthData();
       this.getTwelveMonthCaseDataByCommunity();
+      this.getCaseRange();
     },
     initCommunityIds(ids) {
       if (ids && ids.length) {
@@ -243,6 +370,10 @@ export default {
         this.communityId = [ids[0].id];
         this.getTwelveMonthCaseDataByCommunity();
       }
+    },
+    async getCaseDimensions() {
+      let tree = await queryCaseDimensionsCascadeAPI();
+      this.dimensionTree = deleteNullChild(tree, "child");
     },
     getCommunityRank() {
       communityScoreRankAllAPI({
@@ -283,7 +414,6 @@ export default {
     },
     getPolicyEvaluateRatio() {
       policyEvaluateRatioAPI(this.form).then(res => {
-        console.log("policyEvaluateRatioAPI", res);
         this.evaluateData = res;
       });
     },
@@ -334,6 +464,18 @@ export default {
         .finally(() => {
           this.loading.score = false;
         });
+    },
+    getCaseRange(id) {
+      this.caseRange.forEach(item => {
+        if (!id || id === item.id) {
+          let params = Object.assign({}, this.form, item.params, {
+            subCaseReasonIds: item.params.subCaseReasonIds.toString()
+          });
+          propertyCommitteeRankAPI(params).then(res => {
+            item.data = res.data || res || [];
+          });
+        }
+      });
     },
     chartAnimate(chart) {
       let setTime = null;
@@ -411,6 +553,34 @@ export default {
         }
       }
     },
+    async showDetail(row, page = 1) {
+      this.detailRow = row;
+      this.detailVisible = true;
+      let params = Object.assign(
+        {
+          entityType: row.entityType,
+          id: row.id,
+          page: page,
+          pagSize: this.detailPage.pageSize
+        },
+        this.form
+      );
+      let scoreTypes = getAssessmentTypes();
+      let res = await propertyCommitteeRankByIdAPI(params);
+      this.detailPage.totalCount = res.totalCount;
+      this.detailPage.currentPage = res.page;
+      this.rankDetailData = (res.data || []).map(item => {
+        let typeName = "";
+        scoreTypes.forEach(type => {
+          if (type.id === item.assessmentType) {
+            typeName = type.name;
+          }
+        });
+        return Object.assign(item, {
+          scoreReport: typeName + ":" + (item.score || "--")
+        });
+      });
+    },
     activeRow({ row }) {
       return row.active ? "active-row" : "";
     }
@@ -435,6 +605,7 @@ export default {
 
   & .flex-1 {
     flex: 1;
+    min-width: 0;
   }
   & .flex-2 {
     flex: 2;
@@ -496,6 +667,14 @@ export default {
     right: 10px;
     top: 5px;
     width: 160px;
+  }
+
+  .search-form.large {
+    width: 240px;
+
+    .el-cascader--mini {
+      width: 240px;
+    }
   }
 
   ::v-deep {

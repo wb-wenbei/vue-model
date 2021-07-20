@@ -72,6 +72,7 @@
         <concat-setting
           :visibleDialog.sync="showConcat"
           :data="concatData"
+          @success="concatSetSuccess"
         ></concat-setting>
       </el-tab-pane>
       <el-tab-pane name="keywords" @click.native="activeName = 'keywords'">
@@ -213,6 +214,9 @@ export default {
     },
     search() {
       this.$refs.table.onQuery();
+    },
+    concatSetSuccess() {
+      this.$refs.table.refresh();
     },
     editRow(row) {
       this.type = "edit";

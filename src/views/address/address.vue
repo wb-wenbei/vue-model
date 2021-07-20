@@ -157,7 +157,9 @@ export default {
         : "/api-customer/service-wisdom-town/community/alias/import";
     },
     modelUrl() {
-      return this.uploadType === 1 ? "" : "";
+      return `/api-customer/service-wisdom-town/community/${
+        this.uploadType === 1 ? "address" : "alias"
+      }/downloadTemplate?token=${this.$store.state.userInfo.token}`;
     }
   },
   created() {
@@ -177,6 +179,7 @@ export default {
       this.type = "edit";
       this.title = "编辑地址";
       this.defaultRow.communityId = row.id;
+      this.form = row;
       this.aliasInfoList = (row.aliasInfoList || []).map(item => {
         return {
           id: item.id,
@@ -214,23 +217,18 @@ export default {
       }
     },
     saveApi(api, form, title = "保存") {
-      console.log(form);
       api(form)
         .then(() => {
           this.$message.success(title + "成功！");
         })
         .catch(err => {
           this.$message.error(title + "失败：" + err);
-        })
-        .finally(() => {
-          this.refreshData();
         });
     },
     closeEdit() {
       this.visibleDialog = false;
       this.$refs.table.refresh();
-    },
-    refreshData() {}
+    }
   }
 };
 </script>

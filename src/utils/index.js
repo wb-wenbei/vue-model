@@ -75,3 +75,14 @@ export function listToTree(list) {
   }
   return root;
 }
+
+export function deleteNullChild(tree, children = "children") {
+  return tree.map(item => {
+    if (!item[children] || !item[children].length) {
+      delete item[children];
+    } else {
+      item[children] = deleteNullChild(item[children], children);
+    }
+    return item
+  });
+}

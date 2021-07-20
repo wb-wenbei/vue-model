@@ -19,6 +19,24 @@ export const communityScoreRankAllAPI = params => {
   });
 };
 
+//案件排名查询
+export const propertyCommitteeRankAPI = params => {
+  return http({
+    url: "/api-customer/community/dataStatistics/propertyCommitteeRank",
+    method: "GET",
+    params
+  });
+};
+
+//案件排名查询详情
+export const propertyCommitteeRankByIdAPI = params => {
+  return http({
+    url: "/api-customer/community/dataStatistics/propertyCommitteeRankById",
+    method: "GET",
+    params
+  });
+};
+
 //考核评价占比
 export const evaluateRatioAPI = params => {
   return http({

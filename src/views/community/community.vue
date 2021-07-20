@@ -243,6 +243,8 @@ export default {
   },
   created() {
     this.getOptions();
+    let token = this.$store.state.auth.token;
+    this.modelUrl = `/api-customer/service-wisdom-town/community/downloadTemplate?token=${token}`;
   },
   methods: {
     getOptions() {

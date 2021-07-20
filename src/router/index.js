@@ -78,8 +78,8 @@ const routes = [
     component: Layout,
     meta: {
       title: "居委管理",
-      icon: "shequ",
-      code: "hongqiao.community"
+      icon: "committee",
+      code: "hongqiao.committee"
     },
     children: [
       {
@@ -88,7 +88,7 @@ const routes = [
         component: () => import("../views/committee/committee"),
         meta: {
           title: "居委管理",
-          code: "hongqiao.community"
+          code: "hongqiao.committee"
         }
       }
     ]
@@ -98,8 +98,8 @@ const routes = [
     component: Layout,
     meta: {
       title: "物业管理",
-      icon: "shequ",
-      code: "hongqiao.community"
+      icon: "property",
+      code: "hongqiao.property"
     },
     children: [
       {
@@ -108,7 +108,7 @@ const routes = [
         component: () => import("../views/property/property"),
         meta: {
           title: "物业管理",
-          code: "hongqiao.community"
+          code: "hongqiao.property"
         }
       }
     ]
@@ -161,8 +161,8 @@ const routes = [
     component: Layout,
     meta: {
       title: "地址匹配",
-      icon: "guanli",
-      code: "hongqiao.case"
+      icon: "caseAddress",
+      code: "hongqiao.caseAddress"
     },
     children: [
       {
@@ -171,7 +171,7 @@ const routes = [
         component: () => import("../views/caseAddress/caseAddress"),
         meta: {
           title: "地址匹配",
-          code: "hongqiao.case"
+          code: "hongqiao.caseAddress"
         }
       }
     ]
@@ -202,8 +202,8 @@ const routes = [
     component: Layout,
     meta: {
       title: "地址管理",
-      icon: "shequ",
-      code: "hongqiao.community"
+      icon: "address",
+      code: "hongqiao.address"
     },
     children: [
       {
@@ -212,7 +212,7 @@ const routes = [
         component: () => import("../views/address/address"),
         meta: {
           title: "地址管理",
-          code: "hongqiao.community"
+          code: "hongqiao.address"
         }
       }
     ]

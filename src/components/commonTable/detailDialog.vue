@@ -102,18 +102,23 @@ export default {
         return [];
       }
     },
-    headers: { type: Array }
+    headers: { type: Array },
+    page: {
+      type: Object,
+      default() {
+        return {
+          pageSize: 10,
+          totalCount: 0,
+          currentPage: 1
+        };
+      }
+    }
   },
   data() {
     return {
       fullscreen: false,
       tableData: [],
-      selects: [],
-      page: {
-        pageSize: 10,
-        totalCount: 0,
-        currentPage: 1
-      }
+      selects: []
     };
   },
   watch: {
@@ -132,8 +137,8 @@ export default {
     this.closeDialog();
   },
   methods: {
-    changePage() {
-      this.$emit("changePage", this.page);
+    changePage(v) {
+      this.$emit("changePage", v);
     },
     handleSelectionChange(v) {
       this.selects = v;
