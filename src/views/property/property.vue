@@ -55,7 +55,7 @@ export default {
       type: "add",
       title: "新增物业",
       options: {},
-      modelUrl: "",
+      modelUrl: "/api-customer/service-wisdom-town/property/download/excel",
       uploadURL: "/api-customer/service-wisdom-town/property/import",
       params: { entityType: getEntityType("PROPERTY") },
       searchColumns: [

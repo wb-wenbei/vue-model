@@ -46,9 +46,9 @@ export const deleteAPI = params => {
 };
 
 //管理民警查询
-export const getPoliceAPI = params => {
+export const queryPoliceAPI = params => {
   return http({
-    url: "/api-customer/service-wisdom-town/community/getPolice",
+    url: "/api-customer/service-wisdom-town/community/queryPolice",
     method: "GET",
     params
   });

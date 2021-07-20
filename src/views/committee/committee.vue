@@ -55,7 +55,7 @@ export default {
       type: "add",
       title: "新增居委",
       options: {},
-      modelUrl: "",
+      modelUrl: "/api-customer/service-wisdom-town/committee/download/excel",
       uploadURL: "/api-customer/service-wisdom-town/committee/import",
       params: { entityType: getEntityType("COMMITTEE") },
       searchColumns: [

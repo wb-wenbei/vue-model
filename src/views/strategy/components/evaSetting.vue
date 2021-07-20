@@ -9,6 +9,26 @@
     @save="submit"
     @formUpdate="formUpdate"
   >
+    <template v-slot:baseScore>
+      <el-row :gutter="10">
+        <el-col
+          v-for="(item, index) in form.levelScore"
+          :key="index"
+          :span="6"
+          :style="{ 'min-width': '320px' }"
+        >
+          <el-form-item
+            :label="caseLevelName[item.caseLevel]"
+            style="padding-top: 5px"
+          >
+            <el-input-number
+              class="short-width"
+              v-model="item.baseScore"
+            ></el-input-number>
+          </el-form-item>
+        </el-col>
+      </el-row>
+    </template>
     <template v-slot:evaluate>
       <el-table :data="form.evaluate" border style="width: 100%">
         <el-table-column type="index" label="序号" width="50"></el-table-column>
@@ -64,9 +84,13 @@ export default {
       },
       visible: false,
       loading: false,
+      caseLevelName: {
+        1: "一级案由",
+        2: "二级案由",
+        3: "三级案由"
+      },
       columns: [
         {
-          index: 0,
           prop: "totalScore",
           label: "考核总分",
           type: "num",
@@ -74,9 +98,25 @@ export default {
           cols: 4
         },
         {
-          index: 1,
-          prop: "evaluate",
+          prop: "caseInfo",
+          label: "案由基础分",
+          type: "title",
+          cols: 4
+        },
+        {
+          prop: "baseScore",
+          type: "custom",
+          cols: 4
+        },
+        {
+          prop: "evaInfo",
           label: "考核评价",
+          type: "title",
+          cols: 4
+        },
+        {
+          prop: "evaluate",
+          type: "custom",
           cols: 4
         }
       ]

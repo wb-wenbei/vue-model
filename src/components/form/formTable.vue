@@ -1,6 +1,11 @@
 <template>
   <div class="table-form-content">
-    <el-table border :data="tableData" class="form-table" style="width: 100%">
+    <el-table
+      border
+      :data="pagination ? pageData : tableData"
+      class="form-table"
+      style="width: 100%"
+    >
       <el-table-column type="index" label="序号" :width="indexWidth">
       </el-table-column>
       <el-table-column
@@ -20,6 +25,11 @@
         show-overflow-tooltip
       >
         <template slot-scope="scope">
+          <template v-if="column.type === 'readOnly'">
+            <span>
+              {{ scope.row[column.prop] }}
+            </span>
+          </template>
           <template v-if="column.type === 'text'">
             <span v-if="!scope.row.isEdit">
               {{ scope.row[column.prop] }}
@@ -170,7 +180,7 @@
     </el-table>
     <div style="padding: 10px 0">
       <el-button
-        v-if="!isAdding"
+        v-if="!isAdding && !noAdd"
         style="width: 100%"
         icon="el-icon-plus"
         @click="addRow"
@@ -178,6 +188,18 @@
         {{ addTitle }}
       </el-button>
     </div>
+    <el-pagination
+      v-if="pagination && page.totalCount > page.pageSize"
+      style="text-align:right"
+      background
+      layout="total, prev, pager, next, jumper"
+      :page-size="page.pageSize"
+      :current-page="page.currentPage"
+      @current-change="changePage($event, true)"
+      prev-text="上一页"
+      next-text="下一页"
+      :total="page.totalCount"
+    ></el-pagination>
   </div>
 </template>
 
@@ -186,6 +208,7 @@ import FormSelect from "@/components/form/select.vue";
 import CbSelect from "@/components/combination/index.vue";
 import SelectLabel from "@/components/commonTable/selectLabel.vue";
 import { getOrgNameById } from "./config/index";
+import cloneDeep from "lodash/cloneDeep";
 
 /* columns: [
      {prop: 'user', label: '发起/审批人', type: 'select', options: []},
@@ -211,6 +234,8 @@ export default {
         return {};
       }
     },
+    pagination: { type: Boolean, default: false },
+    noAdd: { type: Boolean, default: false },
     indexWidth: { type: String, default: "50px" },
     addTitle: { type: String, default: "添加设置" },
     docType: { type: String },
@@ -238,7 +263,13 @@ export default {
       getOrgNameById,
       isAdding: false,
       baseOrgs: [],
-      tableData: []
+      pageData: [],
+      tableData: [],
+      page: {
+        pageSize: 10,
+        currentPage: 1,
+        totalCount: 0
+      }
     };
   },
   watch: {
@@ -247,6 +278,10 @@ export default {
       deep: true,
       handler(v) {
         this.tableData = this.getData(v);
+        if (this.pagination) {
+          this.page.totalCount = this.tableData.length;
+          this.changePage();
+        }
       }
     },
     tableData: {
@@ -276,11 +311,10 @@ export default {
       this.isAdding = false;
     },
     addRow() {
-      let data = JSON.parse(
-        JSON.stringify(Object.assign({ isEdit: 1, isAdd: 1 }, this.defaultRow))
+      let data = cloneDeep(
+        Object.assign({ isEdit: 1, isAdd: 1 }, this.defaultRow)
       );
       this.tableData.push(data);
-      console.log(this.tableData, this.defaultRow);
       this.isAdding = true;
     },
     rowEdit(row) {
@@ -306,7 +340,7 @@ export default {
         row.editRow = {};
         this.getRowName(row);
         this.isAdding = false;
-        this.$emit('saveRow',row)
+        this.$emit("saveRow", row);
       } else {
         this.$message.error("请将信息填写完整后保存！");
       }
@@ -327,7 +361,7 @@ export default {
         .then(() => {
           this.tableData.splice(index, 1);
           this.isAdding = false;
-          this.$emit('deleteRow',row)
+          this.$emit("deleteRow", row);
         })
         .catch(() => {
           this.isAdding = false;
@@ -335,6 +369,21 @@ export default {
     },
     onChange(type, event, scope) {
       this.$emit("change", type, event, scope.row);
+    },
+    changePage(v) {
+      if (v) this.page.currentPage = v;
+      this.filterPageData();
+    },
+    filterPageData() {
+      this.pageData = [];
+      this.tableData.forEach((v, index) => {
+        if (
+          index < this.page.pageSize * this.page.currentPage &&
+          index >= this.page.pageSize * (this.page.currentPage - 1)
+        ) {
+          this.pageData.push(v);
+        }
+      });
     }
   }
 };

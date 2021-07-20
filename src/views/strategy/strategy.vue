@@ -32,11 +32,6 @@
           <template v-slot:action-prepend="{ row }">
             <el-button @click="concatRow(row)" type="text">关联</el-button>
           </template>
-          <!--<template v-slot:action="{ row }">
-            <el-button @click="stopRow(row)" type="text">
-              {{ row.isEnabled ? "停用" : "启用" }}
-            </el-button>
-          </template>-->
         </common-table>
         <edit-dialog
           v-if="visibleDialog"
@@ -51,15 +46,26 @@
             <form-table
               v-model="assessmentPolicyDetail"
               :columns="formColumns"
-              :defaultRow="defaultRow"
+              no-add
+              pagination
               :required="[
                 'caseDimensionId',
                 'assessmentType',
                 'singleThreshold'
               ]"
-              @change="onChange"
             >
+              <template v-slot:singleScore="{ data }">
+                <span>{{
+                  (data.scope.row.percent / 100) *
+                    data.scope.row.singleThreshold || 0
+                }}</span>
+              </template>
             </form-table>
+            <div style="position: absolute;top: 58px;right:0">
+              <el-button size="small" type="primary" @click="saveDetailList">
+                保存所有策略明细
+              </el-button>
+            </div>
           </template>
         </edit-dialog>
         <eva-setting :visibleDialog.sync="showEva"></eva-setting>
@@ -92,7 +98,8 @@ import {
   updateAPI,
   enablePolicyAPI
 } from "@/api/strategy/index";
-import { getTypeList, getTypeChildren } from "@/utils/index";
+import { queryCaseDimensionsCascadeAPI } from "@/api/case/index";
+import { listAPI as evaluateListAPI } from "@/api/strategy/evaluate";
 
 export default {
   name: "Strategy",
@@ -118,18 +125,13 @@ export default {
       title: "新增策略",
       strategy: [],
       params: {},
-      caseReasons: [],
+      scoreLevels: [],
+      caseDimensiontree: [],
+      dimensionList: [],
       headers: [
         { prop: "index", label: "序号" },
         { prop: "policyName", label: "策略名称" },
         { prop: "relationCommunityNumber", label: "关联社区" },
-        /*{
-          prop: "isEnabled",
-          label: "状态",
-          filter: v => {
-            return v ? "启用" : "停用";
-          }
-        },*/
         { prop: "userName", label: "创建人" },
         { prop: "updateTime", label: "更新时间", type: "date" },
         { prop: "action", label: "操作", width: 100, fixed: "right" }
@@ -143,7 +145,6 @@ export default {
       ],
       columns: [
         {
-          index: 0,
           prop: "policyName",
           label: "策略名称",
           type: "text",
@@ -151,30 +152,34 @@ export default {
           cols: 4
         },
         {
-          index: 1,
-          prop: "assessmentPolicyDetail",
+          prop: "assessmentInfo",
           label: "策略设置",
+          type: "title",
+          cols: 4
+        },
+        {
+          prop: "assessmentPolicyDetail",
+          type: "custom",
           cols: 4
         }
       ],
       form: { assessmentPolicyDetail: [] },
       assessmentPolicyDetail: [],
-      defaultRow: {
-        assessmentType: 1,
-        options: { caseReasonId: [] }
-      },
       formColumns: [
         {
-          prop: "caseDimensionId",
+          prop: "caseDimensionName",
           label: "案件维度",
-          type: "select",
-          options: []
+          type: "readOnly"
         },
         {
-          prop: "caseReasonId",
-          label: "报案缘由",
-          type: "select",
-          options: []
+          prop: "caseReasonName",
+          label: "一级案由",
+          type: "readOnly"
+        },
+        {
+          prop: "subCaseReasonName",
+          label: "二级案由",
+          type: "readOnly"
         },
         {
           prop: "assessmentType",
@@ -184,11 +189,12 @@ export default {
         },
         {
           prop: "singleThreshold",
-          label: "单次阈值",
+          label: "案由基础分",
           type: "text",
           append: "分"
         },
-        { prop: "percent", label: "评分占比", type: "text", append: "%" }
+        { prop: "percent", label: "引导系数", type: "text", append: "%" },
+        { prop: "singleScore", label: "单次扣分", type: "custom" }
       ]
     };
   },
@@ -198,15 +204,12 @@ export default {
   methods: {
     getOptions() {
       this.getCaseDimensions();
-      this.getCaseReasons();
     },
     async getCaseDimensions() {
-      let caseDimensions = await getTypeList("CASE_DIMENSION");
-      this.formColumns[0].options = caseDimensions;
-    },
-    async getCaseReasons() {
-      this.caseReasons = await getTypeList("CASE_REASON");
-      this.formColumns[1].options = this.caseReasons;
+      let res = await evaluateListAPI();
+      this.scoreLevels = res.levelScore || [];
+      this.caseDimensiontree = await queryCaseDimensionsCascadeAPI();
+      this.dimensionList = this.getListByTree(this.caseDimensiontree);
     },
     search() {
       this.$refs.table.onQuery();
@@ -219,23 +222,28 @@ export default {
         form.assessmentPolicyDetail.forEach(v => {
           v.percent = (v.scoresPercentage * 100).toFixed(2);
           v.isEdit = 0;
-          v.options = { caseReasonId: this.caseReasons };
         });
       }
       this.form = Object.assign({}, form, { assessmentPolicyDetail: [] });
       this.assessmentPolicyDetail = form.assessmentPolicyDetail;
       this.visibleDialog = true;
     },
-    add() {
+    async add() {
       this.type = "add";
       this.title = "新增策略";
       this.form = { isSpecCommunityFacilities: 0 };
-      this.assessmentPolicyDetail = [];
+      this.dimensionList = this.getListByTree(this.caseDimensiontree);
+      this.assessmentPolicyDetail = this.dimensionList;
       this.visibleDialog = true;
     },
     concatRow(row) {
       this.concatData = row;
       this.showConcat = true;
+    },
+    saveDetailList() {
+      this.assessmentPolicyDetail.forEach(item => {
+        item.isEdit = false;
+      });
     },
     setEva() {
       this.showEva = true;
@@ -275,47 +283,61 @@ export default {
         this.$message.error("请先填写策略设置明细！");
         return false;
       }
-      let percentCount = 0;
       let isEdit = false;
-      let sameCaseReasonId = false;
-      let caseReasonIds = [];
+      let sameSubCaseReasonId = false;
+      let subCaseReasonIds = [];
       form.assessmentPolicyDetail.forEach(v => {
         v.scoresPercentage = Number(v.percent / 100);
         v.singleThreshold = Number(v.singleThreshold);
-        percentCount += Number(v.percent);
         if (v.isEdit) {
           isEdit = true;
         }
-        if (caseReasonIds.indexOf(v.caseReasonId) > -1) {
-          sameCaseReasonId = true;
+        if (subCaseReasonIds.indexOf(v.subCaseReasonId) > -1) {
+          sameSubCaseReasonId = true;
         } else {
-          caseReasonIds.push(v.caseReasonId);
+          subCaseReasonIds.push(v.subCaseReasonId);
         }
       });
       if (isEdit) {
         this.$message.error("请先保存所有策略设置明细！");
         return false;
       }
-      if (sameCaseReasonId) {
+      if (sameSubCaseReasonId) {
         this.$message.error("相同报案缘由只能设置一次扣分策略！");
-        return false;
-      }
-      if (percentCount !== 100) {
-        this.$message.error("策略设置评分占比之和必须为100%！");
         return false;
       }
       return true;
     },
-    async onChange(type, event, row) {
-      if (type === "caseDimensionId") {
-        let caseReasons = await getTypeChildren(event);
-        row.caseReasonId = "";
-        if (row.options) {
-          row.options.caseReasonId = caseReasons;
-        } else {
-          row.options = { caseReasonId: caseReasons };
+    getListByTree(tree) {
+      let list = [];
+      tree.forEach(dimension => {
+        (dimension.child || []).forEach(caseReason => {
+          (caseReason.child || []).forEach(subCaseReason => {
+            list.push({
+              caseDimensionId: dimension.code,
+              caseDimensionName: dimension.name,
+              caseReasonId: caseReason.code,
+              caseReasonName: caseReason.name,
+              subCaseReasonId: subCaseReason.code,
+              subCaseReasonName: subCaseReason.name,
+              assessmentType: 1,
+              singleThreshold: this.getScoreByLevel(subCaseReason.caseLevel),
+              percent: 100,
+              isEdit: 1
+            });
+          });
+        });
+      });
+      return list;
+    },
+    getScoreByLevel(level) {
+      let result = 0;
+      (this.scoreLevels || []).forEach(item => {
+        if (level === item.caseLevel) {
+          result = item.baseScore;
         }
-      }
+      });
+      return result;
     }
   }
 };

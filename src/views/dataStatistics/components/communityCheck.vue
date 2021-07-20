@@ -4,7 +4,7 @@
       <el-form-item>
         <form-select
           style="width: 100px"
-          v-model="form.communityType"
+          v-model="form.type"
           :options="options.communityTypes"
           @change="getData"
         ></form-select>
@@ -69,7 +69,7 @@ export default {
       currentValue: [],
       communityName: "",
       form: {
-        communityType: ""
+        type: ""
       },
       options: {
         communityTypes: []

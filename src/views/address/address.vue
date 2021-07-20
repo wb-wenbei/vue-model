@@ -21,6 +21,14 @@
           @search="search"
         ></table-search>
       </template>
+      <template v-slot:upload-header>
+        <div style="text-align: center;margin-bottom: 20px">
+          <el-radio-group v-model="uploadType">
+            <el-radio :label="1">扩展地址上传</el-radio>
+            <el-radio :label="2">社区别名上传</el-radio>
+          </el-radio-group>
+        </div>
+      </template>
     </common-table>
     <edit-dialog
       v-if="visibleDialog"
@@ -30,28 +38,36 @@
       :form="form"
     >
       <template v-slot:form-content>
+        <div style="margin: 0 20px">社区名称：{{ form.name }}</div>
         <div class="address-edit-content">
           <div class="address-edit-item">
-            <div class="address-edit-title">社区别名</div>
+            <div class="address-form-title">社区别名</div>
             <form-table
-              v-model="form.community"
+              v-model="aliasInfoList"
               add-title="添加社区别名"
               :columns="communityColumns"
+              :defaultRow="defaultRow"
               @saveRow="saveAlias"
               @deleteRow="deleteAlias"
             ></form-table>
           </div>
           <div class="address-edit-item">
-            <div class="address-edit-title">扩展地址</div>
+            <div class="address-form-title">扩展地址</div>
             <form-table
-              v-model="form.address"
+              v-model="addressInfoList"
               add-title="添加扩展地址"
               :columns="addressColumns"
+              :defaultRow="defaultRow"
               @saveRow="saveAddress"
               @deleteRow="deleteAddress"
             ></form-table>
           </div>
         </div>
+      </template>
+      <template v-slot:form-action>
+        <el-button type="primary" @click="closeEdit">
+          确定
+        </el-button>
       </template>
     </edit-dialog>
   </div>
@@ -89,14 +105,14 @@ export default {
       loading: false,
       type: "add",
       title: "新增地址",
-      modelUrl: "",
-      uploadURL: "/api-customer/community/address/import",
+      uploadType: 1,
       params: {},
+      form: {},
       headers: [
         { prop: "index", label: "序号" },
-        { prop: "communityName", label: "社区名称" },
+        { prop: "name", label: "社区名称" },
         { prop: "address", label: "标准地址" },
-        { prop: "communityCount", label: "社区别称数" },
+        { prop: "aliasCount", label: "社区别称数" },
         { prop: "addressCount", label: "扩展地址数" },
         { prop: "action", label: "操作", width: 100, fixed: "right" }
       ],
@@ -109,7 +125,7 @@ export default {
       ],
       addressColumns: [
         {
-          prop: "address",
+          prop: "communityAddress",
           label: "扩展地址",
           type: "text"
         }
@@ -117,22 +133,31 @@ export default {
       commonOptions: {
         communities: []
       },
-      form: {
-        community: [],
-        address: []
-      }
+      defaultRow: {
+        communityId: ""
+      },
+      addressInfoList: [],
+      aliasInfoList: []
     };
   },
   computed: {
     searchColumns() {
       return [
         {
-          prop: "communityId",
+          prop: "communityIds",
           label: "社区名称",
           type: "select",
           options: this.commonOptions.communities
         }
       ];
+    },
+    uploadURL() {
+      return this.uploadType === 1
+        ? "/api-customer/service-wisdom-town/community/address/import"
+        : "/api-customer/service-wisdom-town/community/alias/import";
+    },
+    modelUrl() {
+      return this.uploadType === 1 ? "" : "";
     }
   },
   created() {
@@ -151,28 +176,45 @@ export default {
     editRow(row) {
       this.type = "edit";
       this.title = "编辑地址";
-      this.form = Object.assign({}, row);
+      this.defaultRow.communityId = row.id;
+      this.aliasInfoList = (row.aliasInfoList || []).map(item => {
+        return {
+          id: item.id,
+          isEdit: 0,
+          communityId: item.communityId,
+          communityName: item.communityName
+        };
+      });
+      this.addressInfoList = (row.addressInfoList || []).map(item => {
+        return {
+          id: item.id,
+          isEdit: 0,
+          communityId: item.communityId,
+          communityAddress: item.communityAddress
+        };
+      });
       this.visibleDialog = true;
     },
     saveAlias(row) {
-      let api = row.id ? addAliasAPI : updateAliasAPI;
-      this.saveApi(api, row);
+      let api = row.id ? updateAliasAPI : addAliasAPI;
+      this.saveApi(api, Object.assign(row, { aliasName: row.communityName }));
     },
     deleteAlias(row) {
       if (row.id) {
-        this.saveApi(deleteAliasAPI, row, "删除");
+        this.saveApi(deleteAliasAPI, { id: row.id }, "删除");
       }
     },
     saveAddress(row) {
-      let api = row.id ? addAddressAPI : updateAddressAPI;
-      this.saveApi(api, row);
+      let api = row.id ? updateAddressAPI : addAddressAPI;
+      this.saveApi(api, Object.assign(row, { address: row.communityAddress }));
     },
     deleteAddress(row) {
       if (row.id) {
-        this.saveApi(deleteAddressAPI, row, "删除");
+        this.saveApi(deleteAddressAPI, { id: row.id }, "删除");
       }
     },
     saveApi(api, form, title = "保存") {
+      console.log(form);
       api(form)
         .then(() => {
           this.$message.success(title + "成功！");
@@ -184,9 +226,11 @@ export default {
           this.refreshData();
         });
     },
-    refreshData() {
-
-    }
+    closeEdit() {
+      this.visibleDialog = false;
+      this.$refs.table.refresh();
+    },
+    refreshData() {}
   }
 };
 </script>
@@ -199,22 +243,22 @@ export default {
     flex: 1;
     padding: 20px;
     box-sizing: border-box;
-
-    .address-edit-title {
-      margin: 10px;
-      position: relative;
-      font-weight: bold;
-    }
-
-    .address-edit-title::before {
-      content: "";
-      position: absolute;
-      left: -10px;
-      top: 3px;
-      height: 14px;
-      width: 2px;
-      background: #3b7cef;
-    }
   }
+}
+
+.address-form-title {
+  margin: 10px;
+  position: relative;
+  font-weight: bold;
+}
+
+.address-form-title::before {
+  content: "";
+  position: absolute;
+  left: -10px;
+  top: 3px;
+  height: 14px;
+  width: 2px;
+  background: #3b7cef;
 }
 </style>

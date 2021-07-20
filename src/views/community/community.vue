@@ -61,7 +61,7 @@ import {
   deleteAPI,
   addAPI,
   updateAPI,
-  getPoliceAPI
+  queryPoliceAPI
 } from "@/api/community";
 import { getAllAPI } from "@/api/committee/index";
 
@@ -85,7 +85,7 @@ export default {
       type: "add",
       title: "新增社区",
       modelUrl: "",
-      uploadURL: "/api-customer/service-wisdom-town/committee/import",
+      uploadURL: "/api-customer/service-wisdom-town/community/import",
       community: [],
       totalMenus: [],
       matchMenu: [],
@@ -263,7 +263,7 @@ export default {
       this.commonOptions.projectNatures = await getTypeList("PROJECT_NATURE");
     },
     async getPolices() {
-      this.commonOptions.polices = await getPoliceAPI();
+      this.commonOptions.polices = await queryPoliceAPI();
     },
     async getCommittees() {
       this.commonOptions.committees = await getAllAPI({

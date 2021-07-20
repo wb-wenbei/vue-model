@@ -6,9 +6,7 @@
       :api="pageAPI"
       :params="params"
       :deleteApi="deleteAPI"
-      :uploadURL="uploadURL"
-      :modelUrl="modelUrl"
-      :settings="['setting', 'upload']"
+      :settings="['setting']"
       @editRow="editRow"
       @add="add"
     >
@@ -60,6 +58,8 @@ import {
 } from "@/api/case/index";
 import { getAllAPI as communityListAPI } from "@/api/community/index";
 import { getAllAPI as keywordListAPI } from "@/api/keywords/index";
+import { getAllAPI } from "@/api/committee";
+import { getEntityType } from "@/utils";
 
 export default {
   name: "Case",
@@ -76,8 +76,6 @@ export default {
       loading: false,
       type: "add",
       title: "新增案件",
-      modelUrl: "",
-      uploadURL: "/api-customer/community/case/import",
       case: [],
       params: {},
       dimensionTree: [],
@@ -86,7 +84,7 @@ export default {
         { prop: "caseNumber", label: "接警单编号" },
         { prop: "communityName", label: "社区名称" },
         { prop: "communityTypeName", label: "社区类型" },
-        { prop: "orgName", label: "归属物业" },
+        { prop: "propertyName", label: "归属物业" },
         { prop: "caseDimensionName", label: "案件维度" },
         { prop: "caseReasonName", label: "一级案由" },
         { prop: "subCaseReasonName", label: "二级案由" },
@@ -98,6 +96,7 @@ export default {
         caseDimensions: [],
         caseReasons: [],
         subCaseReasons: [],
+        properties: [],
         keywords: []
       },
       searchOptions: {
@@ -136,7 +135,12 @@ export default {
           type: "select",
           options: this.commonOptions.communities
         },
-        { prop: "orgId", label: "归属物业", type: "org" }
+        {
+          prop: "propertyId",
+          label: "归属物业",
+          type: "select",
+          options: this.commonOptions.properties
+        }
       ];
     },
     columns() {
@@ -206,31 +210,30 @@ export default {
     }
   },
   watch: {
-    "params.caseDimension"(v) {
-      this.dimensionChange(v, "search");
+    "params.caseDimension"(v, oldV) {
+      this.dimensionChange(v, oldV, "search");
     },
-    "params.caseReasonId"(v) {
-      this.caseReasonChange(v, "search");
+    "params.caseReasonId"(v, oldV) {
+      this.caseReasonChange(v, oldV, "search");
     },
-    "formData.caseDimensionId"(v) {
-      this.dimensionChange(v);
+    "formData.caseDimensionId"(v, oldV) {
+      this.dimensionChange(v, oldV);
     },
-    "formData.caseReasonId"(v) {
-      this.caseReasonChange(v);
+    "formData.caseReasonId"(v, oldV) {
+      this.caseReasonChange(v, oldV);
     },
-    "formData.subCaseReasonId"(v) {
-      this.subCaseReasonChange(v);
+    "formData.subCaseReasonId"(v, oldV) {
+      this.subCaseReasonChange(v, oldV);
     }
   },
   created() {
     this.getOptions();
-    let token = this.$store.state.auth.token;
-    this.modelUrl = `/api-customer/community/getFile?token=${token}&type=2`;
   },
   methods: {
     getOptions() {
       this.getCaseDimensions();
       this.getCommunities();
+      this.getProperties();
     },
     async getCaseDimensions() {
       this.dimensionTree = await queryCaseDimensionsCascadeAPI();
@@ -243,6 +246,11 @@ export default {
     async getCommunities() {
       this.commonOptions.communities = await communityListAPI();
     },
+    async getProperties() {
+      this.commonOptions.properties = await getAllAPI({
+        entityType: getEntityType("PROPERTY")
+      });
+    },
     async getKeywords(parentCode) {
       this.commonOptions.keywords = await keywordListAPI({
         code: parentCode
@@ -254,25 +262,27 @@ export default {
     editRow(row) {
       this.type = "edit";
       this.title = "编辑案件";
-      this.form = Object.assign({}, row);
-      if (this.form.caseAddress && this.form.caseAddress.length) {
-        this.form.caseAddress = this.form.caseAddress[0].address;
+      this.formData = {};
+      if (row.caseAddress && row.caseAddress.length) {
+        row.caseAddress = row.caseAddress[0].address;
       }
       this.commonOptions.caseReasons = this.getTreeChildByCode(
-        this.form.caseDimensionId,
+        row.caseDimensionId,
         1
       );
       this.commonOptions.subCaseReasons = this.getTreeChildByCode(
-        this.form.caseReasonId,
+        row.caseReasonId,
         2
       );
-      this.getKeywords(this.form.subCaseReasonId);
+      this.getKeywords(row.subCaseReasonId);
+      this.form = Object.assign({}, row);
       this.visibleDialog = true;
     },
     add() {
       this.type = "add";
       this.title = "新增案件";
       this.form = {};
+      this.formData = {};
       this.visibleDialog = true;
     },
     submit(form) {
@@ -310,30 +320,36 @@ export default {
     formUpdate(form) {
       this.formData = form;
     },
-    dimensionChange(id, type) {
+    dimensionChange(id, oldId, type) {
       if (type === "search") {
         this.params.caseReasonId = "";
         this.params.subCaseReasonId = "";
         this.searchOptions.caseReasons = this.getTreeChildByCode(id, 1);
       } else {
-        this.formData.caseReasonId = "";
-        this.formData.subCaseReasonId = "";
-        this.formData.caseKeyword = [];
+        if (oldId) {
+          this.formData.caseReasonId = "";
+          this.formData.subCaseReasonId = "";
+          this.formData.caseKeyword = [];
+        }
         this.commonOptions.caseReasons = this.getTreeChildByCode(id, 1);
       }
     },
-    caseReasonChange(id, type) {
+    caseReasonChange(id, oldId, type) {
       if (type === "search") {
         this.params.subCaseReasonId = "";
         this.searchOptions.subCaseReasons = this.getTreeChildByCode(id, 2);
       } else {
-        this.formData.subCaseReasonId = "";
-        this.formData.caseKeyword = [];
+        if (oldId) {
+          this.formData.subCaseReasonId = "";
+          this.formData.caseKeyword = [];
+        }
         this.commonOptions.subCaseReasons = this.getTreeChildByCode(id, 2);
       }
     },
-    subCaseReasonChange(id) {
-      this.formData.caseKeyword = [];
+    subCaseReasonChange(id, oldV) {
+      if (oldV) {
+        this.formData.caseKeyword = [];
+      }
       this.getKeywords(id);
     },
     getTreeChildByCode(code, level) {

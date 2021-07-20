@@ -46,6 +46,7 @@
     </template>
 
     <el-dialog :visible.sync="uploadDialog" append-to-body width="600px" center>
+      <slot name="upload-header"></slot>
       <div style="text-align: center">
         <span>选择需要导入的Excel文件导入即可。</span>
         <el-button type="text" @click="downLoadModel" v-if="modelUrl"

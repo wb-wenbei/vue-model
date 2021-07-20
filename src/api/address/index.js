@@ -4,7 +4,7 @@ import http from "@/server/http.js";
 //列表（分页）
 export const pageAPI = params => {
   return http({
-    url: "/api-customer/communityAliasAddress/list",
+    url: "/api-customer/service-wisdom-town/communityAliasAddress/list",
     method: "GET",
     params
   });
@@ -14,7 +14,7 @@ export const pageAPI = params => {
 export const addAddressAPI = data => {
   return http({
     method: "POST",
-    url: `/api-customer/community/address/add`,
+    url: `/api-customer/service-wisdom-town/community/address/add`,
     data
   });
 };
@@ -23,16 +23,16 @@ export const addAddressAPI = data => {
 export const updateAddressAPI = data => {
   return http({
     method: "PUT",
-    url: `/api-customer/community/address/update`,
+    url: `/api-customer/service-wisdom-town/community/address/update`,
     data
   });
 };
 // 删除社区扩展地址
-export const deleteAddressAPI = data => {
+export const deleteAddressAPI = params => {
   return http({
     method: "DELETE",
-    url: `/api-customer/community/address/delete`,
-    data
+    url: `/api-customer/service-wisdom-town/community/address/delete`,
+    params
   });
 };
 
@@ -40,7 +40,7 @@ export const deleteAddressAPI = data => {
 export const addAliasAPI = data => {
   return http({
     method: "POST",
-    url: `/api-customer/community/alias/add`,
+    url: `/api-customer/service-wisdom-town/community/alias/add`,
     data
   });
 };
@@ -49,15 +49,15 @@ export const addAliasAPI = data => {
 export const updateAliasAPI = data => {
   return http({
     method: "PUT",
-    url: `/api-customer/community/alias/update`,
+    url: `/api-customer/service-wisdom-town/community/alias/update`,
     data
   });
 };
 // 删除社区别名
-export const deleteAliasAPI = data => {
+export const deleteAliasAPI = params => {
   return http({
     method: "DELETE",
-    url: `/api-customer/community/alias/delete`,
-    data
+    url: `/api-customer/service-wisdom-town/community/alias/delete`,
+    params
   });
 };

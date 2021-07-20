@@ -21,7 +21,11 @@
             v-on="$listeners"
             @checkChange="checkChange"
             @uploadSuccess="onQuery"
-          ></table-function>
+          >
+            <template v-slot:upload-header>
+              <slot name="upload-header"></slot>
+            </template>
+          </table-function>
         </slot>
       </div>
     </div>
