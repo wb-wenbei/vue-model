@@ -58,6 +58,8 @@ import CommonTable from "@/components/commonTable/table.vue";
 import EditDialog from "@/components/commonTable/editDialog.vue";
 import TideCombination from "@/components/combination/index.vue";
 
+import { reloadToken } from "@/api/common/index";
+
 import {
   orgAddAPI,
   orgUpdateAPI,
@@ -149,7 +151,9 @@ export default {
           this.$message.success(`${this.title}成功`);
           this.visibleDialog = false;
           this.loadData();
-          this.$store.dispatch("setBaseOrgList");
+          reloadToken([]).finally(() => {
+            this.$store.dispatch("setBaseOrgList");
+          });
         })
         .catch(message => {
           this.$message.error(`${this.title}失败：${message}`);
