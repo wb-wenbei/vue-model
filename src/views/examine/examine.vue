@@ -1,17 +1,10 @@
 <template>
   <div class="tabs-box">
-    <!--<el-tabs v-model="activeName">
-      <el-tab-pane name="examine" @click.native="activeName = 'examine'">
-        <span slot="label" style="padding: 0 6px">考核记录</span>
-
-      </el-tab-pane>
-    </el-tabs>-->
     <common-table
       ref="table"
       :headers="headers"
       :api="pageAPI"
       :params="params"
-      :columns="columns"
       :settings="['setting', 'download']"
       :canEdit="false"
       :canDelete="false"
@@ -66,18 +59,18 @@
         <div class="detail-header">
           <div class="detail-content">
             <div>考核对象：{{ detailData.communityName }}</div>
-            <div>归属物业：{{ detailData.orgName }}</div>
+            <div>归属物业：{{ detailData.propertyName }}</div>
             <div>考核策略：{{ detailData.policyName }}</div>
             <div>考核次数：{{ detailData.assessmentTimes }}</div>
             <div>考核成绩：{{ detailData.assessmentScore }}</div>
             <div>考核评价：{{ detailData.assessmentLevelName }}</div>
           </div>
           <div class="detail-chart">
-            <common-chart
+<!--            <common-chart
               v-if="chartOptions"
               :loading="chartLoading"
               :options="chartOptions"
-            ></common-chart>
+            ></common-chart>-->
           </div>
         </div>
       </template>
@@ -125,7 +118,10 @@
             >考核维度：{{ detailRow.caseDimensionName }}
           </el-col>
           <el-col :span="6" class="detail-row-item"
-            >报案缘由：{{ detailRow.caseReasonName }}
+            >一级案由：{{ detailRow.caseReasonName }}
+          </el-col>
+          <el-col :span="6" class="detail-row-item"
+            >二级案由：{{ detailRow.subCaseReasonName }}
           </el-col>
           <el-col :span="6" class="detail-row-item"
             >考核方式：{{ detailRow.assessmentWayName }}
@@ -200,10 +196,10 @@ import {
   detailExemptionAPI,
   detailDeleteAPI
 } from "@/api/examine/index";
-import { getTypeList, getTypeChildren } from "@/utils/index";
 import { getAllAPI as communityAllAPI } from "@/api/community/index";
 import { listAllAPI as evaluateAllAPI } from "@/api/strategy/evaluate";
 import { listAllAPI as strategyAllAPI } from "@/api/strategy/index";
+import { queryCaseDimensionsCascadeAPI } from "@/api/case";
 
 export default {
   name: "Examine",
@@ -244,7 +240,49 @@ export default {
         startTime: "",
         endTime: ""
       },
-      searchColumns: [
+      headers: [
+        { prop: "index", label: "序号" },
+        { prop: "communityName", label: "社区名称" },
+        { prop: "propertyName", label: "归属物业" },
+        { prop: "policyName", label: "考核策略" },
+        { prop: "assessmentTimes", label: "考核次数" },
+        { prop: "assessmentScore", label: "考核成绩" },
+        { prop: "assessmentLevelName", label: "考核评价" },
+        { prop: "action", label: "操作", width: 100, fixed: "right" }
+      ],
+      detailHeaders: [
+        { prop: "index", label: "序号" },
+        { prop: "caseDimensionName", label: "考核维度" },
+        { prop: "caseReasonName", label: "报案缘由" },
+        { prop: "assessmentTypeName", label: "考核方式" },
+        { prop: "singleThreshold", label: "单次阈值" },
+        { prop: "assessmentTime", label: "考核时间" },
+        { prop: "assessmentWayName", label: "考核类型" },
+        { prop: "action", label: "操作", width: 140, fixed: "right" }
+      ],
+      pickerOptions: {
+        disabledDate(v) {
+          return v > Date.now();
+        }
+      },
+      commonOptions: {
+        communities: [],
+        caseDimensions: [],
+        caseReasons: [],
+        subCaseReasons: [],
+        evaluates: [],
+        strategies: []
+      },
+      form: {},
+      formData: {},
+      detailData: {},
+      chartOptions: {},
+      detailRow: {}
+    };
+  },
+  computed: {
+    searchColumns() {
+      return [
         {
           prop: "monthTime",
           label: "考核日期"
@@ -253,40 +291,32 @@ export default {
           prop: "policyId",
           label: "考核策略",
           type: "select",
-          options: []
+          options: this.commonOptions.strategies
         },
         {
           prop: "communityIdArr",
           label: "社区名称",
           type: "select",
-          options: [],
+          options: this.commonOptions.communities,
           props: { multiple: true }
         },
         {
           prop: "evaluate",
           label: "考核评价",
           type: "select",
-          options: []
+          options: this.commonOptions.evaluates
         }
-      ],
-      headers: [
-        { prop: "index", label: "序号" },
-        { prop: "communityName", label: "社区名称" },
-        { prop: "orgName", label: "归属物业" },
-        { prop: "policyName", label: "考核策略" },
-        { prop: "assessmentTimes", label: "考核次数" },
-        { prop: "assessmentScore", label: "考核成绩" },
-        { prop: "assessmentLevelName", label: "考核评价" },
-        { prop: "action", label: "操作", width: 100, fixed: "right" }
-      ],
-      columns: [
+      ];
+    },
+    columns() {
+      return [
         { prop: "basicInfo", label: "考核信息", type: "title" },
         {
           prop: "communityId",
           label: "考核对象",
           type: "select",
           required: true,
-          options: []
+          options: this.commonOptions.communities
         },
         {
           prop: "assessmentTime",
@@ -299,14 +329,21 @@ export default {
           label: "案件维度",
           type: "select",
           required: true,
-          options: []
+          options: this.commonOptions.caseDimensions
         },
         {
           prop: "caseReasonId",
-          label: "报案缘由",
+          label: "一级案由",
           type: "select",
           required: true,
-          options: []
+          options: this.commonOptions.caseReasons
+        },
+        {
+          prop: "subCaseReasonId",
+          label: "二级案由",
+          type: "select",
+          required: true,
+          options: this.commonOptions.subCaseReasons
         },
         {
           prop: "assessmentType",
@@ -327,33 +364,10 @@ export default {
           type: "textArea",
           cols: 3
         }
-      ],
-      detailHeaders: [
-        { prop: "index", label: "序号" },
-        { prop: "caseDimensionName", label: "考核维度" },
-        { prop: "caseReasonName", label: "报案缘由" },
-        { prop: "assessmentTypeName", label: "考核方式" },
-        { prop: "singleThreshold", label: "单次阈值" },
-        { prop: "assessmentTime", label: "考核时间" },
-        { prop: "assessmentWayName", label: "考核类型" },
-        { prop: "action", label: "操作", width: 140, fixed: "right" }
-      ],
-      pickerOptions: {
-        disabledDate(v) {
-          return v > Date.now();
-        }
-      },
-      form: {},
-      caseDimensionId: "",
-      detailData: {},
-      chartOptions: {},
-      detailRow: {}
-    };
+      ];
+    }
   },
   watch: {
-    caseDimensionId(v) {
-      this.getCaseReasons(v);
-    },
     "params.communityIdArr": {
       deep: true,
       immediate: true,
@@ -373,6 +387,12 @@ export default {
           );
         }
       }
+    },
+    "formData.caseDimensionId"(v, oldV) {
+      this.dimensionChange(v, oldV);
+    },
+    "formData.caseReasonId"(v, oldV) {
+      this.caseReasonChange(v, oldV);
     }
   },
   created() {
@@ -416,26 +436,35 @@ export default {
       this.getEvaluates();
       this.getStrategies();
     },
+    async getCaseDimensions() {
+      this.dimensionTree = await queryCaseDimensionsCascadeAPI();
+      this.commonOptions.caseDimensions = (this.dimensionTree || []).map(
+        item => {
+          return { id: item.code, name: item.name };
+        }
+      );
+    },
     async getCommunities() {
-      let communities = await communityAllAPI();
-      this.columns[1].options = communities;
-      this.searchColumns[2].options = communities;
+      this.commonOptions.communities = await communityAllAPI();
     },
     async getEvaluates() {
-      let evaluates = await evaluateAllAPI();
-      this.searchColumns[3].options = evaluates;
+      this.commonOptions.evaluates = await evaluateAllAPI();
     },
     async getStrategies() {
-      let strategies = await strategyAllAPI();
-      this.searchColumns[1].options = strategies;
+      this.commonOptions.strategies = await strategyAllAPI();
     },
-    async getCaseDimensions() {
-      let caseDimensions = await getTypeList("CASE_DIMENSION");
-      this.columns[3].options = caseDimensions;
+    dimensionChange(id, oldId) {
+      if (oldId) {
+        this.formData.caseReasonId = "";
+        this.formData.subCaseReasonId = "";
+      }
+      this.commonOptions.caseReasons = this.getTreeChildByCode(id, 1);
     },
-    async getCaseReasons(dimensionId) {
-      let caseReasons = await getTypeChildren(dimensionId);
-      this.columns[4].options = caseReasons;
+    caseReasonChange(id, oldId) {
+      if (oldId) {
+        this.formData.subCaseReasonId = "";
+      }
+      this.commonOptions.subCaseReasons = this.getTreeChildByCode(id, 2);
     },
     search() {
       this.$refs.table.onQuery();
@@ -470,7 +499,7 @@ export default {
       }
     },
     formUpdate(form) {
-      this.caseDimensionId = form.caseDimensionId;
+      this.formData = form;
     },
     showDetail(row) {
       this.detailData = row;
@@ -550,6 +579,31 @@ export default {
       let str = getExportParams(searchData);
       window.location.href = `/api-customer/community/assessment/Excel?${str}`;
       this.downloadDialog = false;
+    },
+    getTreeChildByCode(code, level) {
+      if (!code && code !== 0) {
+        return [];
+      }
+      let list = [];
+      switch (level) {
+        case 1:
+          list = this.dimensionTree;
+          break;
+        case 2:
+          (this.dimensionTree || []).forEach(item => {
+            list.push(...(item.child || []));
+          });
+          break;
+      }
+      let result = [];
+      list.forEach(item => {
+        if (code === item.code) {
+          result = (item.child || []).map(v => {
+            return { id: v.code, name: v.name };
+          });
+        }
+      });
+      return result;
     }
   }
 };
