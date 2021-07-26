@@ -189,10 +189,11 @@ export default {
           options: this.commonOptions.projectNatures
         },
         {
-          prop: "policeId",
+          prop: "policeIds",
           label: "管理民警",
           type: "select",
-          options: this.commonOptions.polices
+          options: this.commonOptions.polices,
+          props: { multiple: true }
         },
         {
           prop: "communityAddress",
