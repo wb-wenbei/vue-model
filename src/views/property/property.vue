@@ -104,7 +104,6 @@ export default {
           prop: "address",
           label: "物业地址",
           type: "text",
-          required: true,
           props: {
             placeholder: "示例：上海市闵行区XX街道929号"
           }
@@ -113,7 +112,6 @@ export default {
           prop: "location",
           label: "物业位置",
           type: "address",
-          required: true,
           cols: 2
         }
       ],
