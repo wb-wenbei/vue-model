@@ -23,7 +23,7 @@ export const getAllAPI = params => {
 export const addAPI = data => {
   return http({
     method: "POST",
-    url: `/api-customer/service-wisdom-town/community/add`,
+    url: `/api-customer/service-wisdom-town/community/insert`,
     data
   });
 };
