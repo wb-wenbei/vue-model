@@ -55,7 +55,13 @@
       <template v-slot:detail-content>
         <div style="max-height: 600px;overflow: auto">
           <ul>
-            <li style="margin-bottom: 4px" v-for="(item,index) in errorList" :key="index">{{item.errorMessage}}</li>
+            <li
+              style="margin-bottom: 4px"
+              v-for="(item, index) in errorList"
+              :key="index"
+            >
+              {{ item.errorMessage }}
+            </li>
           </ul>
         </div>
       </template>
@@ -127,7 +133,11 @@ export default {
       searchOptions: {
         caseDimensions: [],
         caseReasons: [],
-        subCaseReasons: []
+        subCaseReasons: [],
+        match: [
+          { id: 1, name: "有结果" },
+          { id: 0, name: "无结果" }
+        ]
       },
       form: {},
       formData: {}
@@ -154,6 +164,12 @@ export default {
           label: "二级案由",
           type: "select",
           options: this.searchOptions.subCaseReasons
+        },
+        {
+          prop: "match",
+          label: "匹配结果",
+          type: "select",
+          options: this.searchOptions.match
         },
         {
           prop: "communityId",
@@ -224,6 +240,10 @@ export default {
       });
     },
     search() {
+      this.params.matchResult = "";
+      if (this.params.match || this.params.match === 0) {
+        this.params.matchResult = !!this.params.match;
+      }
       this.$refs.table.onQuery();
     },
     uploadComplete(v) {
