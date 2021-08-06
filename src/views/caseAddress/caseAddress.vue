@@ -13,6 +13,7 @@
       :modelUrl="modelUrl"
       :settings="['setting', 'upload']"
       @editRow="editRow"
+      @uploadComplete="uploadComplete"
     >
       <template v-slot:table-header>
         <table-search
@@ -50,12 +51,22 @@
         ></el-input>
       </template>
     </edit-dialog>
+    <detail-dialog title="错误数据信息明细" :visibleDialog.sync="showError">
+      <template v-slot:detail-content>
+        <div style="max-height: 600px;overflow: auto">
+          <ul>
+            <li style="margin-bottom: 4px" v-for="(item,index) in errorList" :key="index">{{item.errorMessage}}</li>
+          </ul>
+        </div>
+      </template>
+    </detail-dialog>
   </div>
 </template>
 
 <script>
 import CommonTable from "@/components/commonTable/table";
 import EditDialog from "@/components/commonTable/editDialog";
+import DetailDialog from "@/components/commonTable/detailDialog";
 import TableSearch from "@/components/commonTable/tableSearch.vue";
 
 import { queryCaseDimensionsCascadeAPI } from "@/api/case/index";
@@ -73,6 +84,7 @@ export default {
   components: {
     CommonTable,
     EditDialog,
+    DetailDialog,
     TableSearch
   },
   data() {
@@ -80,6 +92,7 @@ export default {
       pageAPI,
       deleteAPI,
       visibleDialog: false,
+      showError: false,
       loading: false,
       type: "add",
       title: "新增案件",
@@ -87,6 +100,7 @@ export default {
       uploadURL: "/api-customer/community/caseManagementMatch/import",
       case: [],
       params: {},
+      errorList: [],
       dimensionTree: [],
       headers: [
         { prop: "index", label: "序号" },
@@ -211,6 +225,13 @@ export default {
     },
     search() {
       this.$refs.table.onQuery();
+    },
+    uploadComplete(v) {
+      if (v.data && v.data.length) {
+        this.$message.error("导入失败!");
+        this.errorList = v.data;
+        this.showError = true;
+      }
     },
     editRow(row) {
       this.type = "edit";

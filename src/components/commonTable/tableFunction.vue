@@ -180,6 +180,7 @@ export default {
       } else {
         this.$message.error("导入失败：" + v.message);
       }
+      this.$emit("uploadComplete", v);
     },
     downLoadModel() {
       if (this.modelUrl) {
