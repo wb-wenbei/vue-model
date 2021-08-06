@@ -150,12 +150,14 @@
       </el-table>
     </div>
     <el-pagination
-      v-if="!noShow && showPagination && page.totalCount > page.pageSize"
+      v-if="!noShow && showPagination && page.totalCount > pageSizes[0]"
       class="pagination"
       :disabled="isLoading"
       background
-      layout="total, prev, pager, next, jumper"
+      layout="total, prev, pager, next, sizes, jumper"
+      :page-sizes="pageSizes"
       :page-size="page.pageSize"
+      @size-change="sizeChange"
       :current-page="page.currentPage"
       @current-change="changePage($event, true)"
       prev-text="上一页"
@@ -205,6 +207,12 @@ export default {
     canDelete: { type: Boolean, default: true },
     canDeleteBatch: { type: Boolean, default: true },
     showPagination: { type: Boolean, default: true },
+    pageSizes: {
+      type: Array,
+      default() {
+        return [10, 20, 50];
+      }
+    },
     settings: {
       type: Array,
       default() {
@@ -308,17 +316,11 @@ export default {
     },
     refresh() {
       //更新数据
-      this.pageParams = {
-        pageSize: this.page.pageSize || 10,
-        page: this.page.currentPage || 1
-      };
+      this.pageParams.page = this.page.currentPage || 1;
       this.loadData();
     },
     onQuery() {
-      this.pageParams = {
-        pageSize: 10,
-        page: 1
-      };
+      this.pageParams.page = 1;
       this.loadData();
     },
     rowClick(v, prop) {
@@ -369,6 +371,12 @@ export default {
     },
     cancelSelect() {
       this.$refs.multipleTable.clearSelection();
+    },
+    sizeChange(v) {
+      this.pageParams.pageSize = v;
+      this.pageParams.page = 1;
+      this.page.currentPage = 1;
+      this.loadData();
     },
     changePage(v) {
       this.pageParams.page = v;
