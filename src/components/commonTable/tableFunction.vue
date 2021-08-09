@@ -98,6 +98,7 @@ export default {
       type: Array,
       default: () => []
     },
+    closeBeforeUpload: { type: Boolean, default: false },
     uploadURL: { type: String, default: "" },
     modelUrl: { type: String, default: "" },
     uploadParams: {},
@@ -170,6 +171,8 @@ export default {
         this.$message.error("上传文件必须是 xls/xlsx 格式!");
         return false;
       }
+      this.$emit("beforeUpload");
+      if (this.closeBeforeUpload) this.uploadDialog = false;
       return true;
     },
     uploadSuccess(v) {

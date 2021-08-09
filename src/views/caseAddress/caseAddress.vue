@@ -11,8 +11,10 @@
       :deleteApi="deleteAPI"
       :uploadURL="uploadURL"
       :modelUrl="modelUrl"
+      closeBeforeUpload
       :settings="['setting', 'upload']"
       @editRow="editRow"
+      @beforeUpload="beforeUpload"
       @uploadComplete="uploadComplete"
     >
       <template v-slot:table-header>
@@ -245,6 +247,9 @@ export default {
         this.params.matchResult = !!this.params.match;
       }
       this.$refs.table.onQuery();
+    },
+    beforeUpload() {
+      this.$message.success("正在进行地址匹配，请稍后查看！");
     },
     uploadComplete(v) {
       if (v.data && v.data.length) {
