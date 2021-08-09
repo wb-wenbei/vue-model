@@ -116,6 +116,7 @@ export default {
         { prop: "caseDimensionName", label: "案件维度" },
         { prop: "caseReasonName", label: "一级案由" },
         { prop: "subCaseReasonName", label: "二级案由" },
+        { prop: "caseAddress", label: "案件地址" },
         { prop: "caseTime", label: "报案时间", type: "date" },
         {
           prop: "match",
