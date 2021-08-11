@@ -95,6 +95,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import "src/styles/theme";
 .layout-wrap {
   height: 100%;
 
@@ -108,7 +109,7 @@ export default {
     line-height: 50px;
     font-size: 14px;
     color: #ffffff;
-    background: #3b7cef;
+    background: $--color-primary;
     cursor: pointer;
     display: flex;
     justify-content: space-between;
@@ -125,14 +126,14 @@ export default {
 
     ::v-deep .el-button--primary {
       height: 50px;
-      background: #3b7cef;
+      background: $--color-primary;
       border-color: transparent;
       border-radius: 0;
     }
 
     ::v-deep .el-button:focus,
     .el-button:hover {
-      background: #326acd;
+      background: $--color-primary;
     }
   }
 

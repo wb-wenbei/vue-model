@@ -408,6 +408,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import "src/styles/theme";
 .common-table {
   margin: 16px 0;
 }
@@ -428,11 +429,11 @@ export default {
 .table-select-box {
   text-align: left;
   line-height: 40px;
-  color: #3b7cef;
+  color: $--color-primary;
   border-radius: 4px;
   border-width: 1px;
   border-style: solid;
-  border-color: #3b7cef;
+  border-color: $--color-primary;
   border-image: initial;
   padding: 0 20px;
   margin-top: 8px;
@@ -445,7 +446,7 @@ export default {
   }
 
   span:hover {
-    color: #3b7cef;
+    color: $--color-primary;
   }
 
   span.delete:hover {

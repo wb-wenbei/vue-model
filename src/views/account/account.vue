@@ -237,6 +237,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import "src/styles/theme";
 .account-form {
   display: flex;
   flex-direction: column;
@@ -245,7 +246,7 @@ export default {
 
   .show-password {
     margin: 0 0 10px 80px;
-    color: #3b7cef;
+    color: $--color-primary;
   }
 }
 </style>

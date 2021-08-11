@@ -144,10 +144,9 @@ export default {
     searchColumns() {
       return [
         {
-          prop: "communityIds",
+          prop: "communityName",
           label: "社区名称",
-          type: "select",
-          options: this.commonOptions.communities
+          type: "input"
         }
       ];
     },
@@ -234,6 +233,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import "src/styles/theme";
 .address-edit-content {
   display: flex;
 
@@ -257,6 +257,6 @@ export default {
   top: 3px;
   height: 14px;
   width: 2px;
-  background: #3b7cef;
+  background: $--color-primary;
 }
 </style>

@@ -594,6 +594,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import "src/styles/theme";
 .form-content {
   text-align: left;
 }
@@ -632,7 +633,7 @@ export default {
       .el-table__row {
         cursor: pointer;
         & td:nth-child(2) {
-          color: #3b7cef;
+          color: $--color-primary;
         }
       }
     }
@@ -647,7 +648,7 @@ export default {
     text-align: center;
     font-size: 12px;
     color: white;
-    background: #3b7cef;
+    background: $--color-primary;
     border-radius: 2px;
     background: url("../../assets/icon/勋章4@3x.png") center / contain;
 

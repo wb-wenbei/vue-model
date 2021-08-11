@@ -20,6 +20,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import "src/styles/theme";
 .count-card {
   border: 1px solid #d8d8d8;
   box-sizing: border-box;
@@ -43,7 +44,7 @@ export default {
       left: 0;
       height: 3px;
       width: 20px;
-      background: #3b7cef;
+      background: $--color-primary;
     }
   }
 

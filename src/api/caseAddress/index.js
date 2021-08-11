@@ -27,6 +27,15 @@ export const deleteAPI = params => {
   });
 };
 
+//批量删除
+export const deleteBatchAPI = params => {
+  return http({
+    method: "DELETE",
+    url: `/api-customer/community/caseManagementMatch/batchDelete`,
+    params
+  });
+};
+
 // 案件入库
 export const submitAPI = data => {
   return http({

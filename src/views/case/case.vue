@@ -6,7 +6,9 @@
       :api="pageAPI"
       :params="params"
       :deleteApi="deleteAPI"
-      :settings="['setting']"
+      :settings="['setting', 'upload']"
+      :modelUrl="modelUrl"
+      :uploadUrl="uploadUrl"
       @editRow="editRow"
       @add="add"
     >
@@ -76,6 +78,8 @@ export default {
       loading: false,
       type: "add",
       title: "新增案件",
+      modelUrl: "",
+      uploadUrl: "/api-customer/community/case/import",
       case: [],
       params: {},
       dimensionTree: [],
@@ -228,6 +232,8 @@ export default {
   },
   created() {
     this.getOptions();
+    let token = this.$store.state.auth.token;
+    this.modelUrl = `/api-customer/community/getFile?token=${token}&type=2`;
   },
   methods: {
     getOptions() {

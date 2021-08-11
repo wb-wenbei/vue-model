@@ -137,6 +137,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import "src/styles/theme";
 .community-check {
   width: 300px;
 
@@ -177,8 +178,8 @@ export default {
         color: #606266;
       }
       .el-checkbox__input.is-disabled.is-checked .el-checkbox__inner {
-        background-color: #3b7cef;
-        border-color: #3b7cef;
+        background-color: $--color-primary;
+        border-color: $--color-primary;
       }
       .el-checkbox__input.is-disabled.is-checked .el-checkbox__inner::after {
         border-color: white;

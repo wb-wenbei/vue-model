@@ -7,7 +7,6 @@
       selection
       :params="params"
       :can-add="false"
-      :can-delete-batch="false"
       :deleteApi="deleteAPI"
       :uploadURL="uploadURL"
       :modelUrl="modelUrl"
@@ -16,6 +15,7 @@
       @editRow="editRow"
       @beforeUpload="beforeUpload"
       @uploadComplete="uploadComplete"
+      @deleteBatch="deleteBatch"
     >
       <template v-slot:table-header>
         <table-search
@@ -81,6 +81,7 @@ import { queryCaseDimensionsCascadeAPI } from "@/api/case/index";
 import {
   pageAPI,
   deleteAPI,
+  deleteBatchAPI,
   updateAPI,
   submitAPI
 } from "@/api/caseAddress/index";
@@ -174,11 +175,16 @@ export default {
           type: "select",
           options: this.searchOptions.match
         },
-        {
+        /*{
           prop: "communityId",
           label: "社区名称",
           type: "select",
           options: this.commonOptions.communities
+        },*/
+        {
+          prop: "communityName",
+          label: "社区名称",
+          type: "input"
         }
       ];
     },
@@ -258,6 +264,19 @@ export default {
         this.errorList = v.data;
         this.showError = true;
       }
+    },
+    deleteBatch(selects) {
+      this.$confirm("确定要删除所有选中项吗？").then(() => {
+        let ids = (selects || []).map(v => v.id).toString();
+        deleteBatchAPI(ids)
+          .then(() => {
+            this.$message.success("批量删除成功");
+            this.$refs.table.refresh();
+          })
+          .catch(err => {
+            this.$message.error("批量删除失败" + err);
+          });
+      });
     },
     editRow(row) {
       this.type = "edit";
