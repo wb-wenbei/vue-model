@@ -268,7 +268,7 @@ export default {
     deleteBatch(selects) {
       this.$confirm("确定要删除所有选中项吗？").then(() => {
         let ids = (selects || []).map(v => v.id).toString();
-        deleteBatchAPI(ids)
+        deleteBatchAPI({ ids })
           .then(() => {
             this.$message.success("批量删除成功");
             this.$refs.table.refresh();
