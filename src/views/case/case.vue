@@ -89,6 +89,7 @@ export default {
         { prop: "communityName", label: "社区名称" },
         { prop: "communityTypeName", label: "社区类型" },
         { prop: "propertyName", label: "归属物业" },
+        { prop: "committeeName", label: "归属居委" },
         { prop: "caseDimensionName", label: "案件维度" },
         { prop: "caseReasonName", label: "一级案由" },
         { prop: "subCaseReasonName", label: "二级案由" },
