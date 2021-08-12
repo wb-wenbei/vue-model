@@ -8,7 +8,7 @@
       :deleteApi="deleteAPI"
       :settings="['setting', 'upload']"
       :modelUrl="modelUrl"
-      :uploadUrl="uploadUrl"
+      :uploadURL="uploadURL"
       @editRow="editRow"
       @add="add"
     >
@@ -79,7 +79,7 @@ export default {
       type: "add",
       title: "新增案件",
       modelUrl: "",
-      uploadUrl: "/api-customer/community/case/import",
+      uploadURL: "/api-customer/community/case/import",
       case: [],
       params: {},
       dimensionTree: [],
