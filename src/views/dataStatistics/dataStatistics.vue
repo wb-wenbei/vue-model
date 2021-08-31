@@ -203,7 +203,7 @@
       </div>
     </div>
     <detail-dialog
-      :visible-dialog="detailVisible"
+      :visible-dialog.sync="detailVisible"
       :data="rankDetailData"
       :headers="rankDetailHeaders"
       :page="detailPage"
@@ -239,6 +239,7 @@ import { radarAPI } from "@/api/examine/index";
 import { getEntityType, deleteNullChild } from "@/utils";
 import { queryCaseDimensionsCascadeAPI } from "@/api/case";
 import { getAssessmentTypes } from "@/config/dictionary";
+import { toDateFormat } from "@/filters/timeFormat";
 
 export default {
   name: "DataStatistics",
@@ -570,6 +571,7 @@ export default {
       this.detailPage.totalCount = res.totalCount;
       this.detailPage.currentPage = res.page;
       this.rankDetailData = (res.data || []).map(item => {
+        item.assessmentTime = toDateFormat(item.assessmentTime);
         let typeName = "";
         scoreTypes.forEach(type => {
           if (type.id === item.assessmentType) {

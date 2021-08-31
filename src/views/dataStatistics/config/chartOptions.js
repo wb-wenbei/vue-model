@@ -24,7 +24,8 @@ export function getPieChart(data) {
     color: color,
     tooltip: {
       trigger: "item",
-      formatter: "{a} <br/>{b} : {c} ({d}%)"
+      formatter: "{a} <br/>{b} : {c} ({d}%)",
+      extraCssText: "z-index: 100"
     },
     legend: {
       top: "top",
