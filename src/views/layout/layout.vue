@@ -34,18 +34,22 @@
       <el-main class="main-body">
         <tags-view />
         <el-scrollbar style="height: calc(100% - 50px)">
-          <transition name="fade" mode="out-in" appear>
-            <keep-alive :include="cachedViews">
-              <router-view />
-            </keep-alive>
-          </transition>
-        </el-scrollbar>
-        <div class="footer">
-          <div class="footer-logo"></div>
-          <div class="footer-copy">
-            Copyright @ 2020 TideCloud 沪ICP备16024988号-1
+          <div class="scrollbar-content">
+            <div class="content-body">
+              <transition name="fade" mode="out-in" appear>
+                <keep-alive :include="cachedViews">
+                  <router-view />
+                </keep-alive>
+              </transition>
+            </div>
+            <div class="footer">
+              <div class="footer-logo"></div>
+              <div class="footer-copy">
+                Copyright @ 2020 TideCloud 沪ICP备16024988号-1
+              </div>
+            </div>
           </div>
-        </div>
+        </el-scrollbar>
       </el-main>
     </el-container>
   </el-container>
@@ -143,7 +147,7 @@ export default {
 
     .main-body {
       background: #eee;
-      padding-bottom: 56px;
+      padding-bottom: 0;
       position: relative;
 
       &::v-deep .el-scrollbar__wrap {
@@ -151,25 +155,38 @@ export default {
         background: white;
       }
 
-      .footer {
-        height: 56px;
-        position: absolute;
-        width: calc(100% - 40px);
-        bottom: 0;
+      &::v-deep .el-scrollbar__view {
+        height: 100%;
+      }
+
+      .scrollbar-content {
+        height: 100%;
         display: flex;
         flex-direction: column;
-        align-items: center;
-        .footer-logo {
-          height: 30px;
-          margin: 4px 0 2px;
-          width: 290px;
-          background: url("../../assets/footer/footer_logo.png") center /
-            contain;
+
+        .content-body {
+          flex: 1;
         }
-        .footer-copy {
-          line-height: 20px;
-          font-size: 12px;
-          color: rgba(0, 0, 0, 0.45);
+
+        .footer {
+          height: 56px;
+          bottom: 0;
+          display: flex;
+          background: #eee;
+          flex-direction: column;
+          align-items: center;
+          .footer-logo {
+            height: 30px;
+            margin: 4px 0 2px;
+            width: 290px;
+            background: url("../../assets/footer/footer_logo.png") center /
+              contain;
+          }
+          .footer-copy {
+            line-height: 20px;
+            font-size: 12px;
+            color: rgba(0, 0, 0, 0.45);
+          }
         }
       }
     }
