@@ -9,6 +9,12 @@
         <el-radio-button :label="2">热力图模式</el-radio-button>
       </el-radio-group>
     </div>
+    <div v-show="mapStatus === 1" class="marker-status">
+      <el-radio-group v-model="markerStatus">
+        <el-radio-button :label="2">自动模式</el-radio-button>
+        <el-radio-button :label="1">手动模式</el-radio-button>
+      </el-radio-group>
+    </div>
     <weather class="weather"></weather>
     <div class="left-card">
       <div class="left-search-card">
@@ -105,7 +111,7 @@
             </div>
             <div class="detail">
               <div class="title title-blue">
-                {{ infoData.score || "--" }} /
+                {{ infoData.score }} /
                 <span style="font-size: 12px">
                   {{ infoData.evaluateName || "--" }}
                 </span>
@@ -165,6 +171,7 @@ export default {
       heatmap: null,
       mapStyle: "amap://styles/blue",
       mapStatus: 1,
+      markerStatus: 2,
       params: {
         monthTime: Date.now()
       },
@@ -192,6 +199,19 @@ export default {
       caseInterval: null,
       communityInterval: null
     };
+  },
+  watch: {
+    markerStatus(v) {
+      if (v === 1 && this.timeout) {
+        clearTimeout(this.timeout);
+        this.timeout = null;
+      }
+      if (v === 2 && !this.timeout) {
+        this.timeout = setTimeout(() => {
+          this.onMarkerHover(this.markers[this.hoverIndex]);
+        }, 5000);
+      }
+    }
   },
   created() {
     if (!this.$store.state.auth || !this.$store.state.auth.token) {
@@ -247,9 +267,11 @@ export default {
           });*/
         });
         this.setHeatMapData();
-        this.timeout = setTimeout(() => {
-          this.onMarkerHover(this.markers[this.hoverIndex]);
-        }, 5000);
+        if (this.markerStatus === 2) {
+          this.timeout = setTimeout(() => {
+            this.onMarkerHover(this.markers[this.hoverIndex]);
+          }, 5000);
+        }
       });
     },
     loadData() {
@@ -318,7 +340,9 @@ export default {
           new AMap.Pixel(-PIXEL_HOVER_X / 2, -PIXEL_HOVER_Y / 2)
         );
         if (this.mapStatus === 1) {
-          this.map.setCenter(marker.getPosition());
+          if (this.markerStatus === 2) {
+            this.map.setCenter(marker.getPosition());
+          }
           this.openInfoWindow(marker);
         }
       }
@@ -326,13 +350,15 @@ export default {
         clearTimeout(this.timeout);
         this.timeout = null;
       }
-      this.timeout = setTimeout(() => {
-        this.hoverIndex++;
-        if (this.hoverIndex >= this.markers.length) {
-          this.hoverIndex = 0;
-        }
-        this.onMarkerHover(this.markers[this.hoverIndex]);
-      }, 5000);
+      if (this.markerStatus === 2) {
+        this.timeout = setTimeout(() => {
+          this.hoverIndex++;
+          if (this.hoverIndex >= this.markers.length) {
+            this.hoverIndex = 0;
+          }
+          this.onMarkerHover(this.markers[this.hoverIndex]);
+        }, 5000);
+      }
     },
     onMarkerUnHover() {
       if (this.hoverMarker) {
@@ -510,11 +536,13 @@ export default {
     z-index: 500;
   }
 
-  .map-status {
+  .map-status,
+  .marker-status {
     position: absolute;
     top: 120px;
     right: 20px;
     z-index: 500;
+
     ::v-deep {
       .el-radio-group {
         border-radius: 40px;
@@ -534,6 +562,10 @@ export default {
         color: white;
       }
     }
+  }
+
+  .marker-status {
+    top: 160px;
   }
 
   .left-card {
@@ -581,6 +613,7 @@ export default {
     .left-bottom-card {
       flex: 1;
       min-height: 0;
+
       ::v-deep {
         .el-scrollbar__wrap {
           overflow-x: hidden;
@@ -618,6 +651,7 @@ export default {
       &:hover {
         background: #19b0ae;
       }
+
       &:active {
         background: #169b99;
       }
@@ -662,12 +696,15 @@ export default {
         &.icon-1 {
           background: url("./images/icon_1.png");
         }
+
         &.icon-2 {
           background: url("./images/icon_2.png");
         }
+
         &.icon-3 {
           background: url("./images/icon_3.png");
         }
+
         &.icon-4 {
           background: url("./images/icon_4.png");
         }
