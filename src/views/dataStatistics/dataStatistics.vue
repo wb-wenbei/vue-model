@@ -141,7 +141,7 @@
             <el-table-column type="action" label="详情" width="60">
               <template slot-scope="scope">
                 <el-button @click="showDetail(scope.row)" type="text"
-                  >编辑</el-button
+                  >查看</el-button
                 >
               </template>
             </el-table-column>
@@ -473,7 +473,12 @@ export default {
             subCaseReasonIds: item.params.subCaseReasonIds.toString()
           });
           propertyCommitteeRankAPI(params).then(res => {
-            item.data = res.data || res || [];
+            item.data = (res.data || res || []).map(v => {
+              if (v.score) {
+                v.score = v.score.toFixed(2);
+              }
+              return v;
+            });
           });
         }
       });
