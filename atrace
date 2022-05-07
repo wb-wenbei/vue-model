@@ -1,0 +1,798 @@
+# tracer: nop
+#
+# entries-in-buffer/entries-written: 442970/442970   #P:3
+#
+#                                      _-----=> irqs-off
+#                                     / _----=> need-resched
+#                                    | / _---=> hardirq/softirq
+#                                    || / _--=> preempt-depth
+#                                    ||| /     delay
+#           TASK-PID    TGID   CPU#  ||||    TIMESTAMP  FUNCTION
+#              | |        |      |   ||||       |         |
+           <...>-1864  ( 1665) [004] d..2  5859.047073: sched_switch: prev_comm=PropertyWatch prev_pid=1864 prev_prio=120 prev_state=S ==> next_comm=PropertyWatch next_pid=1778 next_prio=120
+           <...>-796   (  796) [000] d..3  5859.047080: sched_wakeup: comm=PropertyWatch pid=1617 prio=120 target_cpu=007
+          atrace-18481 (18481) [007] d..2  5859.047085: sched_switch: prev_comm=atrace prev_pid=18481 prev_prio=120 prev_state=R+ ==> next_comm=PropertyWatch next_pid=1617 next_prio=120
+           <...>-1617  ( 1590) [007] d..2  5859.047096: sched_switch: prev_comm=PropertyWatch prev_pid=1617 prev_prio=120 prev_state=S ==> next_comm=atrace next_pid=18481 next_prio=120
+           <...>-796   (  796) [000] d..2  5859.047137: sched_waking: comm=PropertyWatch pid=1617 prio=120 target_cpu=007
+           <...>-1778  ( 1585) [004] d..2  5859.047141: sched_switch: prev_comm=PropertyWatch prev_pid=1778 prev_prio=120 prev_state=S ==> next_comm=yuntool next_pid=16316 next_prio=120
+          atrace-18481 (18481) [007] ....  5859.047154: tracing_mark_write: trace_event_clock_sync: parent_ts=5859.023272
+           <...>-796   (  796) [000] d..3  5859.047166: sched_wakeup: comm=PropertyWatch pid=1617 prio=120 target_cpu=004
+          atrace-18481 (18481) [007] d..2  5859.047189: sched_switch: prev_comm=atrace prev_pid=18481 prev_prio=120 prev_state=S ==> next_comm=swapper/7 next_pid=0 next_prio=120
+          <idle>-0     (-----) [007] d..1  5859.047191: cpu_idle: state=0 cpu_id=7
+         yuntool-16316 (  692) [004] d..2  5859.047194: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=PropertyWatch next_pid=1617 next_prio=120
+           <...>-1617  ( 1590) [004] d.h2  5859.047231: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=004
+           <...>-796   (  796) [000] d..2  5859.047245: sched_waking: comm=PropertyWatch pid=1732 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] .n.1  5859.047247: cpu_idle: state=4294967295 cpu_id=7
+           <...>-1617  ( 1590) [004] d.h3  5859.047248: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] d..2  5859.047255: sched_switch: prev_comm=swapper/7 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=yuntool next_pid=16316 next_prio=120
+           <...>-796   (  796) [000] d..3  5859.047274: sched_wakeup: comm=PropertyWatch pid=1732 prio=120 target_cpu=007
+         yuntool-16316 (  692) [007] d..2  5859.047292: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=PropertyWatch next_pid=1732 next_prio=120
+           <...>-1732  ( 1692) [007] d..2  5859.047308: sched_switch: prev_comm=PropertyWatch prev_pid=1732 prev_prio=120 prev_state=S ==> next_comm=swapper/7 next_pid=0 next_prio=120
+          <idle>-0     (-----) [007] d..1  5859.047310: cpu_idle: state=0 cpu_id=7
+           <...>-1617  ( 1590) [004] d..2  5859.047312: sched_switch: prev_comm=PropertyWatch prev_pid=1617 prev_prio=120 prev_state=S ==> next_comm=loggerd_write next_pid=868 next_prio=120
+           <...>-796   (  796) [000] d..2  5859.047323: sched_waking: comm=PropertyWatch pid=1732 prio=120 target_cpu=007
+   loggerd_write-868   (  835) [004] d..2  5859.047326: sched_waking: comm=log_reader pid=16319 prio=120 target_cpu=004
+           <...>-796   (  796) [000] d..3  5859.047349: sched_wakeup: comm=PropertyWatch pid=1732 prio=120 target_cpu=007
+   loggerd_write-868   (  835) [004] d..3  5859.047355: sched_wakeup: comm=log_reader pid=16319 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] dnh2  5859.047358: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] dnh3  5859.047368: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] .n.1  5859.047372: cpu_idle: state=4294967295 cpu_id=7
+          <idle>-0     (-----) [007] d..2  5859.047375: sched_switch: prev_comm=swapper/7 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=log_reader next_pid=16319 next_prio=120
+   loggerd_write-868   (  835) [004] d..2  5859.047390: sched_switch: prev_comm=loggerd_write prev_pid=868 prev_prio=120 prev_state=S ==> next_comm=weston next_pid=875 next_prio=107
+           <...>-796   (  796) [000] d..2  5859.047414: sched_waking: comm=PropertyWatch pid=2113 prio=112 target_cpu=004
+      log_reader-16319 (  835) [007] d..2  5859.047427: sched_switch: prev_comm=log_reader prev_pid=16319 prev_prio=120 prev_state=S ==> next_comm=PropertyWatch next_pid=1732 next_prio=120
+           <...>-796   (  796) [000] d..3  5859.047445: sched_wakeup: comm=PropertyWatch pid=2113 prio=112 target_cpu=007
+          weston-875   (  875) [004] d..2  5859.047464: sched_waking: comm=crtc_commit:215 pid=218 prio=83 target_cpu=004
+          weston-875   (  875) [004] d..3  5859.047481: sched_wakeup: comm=crtc_commit:215 pid=218 prio=83 target_cpu=000
+           <...>-1732  ( 1692) [007] d..2  5859.047495: sched_switch: prev_comm=PropertyWatch prev_pid=1732 prev_prio=120 prev_state=S ==> next_comm=PropertyWatch next_pid=2113 next_prio=112
+           <...>-796   (  796) [000] d..2  5859.047499: sched_switch: prev_comm=propertyd prev_pid=796 prev_prio=120 prev_state=R+ ==> next_comm=crtc_commit:215 next_pid=218 next_prio=83
+           <...>-2113  ( 2091) [007] d..2  5859.047504: sched_switch: prev_comm=PropertyWatch prev_pid=2113 prev_prio=112 prev_state=S ==> next_comm=yuntool next_pid=16316 next_prio=120
+         yuntool-16316 (  692) [007] d..2  5859.047544: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=swapper/7 next_pid=0 next_prio=120
+          <idle>-0     (-----) [007] d..1  5859.047547: cpu_idle: state=0 cpu_id=7
+          weston-875   (  875) [004] d..2  5859.047566: sched_waking: comm=bm-virtio-displ pid=1735 prio=120 target_cpu=004
+          weston-875   (  875) [004] dn.3  5859.047575: sched_wakeup: comm=bm-virtio-displ pid=1735 prio=120 target_cpu=004
+          weston-875   (  875) [004] d..2  5859.047580: sched_switch: prev_comm=weston prev_pid=875 prev_prio=107 prev_state=R+ ==> next_comm=bm-virtio-displ next_pid=1735 next_prio=120
+          <idle>-0     (-----) [007] d.h2  5859.047590: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] dnh3  5859.047597: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] .n.1  5859.047600: cpu_idle: state=4294967295 cpu_id=7
+          <idle>-0     (-----) [007] d..2  5859.047602: sched_switch: prev_comm=swapper/7 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=yuntool next_pid=16316 next_prio=120
+ bm-virtio-displ-1735  ( 1735) [004] d..2  5859.047619: sched_switch: prev_comm=bm-virtio-displ prev_pid=1735 prev_prio=120 prev_state=S ==> next_comm=weston next_pid=875 next_prio=107
+         yuntool-16316 (  692) [007] d..2  5859.047647: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=swapper/7 next_pid=0 next_prio=120
+          <idle>-0     (-----) [007] d..1  5859.047649: cpu_idle: state=0 cpu_id=7
+          weston-875   (  875) [004] d.h1  5859.047687: sched_waking: comm=power_service pid=1064 prio=105 target_cpu=004
+          <idle>-0     (-----) [007] d.h2  5859.047696: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=007
+          weston-875   (  875) [004] d.h2  5859.047707: sched_wakeup: comm=power_service pid=1064 prio=105 target_cpu=007
+          <idle>-0     (-----) [007] dnh3  5859.047711: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] .n.1  5859.047714: cpu_idle: state=4294967295 cpu_id=7
+          <idle>-0     (-----) [007] d..2  5859.047722: sched_switch: prev_comm=swapper/7 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=power_service next_pid=1064 next_prio=105
+   power_service-1064  (  798) [007] d..2  5859.047735: sched_switch: prev_comm=power_service prev_pid=1064 prev_prio=105 prev_state=S ==> next_comm=yuntool next_pid=16316 next_prio=120
+          weston-875   (  875) [004] d..3  5859.047740: sched_waking: comm=WMSThread pid=1129 prio=107 target_cpu=000
+          weston-875   (  875) [004] d..4  5859.047752: sched_wakeup: comm=WMSThread pid=1129 prio=107 target_cpu=007
+         yuntool-16316 (  692) [007] d..2  5859.047765: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=WMSThread next_pid=1129 next_prio=107
+       WMSThread-1129  (  875) [007] d..2  5859.047821: sched_switch: prev_comm=WMSThread prev_pid=1129 prev_prio=107 prev_state=S ==> next_comm=swapper/7 next_pid=0 next_prio=120
+          <idle>-0     (-----) [007] d.h3  5859.047825: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] dnh4  5859.047831: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] d..2  5859.047836: sched_switch: prev_comm=swapper/7 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=yuntool next_pid=16316 next_prio=120
+         yuntool-16316 (  692) [007] d..2  5859.047871: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=swapper/7 next_pid=0 next_prio=120
+          <idle>-0     (-----) [007] d..1  5859.047874: cpu_idle: state=0 cpu_id=7
+ crtc_commit:215-218   (  218) [000] d..2  5859.047890: sched_switch: prev_comm=crtc_commit:215 prev_pid=218 prev_prio=83 prev_state=D ==> next_comm=propertyd next_pid=796 next_prio=120
+           <...>-796   (  796) [000] d..2  5859.047901: sched_waking: comm=loggerd_write pid=868 prio=120 target_cpu=004
+          <idle>-0     (-----) [007] d.h2  5859.047924: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=007
+           <...>-796   (  796) [000] d..3  5859.047934: sched_wakeup: comm=loggerd_write pid=868 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] dnh3  5859.047942: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] .n.1  5859.047957: cpu_idle: state=4294967295 cpu_id=7
+          <idle>-0     (-----) [007] d..2  5859.047959: sched_switch: prev_comm=swapper/7 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=loggerd_write next_pid=868 next_prio=120
+   loggerd_write-868   (  835) [007] d..2  5859.047970: sched_waking: comm=log_reader pid=16319 prio=120 target_cpu=007
+   loggerd_write-868   (  835) [007] d..3  5859.047978: sched_wakeup: comm=log_reader pid=16319 prio=120 target_cpu=007
+           <...>-796   (  796) [000] d..2  5859.047982: sched_waking: comm=PropertyWatch pid=2113 prio=112 target_cpu=007
+   loggerd_write-868   (  835) [007] d..2  5859.047985: sched_switch: prev_comm=loggerd_write prev_pid=868 prev_prio=120 prev_state=S ==> next_comm=log_reader next_pid=16319 next_prio=120
+           <...>-796   (  796) [000] d..3  5859.048001: sched_wakeup: comm=PropertyWatch pid=2113 prio=112 target_cpu=007
+      log_reader-16319 (  835) [007] d..2  5859.048007: sched_switch: prev_comm=log_reader prev_pid=16319 prev_prio=120 prev_state=S ==> next_comm=PropertyWatch next_pid=2113 next_prio=112
+          weston-875   (  875) [004] d..3  5859.048017: sched_waking: comm=WMSThread pid=1129 prio=107 target_cpu=007
+          weston-875   (  875) [004] d..4  5859.048027: sched_wakeup: comm=WMSThread pid=1129 prio=107 target_cpu=007
+           <...>-796   (  796) [000] d..2  5859.048064: sched_waking: comm=PropertyWatch pid=2182 prio=120 target_cpu=004
+           <...>-2113  ( 2091) [007] d..2  5859.048073: sched_switch: prev_comm=PropertyWatch prev_pid=2113 prev_prio=112 prev_state=S ==> next_comm=WMSThread next_pid=1129 next_prio=107
+          weston-875   (  875) [004] d..2  5859.048082: sched_switch: prev_comm=weston prev_pid=875 prev_prio=107 prev_state=S ==> next_comm=swapper/4 next_pid=0 next_prio=120
+          <idle>-0     (-----) [004] d..1  5859.048089: cpu_idle: state=0 cpu_id=4
+          <idle>-0     (-----) [004] .n.1  5859.048091: cpu_idle: state=4294967295 cpu_id=4
+           <...>-796   (  796) [000] d..3  5859.048095: sched_wakeup: comm=PropertyWatch pid=2182 prio=120 target_cpu=004
+       WMSThread-1129  (  875) [007] d..2  5859.048098: sched_switch: prev_comm=WMSThread prev_pid=1129 prev_prio=107 prev_state=S ==> next_comm=yuntool next_pid=16316 next_prio=120
+          <idle>-0     (-----) [004] d..2  5859.048103: sched_switch: prev_comm=swapper/4 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=PropertyWatch next_pid=2182 next_prio=120
+           <...>-2182  ( 2092) [004] d..2  5859.048121: sched_switch: prev_comm=PropertyWatch prev_pid=2182 prev_prio=120 prev_state=S ==> next_comm=swapper/4 next_pid=0 next_prio=120
+          <idle>-0     (-----) [004] d..1  5859.048124: cpu_idle: state=0 cpu_id=4
+           <...>-796   (  796) [000] d..2  5859.048133: sched_waking: comm=loggerd_write pid=868 prio=120 target_cpu=007
+         yuntool-16316 (  692) [007] d..2  5859.048141: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=swapper/7 next_pid=0 next_prio=120
+          <idle>-0     (-----) [007] d..1  5859.048145: cpu_idle: state=0 cpu_id=7
+          <idle>-0     (-----) [007] .n.1  5859.048149: cpu_idle: state=4294967295 cpu_id=7
+           <...>-796   (  796) [000] d..3  5859.048152: sched_wakeup: comm=loggerd_write pid=868 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] d..2  5859.048158: sched_switch: prev_comm=swapper/7 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=loggerd_write next_pid=868 next_prio=120
+   loggerd_write-868   (  835) [007] d..2  5859.048169: sched_waking: comm=log_reader pid=16319 prio=120 target_cpu=007
+          <idle>-0     (-----) [004] .n.1  5859.048185: cpu_idle: state=4294967295 cpu_id=4
+           <...>-796   (  796) [000] d..2  5859.048185: sched_waking: comm=PropertyWatch pid=2182 prio=120 target_cpu=004
+   loggerd_write-868   (  835) [007] d..3  5859.048186: sched_wakeup: comm=log_reader pid=16319 prio=120 target_cpu=004
+          <idle>-0     (-----) [004] d..2  5859.048192: sched_switch: prev_comm=swapper/4 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=log_reader next_pid=16319 next_prio=120
+   loggerd_write-868   (  835) [007] d.h2  5859.048200: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=007
+           <...>-796   (  796) [000] d..3  5859.048209: sched_wakeup: comm=PropertyWatch pid=2182 prio=120 target_cpu=004
+      log_reader-16319 (  835) [004] d..2  5859.048221: sched_switch: prev_comm=log_reader prev_pid=16319 prev_prio=120 prev_state=S ==> next_comm=PropertyWatch next_pid=2182 next_prio=120
+   loggerd_write-868   (  835) [007] d.h3  5859.048225: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=004
+   loggerd_write-868   (  835) [007] d..1  5859.048235: sched_waking: comm=log_reader pid=16319 prio=120 target_cpu=004
+   loggerd_write-868   (  835) [007] d..2  5859.048243: sched_wakeup: comm=log_reader pid=16319 prio=120 target_cpu=007
+   loggerd_write-868   (  835) [007] d..2  5859.048257: sched_switch: prev_comm=loggerd_write prev_pid=868 prev_prio=120 prev_state=S ==> next_comm=log_reader next_pid=16319 next_prio=120
+           <...>-796   (  796) [000] d..2  5859.048278: sched_waking: comm=PropertyWatch pid=1690 prio=120 target_cpu=007
+      log_reader-16319 (  835) [007] d..2  5859.048286: sched_switch: prev_comm=log_reader prev_pid=16319 prev_prio=120 prev_state=S ==> next_comm=swapper/7 next_pid=0 next_prio=120
+          <idle>-0     (-----) [007] d..1  5859.048289: cpu_idle: state=0 cpu_id=7
+           <...>-2182  ( 2092) [004] d..2  5859.048296: sched_switch: prev_comm=PropertyWatch prev_pid=2182 prev_prio=120 prev_state=S ==> next_comm=yuntool next_pid=16316 next_prio=120
+          <idle>-0     (-----) [007] .n.1  5859.048297: cpu_idle: state=4294967295 cpu_id=7
+           <...>-796   (  796) [000] d..3  5859.048301: sched_wakeup: comm=PropertyWatch pid=1690 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] d..2  5859.048305: sched_switch: prev_comm=swapper/7 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=PropertyWatch next_pid=1690 next_prio=120
+           <...>-1690  ( 1515) [007] d..2  5859.048319: sched_switch: prev_comm=PropertyWatch prev_pid=1690 prev_prio=120 prev_state=S ==> next_comm=swapper/7 next_pid=0 next_prio=120
+          <idle>-0     (-----) [007] d..1  5859.048321: cpu_idle: state=0 cpu_id=7
+           <...>-796   (  796) [000] d..2  5859.048333: sched_waking: comm=loggerd_write pid=868 prio=120 target_cpu=007
+         yuntool-16316 (  692) [004] d..2  5859.048348: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=swapper/4 next_pid=0 next_prio=120
+          <idle>-0     (-----) [007] .n.1  5859.048348: cpu_idle: state=4294967295 cpu_id=7
+           <...>-796   (  796) [000] d..3  5859.048351: sched_wakeup: comm=loggerd_write pid=868 prio=120 target_cpu=007
+          <idle>-0     (-----) [004] d..1  5859.048351: cpu_idle: state=0 cpu_id=4
+          <idle>-0     (-----) [007] d..2  5859.048355: sched_switch: prev_comm=swapper/7 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=loggerd_write next_pid=868 next_prio=120
+   loggerd_write-868   (  835) [007] d.h3  5859.048364: sched_waking: comm=amfm pid=1191 prio=120 target_cpu=007
+          <idle>-0     (-----) [004] .n.1  5859.048375: cpu_idle: state=4294967295 cpu_id=4
+   loggerd_write-868   (  835) [007] d.h4  5859.048376: sched_wakeup: comm=amfm pid=1191 prio=120 target_cpu=004
+           <...>-796   (  796) [000] d..2  5859.048381: sched_waking: comm=PropertyWatch pid=1690 prio=120 target_cpu=007
+          <idle>-0     (-----) [004] d..2  5859.048386: sched_switch: prev_comm=swapper/4 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=amfm next_pid=1191 next_prio=120
+            amfm-1191  ( 1174) [004] d.h3  5859.048393: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=004
+   loggerd_write-868   (  835) [007] d..2  5859.048413: sched_waking: comm=log_reader pid=16319 prio=120 target_cpu=007
+           <...>-796   (  796) [000] d..3  5859.048416: sched_wakeup: comm=PropertyWatch pid=1690 prio=120 target_cpu=004
+   loggerd_write-868   (  835) [007] d..3  5859.048418: sched_wakeup: comm=log_reader pid=16319 prio=120 target_cpu=007
+            amfm-1191  ( 1174) [004] d.h4  5859.048421: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=004
+   loggerd_write-868   (  835) [007] d..2  5859.048424: sched_switch: prev_comm=loggerd_write prev_pid=868 prev_prio=120 prev_state=S ==> next_comm=log_reader next_pid=16319 next_prio=120
+            amfm-1191  ( 1174) [004] d..1  5859.048437: sched_waking: comm=amfm pid=1199 prio=120 target_cpu=007
+            amfm-1191  ( 1174) [004] d..2  5859.048453: sched_wakeup: comm=amfm pid=1199 prio=120 target_cpu=007
+      log_reader-16319 (  835) [007] d..2  5859.048458: sched_switch: prev_comm=log_reader prev_pid=16319 prev_prio=120 prev_state=S ==> next_comm=amfm next_pid=1199 next_prio=120
+            amfm-1191  ( 1174) [004] d..2  5859.048468: sched_switch: prev_comm=amfm prev_pid=1191 prev_prio=120 prev_state=S ==> next_comm=PropertyWatch next_pid=1690 next_prio=120
+            amfm-1199  ( 1174) [007] d..2  5859.048485: sched_switch: prev_comm=amfm prev_pid=1199 prev_prio=120 prev_state=S ==> next_comm=swapper/7 next_pid=0 next_prio=120
+          <idle>-0     (-----) [007] d..1  5859.048488: cpu_idle: state=0 cpu_id=7
+           <...>-796   (  796) [000] d..2  5859.048502: sched_waking: comm=PropertyWatch pid=1912 prio=120 target_cpu=000
+          <idle>-0     (-----) [007] .n.1  5859.048531: cpu_idle: state=4294967295 cpu_id=7
+           <...>-796   (  796) [000] d..3  5859.048534: sched_wakeup: comm=PropertyWatch pid=1912 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] d..2  5859.048538: sched_switch: prev_comm=swapper/7 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=PropertyWatch next_pid=1912 next_prio=120
+           <...>-1690  ( 1515) [004] d..2  5859.048541: sched_switch: prev_comm=PropertyWatch prev_pid=1690 prev_prio=120 prev_state=S ==> next_comm=yuntool next_pid=16316 next_prio=120
+           <...>-1912  ( 1857) [007] d..2  5859.048563: sched_switch: prev_comm=PropertyWatch prev_pid=1912 prev_prio=120 prev_state=S ==> next_comm=swapper/7 next_pid=0 next_prio=120
+          <idle>-0     (-----) [007] d..1  5859.048566: cpu_idle: state=0 cpu_id=7
+           <...>-796   (  796) [000] d..2  5859.048584: sched_waking: comm=loggerd_write pid=868 prio=120 target_cpu=007
+         yuntool-16316 (  692) [004] d..2  5859.048592: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=swapper/4 next_pid=0 next_prio=120
+          <idle>-0     (-----) [004] d..1  5859.048596: cpu_idle: state=0 cpu_id=4
+          <idle>-0     (-----) [007] .n.1  5859.048599: cpu_idle: state=4294967295 cpu_id=7
+           <...>-796   (  796) [000] d..3  5859.048602: sched_wakeup: comm=loggerd_write pid=868 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] d..2  5859.048606: sched_switch: prev_comm=swapper/7 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=loggerd_write next_pid=868 next_prio=120
+   loggerd_write-868   (  835) [007] d..2  5859.048616: sched_waking: comm=log_reader pid=16319 prio=120 target_cpu=007
+   loggerd_write-868   (  835) [007] d..3  5859.048630: sched_wakeup: comm=log_reader pid=16319 prio=120 target_cpu=004
+           <...>-796   (  796) [000] d..2  5859.048633: sched_waking: comm=PropertyWatch pid=1912 prio=120 target_cpu=007
+          <idle>-0     (-----) [004] dnh2  5859.048640: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=004
+          <idle>-0     (-----) [004] dnh3  5859.048648: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=004
+   loggerd_write-868   (  835) [007] d..2  5859.048660: sched_switch: prev_comm=loggerd_write prev_pid=868 prev_prio=120 prev_state=S ==> next_comm=swapper/7 next_pid=0 next_prio=120
+          <idle>-0     (-----) [007] d..1  5859.048662: cpu_idle: state=0 cpu_id=7
+           <...>-796   (  796) [000] d..3  5859.048666: sched_wakeup: comm=PropertyWatch pid=1912 prio=120 target_cpu=004
+          <idle>-0     (-----) [004] .n.1  5859.048669: cpu_idle: state=4294967295 cpu_id=4
+          <idle>-0     (-----) [004] d..2  5859.048673: sched_switch: prev_comm=swapper/4 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=PropertyWatch next_pid=1912 next_prio=120
+           <...>-1912  ( 1857) [004] d..2  5859.048742: sched_switch: prev_comm=PropertyWatch prev_pid=1912 prev_prio=120 prev_state=S ==> next_comm=yuntool next_pid=16316 next_prio=120
+           <...>-796   (  796) [000] d..2  5859.048754: sched_waking: comm=PropertyWatch pid=1720 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] .n.1  5859.048772: cpu_idle: state=4294967295 cpu_id=7
+           <...>-796   (  796) [000] d..3  5859.048776: sched_wakeup: comm=PropertyWatch pid=1720 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] d..2  5859.048780: sched_switch: prev_comm=swapper/7 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=PropertyWatch next_pid=1720 next_prio=120
+         yuntool-16316 (  692) [004] d..2  5859.048780: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=log_reader next_pid=16319 next_prio=120
+           <...>-1720  ( 1593) [007] d..2  5859.048793: sched_switch: prev_comm=PropertyWatch prev_pid=1720 prev_prio=120 prev_state=S ==> next_comm=swapper/7 next_pid=0 next_prio=120
+          <idle>-0     (-----) [007] d..1  5859.048795: cpu_idle: state=0 cpu_id=7
+           <...>-796   (  796) [000] d..2  5859.048808: sched_waking: comm=loggerd_write pid=868 prio=120 target_cpu=007
+      log_reader-16319 (  835) [004] d..2  5859.048822: sched_switch: prev_comm=log_reader prev_pid=16319 prev_prio=120 prev_state=S ==> next_comm=swapper/4 next_pid=0 next_prio=120
+          <idle>-0     (-----) [007] .n.1  5859.048823: cpu_idle: state=4294967295 cpu_id=7
+           <...>-796   (  796) [000] d..3  5859.048826: sched_wakeup: comm=loggerd_write pid=868 prio=120 target_cpu=007
+          <idle>-0     (-----) [004] d..1  5859.048829: cpu_idle: state=0 cpu_id=4
+          <idle>-0     (-----) [007] d..2  5859.048830: sched_switch: prev_comm=swapper/7 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=loggerd_write next_pid=868 next_prio=120
+          <idle>-0     (-----) [004] d.h2  5859.048834: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=004
+   loggerd_write-868   (  835) [007] d..2  5859.048836: sched_waking: comm=log_reader pid=16319 prio=120 target_cpu=004
+          <idle>-0     (-----) [004] dnh3  5859.048841: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=004
+   loggerd_write-868   (  835) [007] d..3  5859.048844: sched_wakeup: comm=log_reader pid=16319 prio=120 target_cpu=004
+          <idle>-0     (-----) [004] .n.1  5859.048848: cpu_idle: state=4294967295 cpu_id=4
+          <idle>-0     (-----) [004] d..2  5859.048851: sched_switch: prev_comm=swapper/4 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=yuntool next_pid=16316 next_prio=120
+   loggerd_write-868   (  835) [007] d..2  5859.048853: sched_switch: prev_comm=loggerd_write prev_pid=868 prev_prio=120 prev_state=S ==> next_comm=swapper/7 next_pid=0 next_prio=120
+          <idle>-0     (-----) [007] d..1  5859.048855: cpu_idle: state=0 cpu_id=7
+           <...>-796   (  796) [000] d..2  5859.048856: sched_waking: comm=PropertyWatch pid=1720 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] .n.1  5859.048870: cpu_idle: state=4294967295 cpu_id=7
+           <...>-796   (  796) [000] d..3  5859.048873: sched_wakeup: comm=PropertyWatch pid=1720 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] d..2  5859.048877: sched_switch: prev_comm=swapper/7 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=PropertyWatch next_pid=1720 next_prio=120
+         yuntool-16316 (  692) [004] d..2  5859.048885: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=log_reader next_pid=16319 next_prio=120
+      log_reader-16319 (  835) [004] d..2  5859.048918: sched_switch: prev_comm=log_reader prev_pid=16319 prev_prio=120 prev_state=S ==> next_comm=swapper/4 next_pid=0 next_prio=120
+          <idle>-0     (-----) [004] d..1  5859.048921: cpu_idle: state=0 cpu_id=4
+           <...>-796   (  796) [000] d..2  5859.048933: sched_waking: comm=PropertyWatch pid=1745 prio=120 target_cpu=007
+          <idle>-0     (-----) [004] d.h2  5859.048938: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=004
+          <idle>-0     (-----) [004] dnh3  5859.048943: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=004
+           <...>-1720  ( 1593) [007] d..2  5859.048944: sched_switch: prev_comm=PropertyWatch prev_pid=1720 prev_prio=120 prev_state=S ==> next_comm=swapper/7 next_pid=0 next_prio=120
+          <idle>-0     (-----) [004] .n.1  5859.048946: cpu_idle: state=4294967295 cpu_id=4
+          <idle>-0     (-----) [007] d..1  5859.048947: cpu_idle: state=0 cpu_id=7
+          <idle>-0     (-----) [004] d..2  5859.048949: sched_switch: prev_comm=swapper/4 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=yuntool next_pid=16316 next_prio=120
+          <idle>-0     (-----) [007] .n.1  5859.048955: cpu_idle: state=4294967295 cpu_id=7
+           <...>-796   (  796) [000] d..3  5859.048959: sched_wakeup: comm=PropertyWatch pid=1745 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] d..2  5859.048963: sched_switch: prev_comm=swapper/7 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=PropertyWatch next_pid=1745 next_prio=120
+           <...>-1745  ( 1678) [007] d..2  5859.048976: sched_switch: prev_comm=PropertyWatch prev_pid=1745 prev_prio=120 prev_state=S ==> next_comm=swapper/7 next_pid=0 next_prio=120
+          <idle>-0     (-----) [007] d..1  5859.048978: cpu_idle: state=0 cpu_id=7
+         yuntool-16316 (  692) [004] d..2  5859.048988: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=swapper/4 next_pid=0 next_prio=120
+           <...>-796   (  796) [000] d..2  5859.048990: sched_waking: comm=loggerd_write pid=868 prio=120 target_cpu=007
+          <idle>-0     (-----) [004] d..1  5859.048991: cpu_idle: state=0 cpu_id=4
+          <idle>-0     (-----) [007] .n.1  5859.049005: cpu_idle: state=4294967295 cpu_id=7
+           <...>-796   (  796) [000] d..3  5859.049008: sched_wakeup: comm=loggerd_write pid=868 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] d..2  5859.049011: sched_switch: prev_comm=swapper/7 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=loggerd_write next_pid=868 next_prio=120
+   loggerd_write-868   (  835) [007] d..2  5859.049022: sched_waking: comm=log_reader pid=16319 prio=120 target_cpu=004
+   loggerd_write-868   (  835) [007] d..3  5859.049031: sched_wakeup: comm=log_reader pid=16319 prio=120 target_cpu=004
+           <...>-796   (  796) [000] d..2  5859.049038: sched_waking: comm=PropertyWatch pid=1745 prio=120 target_cpu=007
+          <idle>-0     (-----) [004] dnh2  5859.049038: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=004
+   loggerd_write-868   (  835) [007] d..2  5859.049045: sched_switch: prev_comm=loggerd_write prev_pid=868 prev_prio=120 prev_state=S ==> next_comm=swapper/7 next_pid=0 next_prio=120
+          <idle>-0     (-----) [007] d..1  5859.049047: cpu_idle: state=0 cpu_id=7
+          <idle>-0     (-----) [007] .n.1  5859.049056: cpu_idle: state=4294967295 cpu_id=7
+           <...>-796   (  796) [000] d..3  5859.049059: sched_wakeup: comm=PropertyWatch pid=1745 prio=120 target_cpu=007
+          <idle>-0     (-----) [004] dnh3  5859.049064: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] d..2  5859.049066: sched_switch: prev_comm=swapper/7 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=PropertyWatch next_pid=1745 next_prio=120
+          <idle>-0     (-----) [004] .n.1  5859.049080: cpu_idle: state=4294967295 cpu_id=4
+          <idle>-0     (-----) [004] d..2  5859.049084: sched_switch: prev_comm=swapper/4 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=log_reader next_pid=16319 next_prio=120
+      log_reader-16319 (  835) [004] d..2  5859.049121: sched_switch: prev_comm=log_reader prev_pid=16319 prev_prio=120 prev_state=S ==> next_comm=swapper/4 next_pid=0 next_prio=120
+           <...>-796   (  796) [000] d..2  5859.049122: sched_waking: comm=PropertyWatch pid=1837 prio=120 target_cpu=007
+          <idle>-0     (-----) [004] d..1  5859.049125: cpu_idle: state=0 cpu_id=4
+           <...>-1745  ( 1678) [007] d..2  5859.049133: sched_switch: prev_comm=PropertyWatch prev_pid=1745 prev_prio=120 prev_state=S ==> next_comm=yuntool next_pid=16316 next_prio=120
+          <idle>-0     (-----) [004] .n.1  5859.049152: cpu_idle: state=4294967295 cpu_id=4
+           <...>-796   (  796) [000] d..3  5859.049155: sched_wakeup: comm=PropertyWatch pid=1837 prio=120 target_cpu=004
+          <idle>-0     (-----) [004] d..2  5859.049162: sched_switch: prev_comm=swapper/4 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=PropertyWatch next_pid=1837 next_prio=120
+         yuntool-16316 (  692) [007] d..2  5859.049185: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=swapper/7 next_pid=0 next_prio=120
+          <idle>-0     (-----) [007] d..1  5859.049188: cpu_idle: state=0 cpu_id=7
+           <...>-1837  ( 1782) [004] d..2  5859.049192: sched_switch: prev_comm=PropertyWatch prev_pid=1837 prev_prio=120 prev_state=S ==> next_comm=swapper/4 next_pid=0 next_prio=120
+          <idle>-0     (-----) [004] d..1  5859.049195: cpu_idle: state=0 cpu_id=4
+           <...>-796   (  796) [000] d..2  5859.049209: sched_waking: comm=loggerd_write pid=868 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] d.h2  5859.049220: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=007
+           <...>-796   (  796) [000] d..3  5859.049228: sched_wakeup: comm=loggerd_write pid=868 prio=120 target_cpu=007
+          <idle>-0     (-----) [004] .n.1  5859.049241: cpu_idle: state=4294967295 cpu_id=4
+          <idle>-0     (-----) [007] dnh3  5859.049242: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=004
+          <idle>-0     (-----) [004] d..2  5859.049247: sched_switch: prev_comm=swapper/4 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=yuntool next_pid=16316 next_prio=120
+           <...>-796   (  796) [000] d..2  5859.049256: sched_waking: comm=PropertyWatch pid=1837 prio=120 target_cpu=004
+          <idle>-0     (-----) [007] .n.1  5859.049256: cpu_idle: state=4294967295 cpu_id=7
+          <idle>-0     (-----) [007] d..2  5859.049259: sched_switch: prev_comm=swapper/7 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=loggerd_write next_pid=868 next_prio=120
+   loggerd_write-868   (  835) [007] d..2  5859.049269: sched_waking: comm=log_reader pid=16319 prio=120 target_cpu=004
+           <...>-796   (  796) [000] d..3  5859.049273: sched_wakeup: comm=PropertyWatch pid=1837 prio=120 target_cpu=004
+   loggerd_write-868   (  835) [007] d..3  5859.049286: sched_wakeup: comm=log_reader pid=16319 prio=120 target_cpu=007
+         yuntool-16316 (  692) [004] d..2  5859.049290: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=PropertyWatch next_pid=1837 next_prio=120
+   loggerd_write-868   (  835) [007] d..2  5859.049305: sched_switch: prev_comm=loggerd_write prev_pid=868 prev_prio=120 prev_state=S ==> next_comm=log_reader next_pid=16319 next_prio=120
+           <...>-796   (  796) [000] d..2  5859.049331: sched_waking: comm=PropertyWatch pid=1869 prio=120 target_cpu=007
+      log_reader-16319 (  835) [007] d..2  5859.049331: sched_switch: prev_comm=log_reader prev_pid=16319 prev_prio=120 prev_state=S ==> next_comm=swapper/7 next_pid=0 next_prio=120
+          <idle>-0     (-----) [007] d..1  5859.049333: cpu_idle: state=0 cpu_id=7
+           <...>-1837  ( 1782) [004] d.h1  5859.049341: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=004
+          <idle>-0     (-----) [007] .n.1  5859.049348: cpu_idle: state=4294967295 cpu_id=7
+           <...>-796   (  796) [000] d..3  5859.049352: sched_wakeup: comm=PropertyWatch pid=1869 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] d..2  5859.049360: sched_switch: prev_comm=swapper/7 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=PropertyWatch next_pid=1869 next_prio=120
+           <...>-1837  ( 1782) [004] d.h2  5859.049366: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=007
+           <...>-1869  ( 1580) [007] d..2  5859.049373: sched_switch: prev_comm=PropertyWatch prev_pid=1869 prev_prio=120 prev_state=S ==> next_comm=yuntool next_pid=16316 next_prio=120
+           <...>-796   (  796) [000] d..2  5859.049388: sched_waking: comm=loggerd_write pid=868 prio=120 target_cpu=007
+           <...>-796   (  796) [000] d..3  5859.049404: sched_wakeup: comm=loggerd_write pid=868 prio=120 target_cpu=007
+         yuntool-16316 (  692) [007] d..2  5859.049410: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=loggerd_write next_pid=868 next_prio=120
+           <...>-1837  ( 1782) [004] d..2  5859.049418: sched_switch: prev_comm=PropertyWatch prev_pid=1837 prev_prio=120 prev_state=S ==> next_comm=swapper/4 next_pid=0 next_prio=120
+          <idle>-0     (-----) [004] d..1  5859.049420: cpu_idle: state=0 cpu_id=4
+   loggerd_write-868   (  835) [007] d..2  5859.049420: sched_waking: comm=log_reader pid=16319 prio=120 target_cpu=007
+          <idle>-0     (-----) [004] .n.1  5859.049434: cpu_idle: state=4294967295 cpu_id=4
+   loggerd_write-868   (  835) [007] d..3  5859.049436: sched_wakeup: comm=log_reader pid=16319 prio=120 target_cpu=004
+           <...>-796   (  796) [000] d..2  5859.049438: sched_waking: comm=PropertyWatch pid=1869 prio=120 target_cpu=007
+          <idle>-0     (-----) [004] d..2  5859.049441: sched_switch: prev_comm=swapper/4 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=log_reader next_pid=16319 next_prio=120
+   loggerd_write-868   (  835) [007] d.h2  5859.049463: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=007
+           <...>-796   (  796) [000] d..3  5859.049476: sched_wakeup: comm=PropertyWatch pid=1869 prio=120 target_cpu=004
+      log_reader-16319 (  835) [004] d..2  5859.049490: sched_switch: prev_comm=log_reader prev_pid=16319 prev_prio=120 prev_state=S ==> next_comm=PropertyWatch next_pid=1869 next_prio=120
+   loggerd_write-868   (  835) [007] d.h3  5859.049495: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=004
+   loggerd_write-868   (  835) [007] d..1  5859.049511: sched_waking: comm=log_reader pid=16319 prio=120 target_cpu=004
+   loggerd_write-868   (  835) [007] d..2  5859.049519: sched_wakeup: comm=log_reader pid=16319 prio=120 target_cpu=007
+   loggerd_write-868   (  835) [007] d..2  5859.049533: sched_switch: prev_comm=loggerd_write prev_pid=868 prev_prio=120 prev_state=S ==> next_comm=log_reader next_pid=16319 next_prio=120
+      log_reader-16319 (  835) [007] d..2  5859.049558: sched_switch: prev_comm=log_reader prev_pid=16319 prev_prio=120 prev_state=S ==> next_comm=swapper/7 next_pid=0 next_prio=120
+           <...>-1869  ( 1580) [004] d..2  5859.049560: sched_switch: prev_comm=PropertyWatch prev_pid=1869 prev_prio=120 prev_state=S ==> next_comm=yuntool next_pid=16316 next_prio=120
+          <idle>-0     (-----) [007] d..1  5859.049561: cpu_idle: state=0 cpu_id=7
+           <...>-796   (  796) [000] d..2  5859.049576: sched_waking: comm=PropertyWatch pid=1290 prio=112 target_cpu=000
+          <idle>-0     (-----) [007] .n.1  5859.049605: cpu_idle: state=4294967295 cpu_id=7
+           <...>-796   (  796) [000] d..3  5859.049608: sched_wakeup: comm=PropertyWatch pid=1290 prio=112 target_cpu=007
+         yuntool-16316 (  692) [004] d..2  5859.049609: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=swapper/4 next_pid=0 next_prio=120
+          <idle>-0     (-----) [007] d..2  5859.049612: sched_switch: prev_comm=swapper/7 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=PropertyWatch next_pid=1290 next_prio=112
+          <idle>-0     (-----) [004] d..1  5859.049613: cpu_idle: state=0 cpu_id=4
+           <...>-1290  ( 1121) [007] d..2  5859.049638: sched_switch: prev_comm=PropertyWatch prev_pid=1290 prev_prio=112 prev_state=S ==> next_comm=swapper/7 next_pid=0 next_prio=120
+          <idle>-0     (-----) [007] d..1  5859.049640: cpu_idle: state=0 cpu_id=7
+          <idle>-0     (-----) [004] d.h2  5859.049653: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=004
+           <...>-796   (  796) [000] d..2  5859.049657: sched_waking: comm=loggerd_write pid=868 prio=120 target_cpu=007
+          <idle>-0     (-----) [004] dnh3  5859.049660: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=004
+          <idle>-0     (-----) [004] .n.1  5859.049664: cpu_idle: state=4294967295 cpu_id=4
+          <idle>-0     (-----) [004] d..2  5859.049667: sched_switch: prev_comm=swapper/4 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=yuntool next_pid=16316 next_prio=120
+          <idle>-0     (-----) [007] .n.1  5859.049671: cpu_idle: state=4294967295 cpu_id=7
+           <...>-796   (  796) [000] d..3  5859.049675: sched_wakeup: comm=loggerd_write pid=868 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] d..2  5859.049679: sched_switch: prev_comm=swapper/7 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=loggerd_write next_pid=868 next_prio=120
+   loggerd_write-868   (  835) [007] d..2  5859.049687: sched_waking: comm=log_reader pid=16319 prio=120 target_cpu=007
+         yuntool-16316 (  692) [004] d..2  5859.049700: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=swapper/4 next_pid=0 next_prio=120
+          <idle>-0     (-----) [004] d..1  5859.049702: cpu_idle: state=0 cpu_id=4
+          <idle>-0     (-----) [004] .n.1  5859.049703: cpu_idle: state=4294967295 cpu_id=4
+   loggerd_write-868   (  835) [007] d..3  5859.049704: sched_wakeup: comm=log_reader pid=16319 prio=120 target_cpu=004
+           <...>-796   (  796) [000] d..2  5859.049705: sched_waking: comm=PropertyWatch pid=1290 prio=112 target_cpu=007
+          <idle>-0     (-----) [004] d..2  5859.049709: sched_switch: prev_comm=swapper/4 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=log_reader next_pid=16319 next_prio=120
+   loggerd_write-868   (  835) [007] d..1  5859.049729: sched_waking: comm=log_reader pid=16319 prio=120 target_cpu=004
+           <...>-796   (  796) [000] d..3  5859.049742: sched_wakeup: comm=PropertyWatch pid=1290 prio=112 target_cpu=004
+      log_reader-16319 (  835) [004] d..2  5859.049757: sched_switch: prev_comm=log_reader prev_pid=16319 prev_prio=120 prev_state=S ==> next_comm=PropertyWatch next_pid=1290 next_prio=112
+           <...>-1290  ( 1121) [004] d.h3  5859.049762: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=004
+   loggerd_write-868   (  835) [007] d..2  5859.049777: sched_wakeup: comm=log_reader pid=16319 prio=120 target_cpu=004
+           <...>-1290  ( 1121) [004] d.h4  5859.049782: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=004
+   loggerd_write-868   (  835) [007] d..2  5859.049788: sched_switch: prev_comm=loggerd_write prev_pid=868 prev_prio=120 prev_state=S ==> next_comm=swapper/7 next_pid=0 next_prio=120
+          <idle>-0     (-----) [007] d..1  5859.049790: cpu_idle: state=0 cpu_id=7
+           <...>-796   (  796) [000] d..2  5859.049829: sched_waking: comm=PropertyWatch pid=2010 prio=94 target_cpu=004
+           <...>-796   (  796) [000] dn.3  5859.049854: sched_wakeup: comm=PropertyWatch pid=2010 prio=94 target_cpu=000
+           <...>-1290  ( 1121) [004] d..2  5859.049854: sched_switch: prev_comm=PropertyWatch prev_pid=1290 prev_prio=112 prev_state=S ==> next_comm=yuntool next_pid=16316 next_prio=120
+           <...>-796   (  796) [000] d..2  5859.049879: sched_switch: prev_comm=propertyd prev_pid=796 prev_prio=120 prev_state=R+ ==> next_comm=PropertyWatch next_pid=2010 next_prio=94
+         yuntool-16316 (  692) [004] d..2  5859.049892: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=log_reader next_pid=16319 next_prio=120
+           <...>-2010  ( 2006) [000] d..2  5859.049897: sched_switch: prev_comm=PropertyWatch prev_pid=2010 prev_prio=94 prev_state=S ==> next_comm=propertyd next_pid=796 next_prio=120
+           <...>-796   (  796) [000] d..2  5859.049925: sched_waking: comm=loggerd_write pid=868 prio=120 target_cpu=007
+      log_reader-16319 (  835) [004] d..2  5859.049928: sched_switch: prev_comm=log_reader prev_pid=16319 prev_prio=120 prev_state=S ==> next_comm=swapper/4 next_pid=0 next_prio=120
+          <idle>-0     (-----) [004] d..1  5859.049932: cpu_idle: state=0 cpu_id=4
+          <idle>-0     (-----) [007] .n.1  5859.049940: cpu_idle: state=4294967295 cpu_id=7
+           <...>-796   (  796) [000] d..3  5859.049944: sched_wakeup: comm=loggerd_write pid=868 prio=120 target_cpu=007
+          <idle>-0     (-----) [004] d.h2  5859.049945: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=004
+          <idle>-0     (-----) [007] d..2  5859.049948: sched_switch: prev_comm=swapper/7 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=loggerd_write next_pid=868 next_prio=120
+          <idle>-0     (-----) [004] dnh3  5859.049952: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=004
+   loggerd_write-868   (  835) [007] d..2  5859.049953: sched_waking: comm=log_reader pid=16319 prio=120 target_cpu=004
+          <idle>-0     (-----) [004] .n.1  5859.049957: cpu_idle: state=4294967295 cpu_id=4
+   loggerd_write-868   (  835) [007] d..3  5859.049958: sched_wakeup: comm=log_reader pid=16319 prio=120 target_cpu=004
+          <idle>-0     (-----) [004] d..2  5859.049961: sched_switch: prev_comm=swapper/4 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=yuntool next_pid=16316 next_prio=120
+   loggerd_write-868   (  835) [007] d..2  5859.049970: sched_switch: prev_comm=loggerd_write prev_pid=868 prev_prio=120 prev_state=S ==> next_comm=swapper/7 next_pid=0 next_prio=120
+          <idle>-0     (-----) [007] d..1  5859.049972: cpu_idle: state=0 cpu_id=7
+           <...>-796   (  796) [000] d..2  5859.049975: sched_waking: comm=PropertyWatch pid=2010 prio=94 target_cpu=000
+           <...>-796   (  796) [000] dn.3  5859.049986: sched_wakeup: comm=PropertyWatch pid=2010 prio=94 target_cpu=000
+           <...>-796   (  796) [000] d..2  5859.049995: sched_switch: prev_comm=propertyd prev_pid=796 prev_prio=120 prev_state=R+ ==> next_comm=PropertyWatch next_pid=2010 next_prio=94
+         yuntool-16316 (  692) [004] d..2  5859.049999: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=log_reader next_pid=16319 next_prio=120
+      log_reader-16319 (  835) [004] d..2  5859.050033: sched_switch: prev_comm=log_reader prev_pid=16319 prev_prio=120 prev_state=S ==> next_comm=swapper/4 next_pid=0 next_prio=120
+          <idle>-0     (-----) [004] d..1  5859.050035: cpu_idle: state=0 cpu_id=4
+          <idle>-0     (-----) [004] d.h2  5859.050051: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=004
+          <idle>-0     (-----) [004] dnh3  5859.050056: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=004
+          <idle>-0     (-----) [004] .n.1  5859.050059: cpu_idle: state=4294967295 cpu_id=4
+          <idle>-0     (-----) [004] d..2  5859.050061: sched_switch: prev_comm=swapper/4 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=yuntool next_pid=16316 next_prio=120
+         yuntool-16316 (  692) [004] d..2  5859.050104: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=swapper/4 next_pid=0 next_prio=120
+          <idle>-0     (-----) [004] d..1  5859.050108: cpu_idle: state=0 cpu_id=4
+          <idle>-0     (-----) [004] d.h2  5859.050150: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=004
+          <idle>-0     (-----) [004] dnh3  5859.050157: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=004
+          <idle>-0     (-----) [004] .n.1  5859.050160: cpu_idle: state=4294967295 cpu_id=4
+          <idle>-0     (-----) [004] d..2  5859.050163: sched_switch: prev_comm=swapper/4 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=yuntool next_pid=16316 next_prio=120
+         yuntool-16316 (  692) [004] d..2  5859.050192: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=swapper/4 next_pid=0 next_prio=120
+          <idle>-0     (-----) [004] d..1  5859.050194: cpu_idle: state=0 cpu_id=4
+          <idle>-0     (-----) [004] d.h2  5859.050240: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=004
+          <idle>-0     (-----) [004] dnh3  5859.050245: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=004
+          <idle>-0     (-----) [004] .n.1  5859.050248: cpu_idle: state=4294967295 cpu_id=4
+          <idle>-0     (-----) [004] d..2  5859.050251: sched_switch: prev_comm=swapper/4 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=yuntool next_pid=16316 next_prio=120
+         yuntool-16316 (  692) [004] d..2  5859.050276: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=swapper/4 next_pid=0 next_prio=120
+          <idle>-0     (-----) [004] d..1  5859.050278: cpu_idle: state=0 cpu_id=4
+          <idle>-0     (-----) [004] d.h2  5859.050325: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=004
+          <idle>-0     (-----) [004] dnh3  5859.050329: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=004
+          <idle>-0     (-----) [004] .n.1  5859.050332: cpu_idle: state=4294967295 cpu_id=4
+          <idle>-0     (-----) [004] d..2  5859.050335: sched_switch: prev_comm=swapper/4 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=yuntool next_pid=16316 next_prio=120
+         yuntool-16316 (  692) [004] d..2  5859.050360: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=swapper/4 next_pid=0 next_prio=120
+          <idle>-0     (-----) [004] d..1  5859.050362: cpu_idle: state=0 cpu_id=4
+          <idle>-0     (-----) [004] d.h2  5859.050409: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=004
+          <idle>-0     (-----) [004] dnh3  5859.050413: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=004
+          <idle>-0     (-----) [004] .n.1  5859.050416: cpu_idle: state=4294967295 cpu_id=4
+          <idle>-0     (-----) [004] d..2  5859.050419: sched_switch: prev_comm=swapper/4 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=yuntool next_pid=16316 next_prio=120
+         yuntool-16316 (  692) [004] d..2  5859.050444: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=swapper/4 next_pid=0 next_prio=120
+          <idle>-0     (-----) [004] d..1  5859.050446: cpu_idle: state=0 cpu_id=4
+          <idle>-0     (-----) [004] d.h2  5859.050493: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=004
+          <idle>-0     (-----) [004] dnh3  5859.050497: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=004
+          <idle>-0     (-----) [004] .n.1  5859.050500: cpu_idle: state=4294967295 cpu_id=4
+           <...>-2010  ( 2006) [000] d..2  5859.050502: sched_switch: prev_comm=PropertyWatch prev_pid=2010 prev_prio=94 prev_state=S ==> next_comm=propertyd next_pid=796 next_prio=120
+          <idle>-0     (-----) [004] d..2  5859.050503: sched_switch: prev_comm=swapper/4 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=yuntool next_pid=16316 next_prio=120
+         yuntool-16316 (  692) [004] d..2  5859.050527: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=swapper/4 next_pid=0 next_prio=120
+          <idle>-0     (-----) [004] d..1  5859.050529: cpu_idle: state=0 cpu_id=4
+           <...>-796   (  796) [000] d..2  5859.050574: sched_waking: comm=PropertyWatch pid=1674 prio=120 target_cpu=004
+          <idle>-0     (-----) [004] d.h2  5859.050577: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=004
+          <idle>-0     (-----) [004] dnh3  5859.050585: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=004
+          <idle>-0     (-----) [004] .n.1  5859.050588: cpu_idle: state=4294967295 cpu_id=4
+          <idle>-0     (-----) [004] d..2  5859.050600: sched_switch: prev_comm=swapper/4 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=yuntool next_pid=16316 next_prio=120
+          <idle>-0     (-----) [007] .n.1  5859.050607: cpu_idle: state=4294967295 cpu_id=7
+           <...>-796   (  796) [000] d..3  5859.050610: sched_wakeup: comm=PropertyWatch pid=1674 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] d..2  5859.050613: sched_switch: prev_comm=swapper/7 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=PropertyWatch next_pid=1674 next_prio=120
+         yuntool-16316 (  692) [004] d..2  5859.050639: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=swapper/4 next_pid=0 next_prio=120
+          <idle>-0     (-----) [004] d..1  5859.050641: cpu_idle: state=0 cpu_id=4
+           <...>-1674  ( 1604) [007] d..2  5859.050641: sched_switch: prev_comm=PropertyWatch prev_pid=1674 prev_prio=120 prev_state=S ==> next_comm=swapper/7 next_pid=0 next_prio=120
+          <idle>-0     (-----) [007] d..1  5859.050644: cpu_idle: state=0 cpu_id=7
+           <...>-796   (  796) [000] d..2  5859.050662: sched_waking: comm=loggerd_write pid=868 prio=120 target_cpu=007
+          <idle>-0     (-----) [004] d.h2  5859.050674: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=004
+          <idle>-0     (-----) [007] .n.1  5859.050677: cpu_idle: state=4294967295 cpu_id=7
+          <idle>-0     (-----) [004] dnh3  5859.050678: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=004
+           <...>-796   (  796) [000] d..3  5859.050681: sched_wakeup: comm=loggerd_write pid=868 prio=120 target_cpu=007
+          <idle>-0     (-----) [004] .n.1  5859.050681: cpu_idle: state=4294967295 cpu_id=4
+          <idle>-0     (-----) [004] d..2  5859.050684: sched_switch: prev_comm=swapper/4 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=yuntool next_pid=16316 next_prio=120
+          <idle>-0     (-----) [007] d..2  5859.050684: sched_switch: prev_comm=swapper/7 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=loggerd_write next_pid=868 next_prio=120
+   loggerd_write-868   (  835) [007] d..2  5859.050690: sched_waking: comm=log_reader pid=16319 prio=120 target_cpu=004
+   loggerd_write-868   (  835) [007] d..3  5859.050696: sched_wakeup: comm=log_reader pid=16319 prio=120 target_cpu=004
+         yuntool-16316 (  692) [004] d..2  5859.050705: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=log_reader next_pid=16319 next_prio=120
+   loggerd_write-868   (  835) [007] d..2  5859.050705: sched_switch: prev_comm=loggerd_write prev_pid=868 prev_prio=120 prev_state=S ==> next_comm=swapper/7 next_pid=0 next_prio=120
+          <idle>-0     (-----) [007] d..1  5859.050706: cpu_idle: state=0 cpu_id=7
+           <...>-796   (  796) [000] d..2  5859.050712: sched_waking: comm=PropertyWatch pid=1674 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] .n.1  5859.050726: cpu_idle: state=4294967295 cpu_id=7
+           <...>-796   (  796) [000] d..3  5859.050729: sched_wakeup: comm=PropertyWatch pid=1674 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] d..2  5859.050733: sched_switch: prev_comm=swapper/7 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=PropertyWatch next_pid=1674 next_prio=120
+      log_reader-16319 (  835) [004] d..2  5859.050740: sched_switch: prev_comm=log_reader prev_pid=16319 prev_prio=120 prev_state=S ==> next_comm=swapper/4 next_pid=0 next_prio=120
+          <idle>-0     (-----) [004] d..1  5859.050744: cpu_idle: state=0 cpu_id=4
+          <idle>-0     (-----) [004] d.h2  5859.050759: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=004
+          <idle>-0     (-----) [004] dnh3  5859.050766: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=004
+          <idle>-0     (-----) [004] .n.1  5859.050769: cpu_idle: state=4294967295 cpu_id=4
+          <idle>-0     (-----) [004] d..2  5859.050772: sched_switch: prev_comm=swapper/4 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=yuntool next_pid=16316 next_prio=120
+           <...>-796   (  796) [000] d..2  5859.050795: sched_waking: comm=PropertyWatch pid=1445 prio=120 target_cpu=000
+           <...>-1674  ( 1604) [007] d..2  5859.050804: sched_switch: prev_comm=PropertyWatch prev_pid=1674 prev_prio=120 prev_state=S ==> next_comm=swapper/7 next_pid=0 next_prio=120
+          <idle>-0     (-----) [007] d..1  5859.050806: cpu_idle: state=0 cpu_id=7
+         yuntool-16316 (  692) [004] d..2  5859.050814: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=swapper/4 next_pid=0 next_prio=120
+          <idle>-0     (-----) [004] d..1  5859.050818: cpu_idle: state=0 cpu_id=4
+          <idle>-0     (-----) [007] .n.1  5859.050825: cpu_idle: state=4294967295 cpu_id=7
+           <...>-796   (  796) [000] d..3  5859.050828: sched_wakeup: comm=PropertyWatch pid=1445 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] d..2  5859.050832: sched_switch: prev_comm=swapper/7 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=PropertyWatch next_pid=1445 next_prio=120
+           <...>-1445  ( 1441) [007] d..2  5859.050857: sched_switch: prev_comm=PropertyWatch prev_pid=1445 prev_prio=120 prev_state=S ==> next_comm=swapper/7 next_pid=0 next_prio=120
+          <idle>-0     (-----) [007] d..1  5859.050859: cpu_idle: state=0 cpu_id=7
+          <idle>-0     (-----) [004] d.h2  5859.050860: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=004
+          <idle>-0     (-----) [004] dnh3  5859.050866: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=004
+          <idle>-0     (-----) [004] .n.1  5859.050869: cpu_idle: state=4294967295 cpu_id=4
+          <idle>-0     (-----) [004] d..2  5859.050872: sched_switch: prev_comm=swapper/4 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=yuntool next_pid=16316 next_prio=120
+           <...>-796   (  796) [000] d..2  5859.050876: sched_waking: comm=loggerd_write pid=868 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] .n.1  5859.050891: cpu_idle: state=4294967295 cpu_id=7
+           <...>-796   (  796) [000] d..3  5859.050894: sched_wakeup: comm=loggerd_write pid=868 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] d..2  5859.050898: sched_switch: prev_comm=swapper/7 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=loggerd_write next_pid=868 next_prio=120
+         yuntool-16316 (  692) [004] d..2  5859.050901: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=swapper/4 next_pid=0 next_prio=120
+          <idle>-0     (-----) [004] d..1  5859.050903: cpu_idle: state=0 cpu_id=4
+   loggerd_write-868   (  835) [007] d..2  5859.050908: sched_waking: comm=log_reader pid=16319 prio=120 target_cpu=004
+          <idle>-0     (-----) [004] .n.1  5859.050916: cpu_idle: state=4294967295 cpu_id=4
+   loggerd_write-868   (  835) [007] d..3  5859.050918: sched_wakeup: comm=log_reader pid=16319 prio=120 target_cpu=004
+          <idle>-0     (-----) [004] d..2  5859.050924: sched_switch: prev_comm=swapper/4 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=log_reader next_pid=16319 next_prio=120
+           <...>-796   (  796) [000] d..2  5859.050931: sched_waking: comm=PropertyWatch pid=1445 prio=120 target_cpu=007
+   loggerd_write-868   (  835) [007] d..2  5859.050939: sched_switch: prev_comm=loggerd_write prev_pid=868 prev_prio=120 prev_state=S ==> next_comm=swapper/7 next_pid=0 next_prio=120
+          <idle>-0     (-----) [007] d..1  5859.050941: cpu_idle: state=0 cpu_id=7
+          <idle>-0     (-----) [007] .n.1  5859.050947: cpu_idle: state=4294967295 cpu_id=7
+      log_reader-16319 (  835) [004] d.h1  5859.050948: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=004
+           <...>-796   (  796) [000] d..3  5859.050950: sched_wakeup: comm=PropertyWatch pid=1445 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] d..2  5859.050954: sched_switch: prev_comm=swapper/7 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=PropertyWatch next_pid=1445 next_prio=120
+      log_reader-16319 (  835) [004] d.h2  5859.050964: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=007
+           <...>-796   (  796) [000] d.h3  5859.050964: sched_waking: comm=gw pid=900 prio=69 target_cpu=000
+           <...>-796   (  796) [000] dnh4  5859.050982: sched_wakeup: comm=gw pid=900 prio=69 target_cpu=000
+      log_reader-16319 (  835) [004] d..2  5859.050995: sched_switch: prev_comm=log_reader prev_pid=16319 prev_prio=120 prev_state=S ==> next_comm=swapper/4 next_pid=0 next_prio=120
+           <...>-796   (  796) [000] d..2  5859.050995: sched_switch: prev_comm=propertyd prev_pid=796 prev_prio=120 prev_state=R+ ==> next_comm=gw next_pid=900 next_prio=69
+          <idle>-0     (-----) [004] d..1  5859.050998: cpu_idle: state=0 cpu_id=4
+           <...>-1445  ( 1441) [007] d..2  5859.051009: sched_switch: prev_comm=PropertyWatch prev_pid=1445 prev_prio=120 prev_state=S ==> next_comm=yuntool next_pid=16316 next_prio=120
+         yuntool-16316 (  692) [007] d..2  5859.051050: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=swapper/7 next_pid=0 next_prio=120
+          <idle>-0     (-----) [007] d..1  5859.051053: cpu_idle: state=0 cpu_id=7
+          <idle>-0     (-----) [007] d.h2  5859.051097: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] dnh3  5859.051103: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] .n.1  5859.051106: cpu_idle: state=4294967295 cpu_id=7
+          <idle>-0     (-----) [007] d..2  5859.051108: sched_switch: prev_comm=swapper/7 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=yuntool next_pid=16316 next_prio=120
+         yuntool-16316 (  692) [007] d..2  5859.051130: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=swapper/7 next_pid=0 next_prio=120
+          <idle>-0     (-----) [007] d..1  5859.051132: cpu_idle: state=0 cpu_id=7
+          <idle>-0     (-----) [007] d.h2  5859.051180: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] dnh3  5859.051184: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] .n.1  5859.051187: cpu_idle: state=4294967295 cpu_id=7
+          <idle>-0     (-----) [007] d..2  5859.051189: sched_switch: prev_comm=swapper/7 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=yuntool next_pid=16316 next_prio=120
+              gw-900   (  883) [000] d..2  5859.051191: sched_switch: prev_comm=gw prev_pid=900 prev_prio=69 prev_state=D ==> next_comm=propertyd next_pid=796 next_prio=120
+         yuntool-16316 (  692) [007] d..2  5859.051208: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=swapper/7 next_pid=0 next_prio=120
+          <idle>-0     (-----) [007] d..1  5859.051210: cpu_idle: state=0 cpu_id=7
+           <...>-796   (  796) [000] d.h2  5859.051214: sched_waking: comm=gw pid=900 prio=69 target_cpu=000
+           <...>-796   (  796) [000] dnh3  5859.051225: sched_wakeup: comm=gw pid=900 prio=69 target_cpu=000
+           <...>-796   (  796) [000] d..2  5859.051234: sched_switch: prev_comm=propertyd prev_pid=796 prev_prio=120 prev_state=R+ ==> next_comm=gw next_pid=900 next_prio=69
+              gw-900   (  883) [000] d..3  5859.051244: sched_waking: comm=spi0 pid=330 prio=120 target_cpu=004
+          <idle>-0     (-----) [007] d.h2  5859.051259: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=007
+          <idle>-0     (-----) [004] .n.1  5859.051260: cpu_idle: state=4294967295 cpu_id=4
+          <idle>-0     (-----) [007] dnh3  5859.051263: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=007
+              gw-900   (  883) [000] d..4  5859.051264: sched_wakeup: comm=spi0 pid=330 prio=120 target_cpu=004
+          <idle>-0     (-----) [007] .n.1  5859.051266: cpu_idle: state=4294967295 cpu_id=7
+          <idle>-0     (-----) [007] d..2  5859.051268: sched_switch: prev_comm=swapper/7 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=yuntool next_pid=16316 next_prio=120
+          <idle>-0     (-----) [004] d..2  5859.051269: sched_switch: prev_comm=swapper/4 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=spi0 next_pid=330 next_prio=120
+            spi0-330   (  330) [004] d..2  5859.051283: sched_switch: prev_comm=spi0 prev_pid=330 prev_prio=120 prev_state=S ==> next_comm=swapper/4 next_pid=0 next_prio=120
+          <idle>-0     (-----) [004] d..1  5859.051285: cpu_idle: state=0 cpu_id=4
+         yuntool-16316 (  692) [007] d..2  5859.051287: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=swapper/7 next_pid=0 next_prio=120
+          <idle>-0     (-----) [007] d..1  5859.051289: cpu_idle: state=0 cpu_id=7
+          <idle>-0     (-----) [007] d.h2  5859.051337: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] dnh3  5859.051341: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] .n.1  5859.051344: cpu_idle: state=4294967295 cpu_id=7
+          <idle>-0     (-----) [007] d..2  5859.051346: sched_switch: prev_comm=swapper/7 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=yuntool next_pid=16316 next_prio=120
+         yuntool-16316 (  692) [007] d..2  5859.051365: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=swapper/7 next_pid=0 next_prio=120
+          <idle>-0     (-----) [007] d..1  5859.051366: cpu_idle: state=0 cpu_id=7
+              gw-900   (  883) [000] d..2  5859.051385: sched_switch: prev_comm=gw prev_pid=900 prev_prio=69 prev_state=D ==> next_comm=propertyd next_pid=796 next_prio=120
+          <idle>-0     (-----) [007] d.h2  5859.051415: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=007
+           <...>-796   (  796) [000] d.h3  5859.051418: sched_waking: comm=gw pid=900 prio=69 target_cpu=000
+          <idle>-0     (-----) [007] dnh3  5859.051419: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] .n.1  5859.051421: cpu_idle: state=4294967295 cpu_id=7
+          <idle>-0     (-----) [007] d..2  5859.051423: sched_switch: prev_comm=swapper/7 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=yuntool next_pid=16316 next_prio=120
+           <...>-796   (  796) [000] dnh4  5859.051429: sched_wakeup: comm=gw pid=900 prio=69 target_cpu=000
+           <...>-796   (  796) [000] d..2  5859.051438: sched_switch: prev_comm=propertyd prev_pid=796 prev_prio=120 prev_state=R+ ==> next_comm=gw next_pid=900 next_prio=69
+         yuntool-16316 (  692) [007] d..2  5859.051442: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=swapper/7 next_pid=0 next_prio=120
+          <idle>-0     (-----) [007] d..1  5859.051444: cpu_idle: state=0 cpu_id=7
+              gw-900   (  883) [000] d..3  5859.051445: sched_waking: comm=spi0 pid=330 prio=120 target_cpu=004
+          <idle>-0     (-----) [004] .n.1  5859.051457: cpu_idle: state=4294967295 cpu_id=4
+              gw-900   (  883) [000] d..4  5859.051460: sched_wakeup: comm=spi0 pid=330 prio=120 target_cpu=004
+          <idle>-0     (-----) [004] d..2  5859.051464: sched_switch: prev_comm=swapper/4 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=spi0 next_pid=330 next_prio=120
+            spi0-330   (  330) [004] d..2  5859.051473: sched_switch: prev_comm=spi0 prev_pid=330 prev_prio=120 prev_state=S ==> next_comm=swapper/4 next_pid=0 next_prio=120
+          <idle>-0     (-----) [004] d..1  5859.051475: cpu_idle: state=0 cpu_id=4
+          <idle>-0     (-----) [007] d.h2  5859.051493: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] dnh3  5859.051497: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=007
+              gw-900   (  883) [000] d..2  5859.051498: sched_switch: prev_comm=gw prev_pid=900 prev_prio=69 prev_state=S ==> next_comm=propertyd next_pid=796 next_prio=120
+          <idle>-0     (-----) [007] .n.1  5859.051499: cpu_idle: state=4294967295 cpu_id=7
+          <idle>-0     (-----) [007] d..2  5859.051501: sched_switch: prev_comm=swapper/7 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=yuntool next_pid=16316 next_prio=120
+         yuntool-16316 (  692) [007] d..2  5859.051520: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=swapper/7 next_pid=0 next_prio=120
+          <idle>-0     (-----) [007] d..1  5859.051521: cpu_idle: state=0 cpu_id=7
+           <...>-796   (  796) [000] d..2  5859.051541: sched_waking: comm=PropertyWatch pid=1466 prio=110 target_cpu=000
+           <...>-796   (  796) [000] d..3  5859.051575: sched_wakeup: comm=PropertyWatch pid=1466 prio=110 target_cpu=007
+          <idle>-0     (-----) [007] dnh2  5859.051578: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=007
+          <idle>-0     (-----) [004] .n.1  5859.051598: cpu_idle: state=4294967295 cpu_id=4
+          <idle>-0     (-----) [007] dnh3  5859.051599: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=004
+          <idle>-0     (-----) [004] d..2  5859.051603: sched_switch: prev_comm=swapper/4 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=yuntool next_pid=16316 next_prio=120
+          <idle>-0     (-----) [007] .n.1  5859.051616: cpu_idle: state=4294967295 cpu_id=7
+          <idle>-0     (-----) [007] d..2  5859.051619: sched_switch: prev_comm=swapper/7 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=PropertyWatch next_pid=1466 next_prio=110
+           <...>-796   (  796) [000] d..2  5859.051620: sched_waking: comm=loggerd_write pid=868 prio=120 target_cpu=007
+           <...>-796   (  796) [000] d..3  5859.051637: sched_wakeup: comm=loggerd_write pid=868 prio=120 target_cpu=007
+           <...>-1466  ( 1443) [007] d..2  5859.051641: sched_switch: prev_comm=PropertyWatch prev_pid=1466 prev_prio=110 prev_state=S ==> next_comm=loggerd_write next_pid=868 next_prio=120
+   loggerd_write-868   (  835) [007] d..2  5859.051652: sched_waking: comm=log_reader pid=16319 prio=120 target_cpu=004
+         yuntool-16316 (  692) [004] d..2  5859.051653: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=swapper/4 next_pid=0 next_prio=120
+          <idle>-0     (-----) [004] d..1  5859.051656: cpu_idle: state=0 cpu_id=4
+          <idle>-0     (-----) [004] .n.1  5859.051661: cpu_idle: state=4294967295 cpu_id=4
+   loggerd_write-868   (  835) [007] d..3  5859.051663: sched_wakeup: comm=log_reader pid=16319 prio=120 target_cpu=004
+          <idle>-0     (-----) [004] d..2  5859.051670: sched_switch: prev_comm=swapper/4 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=log_reader next_pid=16319 next_prio=120
+           <...>-796   (  796) [000] d..2  5859.051670: sched_waking: comm=PropertyWatch pid=1466 prio=110 target_cpu=007
+           <...>-796   (  796) [000] d..3  5859.051690: sched_wakeup: comm=PropertyWatch pid=1466 prio=110 target_cpu=007
+      log_reader-16319 (  835) [004] d.h1  5859.051695: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=004
+   loggerd_write-868   (  835) [007] d..2  5859.051695: sched_switch: prev_comm=loggerd_write prev_pid=868 prev_prio=120 prev_state=S ==> next_comm=PropertyWatch next_pid=1466 next_prio=110
+      log_reader-16319 (  835) [004] d.h2  5859.051709: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=007
+           <...>-1466  ( 1443) [007] d..2  5859.051716: sched_switch: prev_comm=PropertyWatch prev_pid=1466 prev_prio=110 prev_state=R+ ==> next_comm=yuntool next_pid=16316 next_prio=120
+      log_reader-16319 (  835) [004] d..2  5859.051742: sched_switch: prev_comm=log_reader prev_pid=16319 prev_prio=120 prev_state=S ==> next_comm=swapper/4 next_pid=0 next_prio=120
+          <idle>-0     (-----) [004] d..1  5859.051744: cpu_idle: state=0 cpu_id=4
+         yuntool-16316 (  692) [007] d..2  5859.051749: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=PropertyWatch next_pid=1466 next_prio=110
+           <...>-796   (  796) [000] d..2  5859.051753: sched_waking: comm=PropertyWatch pid=1038 prio=105 target_cpu=007
+          <idle>-0     (-----) [004] .n.1  5859.051782: cpu_idle: state=4294967295 cpu_id=4
+           <...>-796   (  796) [000] d..3  5859.051784: sched_wakeup: comm=PropertyWatch pid=1038 prio=105 target_cpu=004
+          <idle>-0     (-----) [004] d..2  5859.051789: sched_switch: prev_comm=swapper/4 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=PropertyWatch next_pid=1038 next_prio=105
+           <...>-1466  ( 1443) [007] d.h1  5859.051801: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=007
+           <...>-1466  ( 1443) [007] dnh2  5859.051817: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=007
+           <...>-1038  (  598) [004] d..2  5859.051818: sched_switch: prev_comm=PropertyWatch prev_pid=1038 prev_prio=105 prev_state=S ==> next_comm=swapper/4 next_pid=0 next_prio=120
+          <idle>-0     (-----) [004] d..1  5859.051821: cpu_idle: state=0 cpu_id=4
+           <...>-1466  ( 1443) [007] d..2  5859.051821: sched_switch: prev_comm=PropertyWatch prev_pid=1466 prev_prio=110 prev_state=R+ ==> next_comm=yuntool next_pid=16316 next_prio=120
+           <...>-796   (  796) [000] d..2  5859.051837: sched_waking: comm=loggerd_write pid=868 prio=120 target_cpu=007
+          <idle>-0     (-----) [004] .n.1  5859.051867: cpu_idle: state=4294967295 cpu_id=4
+         yuntool-16316 (  692) [007] d..2  5859.051869: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=PropertyWatch next_pid=1466 next_prio=110
+           <...>-796   (  796) [000] d..3  5859.051870: sched_wakeup: comm=loggerd_write pid=868 prio=120 target_cpu=004
+          <idle>-0     (-----) [004] d..2  5859.051874: sched_switch: prev_comm=swapper/4 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=loggerd_write next_pid=868 next_prio=120
+   loggerd_write-868   (  835) [004] d..2  5859.051886: sched_waking: comm=log_reader pid=16319 prio=120 target_cpu=004
+           <...>-796   (  796) [000] d.h3  5859.051894: sched_waking: comm=gw pid=900 prio=69 target_cpu=000
+           <...>-796   (  796) [000] dnh4  5859.051904: sched_wakeup: comm=gw pid=900 prio=69 target_cpu=000
+           <...>-1466  ( 1443) [007] d..2  5859.051908: sched_switch: prev_comm=PropertyWatch prev_pid=1466 prev_prio=110 prev_state=S ==> next_comm=swapper/7 next_pid=0 next_prio=120
+          <idle>-0     (-----) [007] d..1  5859.051911: cpu_idle: state=0 cpu_id=7
+          <idle>-0     (-----) [007] .n.1  5859.051912: cpu_idle: state=4294967295 cpu_id=7
+   loggerd_write-868   (  835) [004] d..3  5859.051913: sched_wakeup: comm=log_reader pid=16319 prio=120 target_cpu=007
+           <...>-796   (  796) [000] d..2  5859.051914: sched_switch: prev_comm=propertyd prev_pid=796 prev_prio=120 prev_state=R+ ==> next_comm=gw next_pid=900 next_prio=69
+          <idle>-0     (-----) [007] d..2  5859.051921: sched_switch: prev_comm=swapper/7 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=log_reader next_pid=16319 next_prio=120
+      log_reader-16319 (  835) [007] d.h3  5859.051925: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=007
+      log_reader-16319 (  835) [007] dnh4  5859.051937: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=007
+      log_reader-16319 (  835) [007] d..2  5859.051942: sched_switch: prev_comm=log_reader prev_pid=16319 prev_prio=120 prev_state=R ==> next_comm=yuntool next_pid=16316 next_prio=120
+   loggerd_write-868   (  835) [004] d..2  5859.051945: sched_switch: prev_comm=loggerd_write prev_pid=868 prev_prio=120 prev_state=S ==> next_comm=swapper/4 next_pid=0 next_prio=120
+          <idle>-0     (-----) [004] d..1  5859.051948: cpu_idle: state=0 cpu_id=4
+         yuntool-16316 (  692) [007] d..2  5859.051972: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=log_reader next_pid=16319 next_prio=120
+      log_reader-16319 (  835) [007] d..2  5859.052005: sched_switch: prev_comm=log_reader prev_pid=16319 prev_prio=120 prev_state=S ==> next_comm=swapper/7 next_pid=0 next_prio=120
+          <idle>-0     (-----) [007] d..1  5859.052007: cpu_idle: state=0 cpu_id=7
+          <idle>-0     (-----) [007] d.h2  5859.052026: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] dnh3  5859.052032: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] .n.1  5859.052035: cpu_idle: state=4294967295 cpu_id=7
+          <idle>-0     (-----) [007] d..2  5859.052038: sched_switch: prev_comm=swapper/7 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=yuntool next_pid=16316 next_prio=120
+              gw-900   (  883) [000] d..2  5859.052053: sched_switch: prev_comm=gw prev_pid=900 prev_prio=69 prev_state=D ==> next_comm=propertyd next_pid=796 next_prio=120
+         yuntool-16316 (  692) [007] d..2  5859.052074: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=swapper/7 next_pid=0 next_prio=120
+          <idle>-0     (-----) [007] d..1  5859.052077: cpu_idle: state=0 cpu_id=7
+           <...>-796   (  796) [000] d..2  5859.052084: sched_waking: comm=PropertyWatch pid=1038 prio=105 target_cpu=004
+          <idle>-0     (-----) [004] .n.1  5859.052103: cpu_idle: state=4294967295 cpu_id=4
+           <...>-796   (  796) [000] d..3  5859.052107: sched_wakeup: comm=PropertyWatch pid=1038 prio=105 target_cpu=004
+          <idle>-0     (-----) [004] d..2  5859.052111: sched_switch: prev_comm=swapper/4 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=PropertyWatch next_pid=1038 next_prio=105
+           <...>-796   (  796) [000] d.h3  5859.052121: sched_waking: comm=gw pid=900 prio=69 target_cpu=000
+          <idle>-0     (-----) [007] d.h2  5859.052122: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] dnh3  5859.052128: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=007
+           <...>-796   (  796) [000] dnh4  5859.052131: sched_wakeup: comm=gw pid=900 prio=69 target_cpu=000
+          <idle>-0     (-----) [007] .n.1  5859.052131: cpu_idle: state=4294967295 cpu_id=7
+          <idle>-0     (-----) [007] d..2  5859.052133: sched_switch: prev_comm=swapper/7 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=yuntool next_pid=16316 next_prio=120
+           <...>-796   (  796) [000] d..2  5859.052140: sched_switch: prev_comm=propertyd prev_pid=796 prev_prio=120 prev_state=R+ ==> next_comm=gw next_pid=900 next_prio=69
+              gw-900   (  883) [000] d..3  5859.052148: sched_waking: comm=spi0 pid=330 prio=120 target_cpu=004
+         yuntool-16316 (  692) [007] d..2  5859.052156: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=swapper/7 next_pid=0 next_prio=120
+          <idle>-0     (-----) [007] d..1  5859.052157: cpu_idle: state=0 cpu_id=7
+          <idle>-0     (-----) [007] .n.1  5859.052170: cpu_idle: state=4294967295 cpu_id=7
+              gw-900   (  883) [000] d..4  5859.052173: sched_wakeup: comm=spi0 pid=330 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] d..2  5859.052177: sched_switch: prev_comm=swapper/7 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=spi0 next_pid=330 next_prio=120
+            spi0-330   (  330) [007] d..2  5859.052197: sched_switch: prev_comm=spi0 prev_pid=330 prev_prio=120 prev_state=S ==> next_comm=swapper/7 next_pid=0 next_prio=120
+          <idle>-0     (-----) [007] d..1  5859.052199: cpu_idle: state=0 cpu_id=7
+          <idle>-0     (-----) [007] d.h2  5859.052205: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] dnh3  5859.052210: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] .n.1  5859.052212: cpu_idle: state=4294967295 cpu_id=7
+          <idle>-0     (-----) [007] d..2  5859.052214: sched_switch: prev_comm=swapper/7 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=yuntool next_pid=16316 next_prio=120
+              gw-900   (  883) [000] d..2  5859.052233: sched_switch: prev_comm=gw prev_pid=900 prev_prio=69 prev_state=S ==> next_comm=propertyd next_pid=796 next_prio=120
+         yuntool-16316 (  692) [007] d..2  5859.052235: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=swapper/7 next_pid=0 next_prio=120
+          <idle>-0     (-----) [007] d..1  5859.052236: cpu_idle: state=0 cpu_id=7
+           <...>-1038  (  598) [004] d..2  5859.052248: sched_switch: prev_comm=PropertyWatch prev_pid=1038 prev_prio=105 prev_state=S ==> next_comm=swapper/4 next_pid=0 next_prio=120
+          <idle>-0     (-----) [004] d..1  5859.052251: cpu_idle: state=0 cpu_id=4
+          <idle>-0     (-----) [007] d.h2  5859.052286: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] dnh3  5859.052290: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] .n.1  5859.052292: cpu_idle: state=4294967295 cpu_id=7
+          <idle>-0     (-----) [007] d..2  5859.052294: sched_switch: prev_comm=swapper/7 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=yuntool next_pid=16316 next_prio=120
+           <...>-796   (  796) [000] d..2  5859.052305: sched_waking: comm=PropertyWatch pid=872 prio=120 target_cpu=004
+         yuntool-16316 (  692) [007] d..2  5859.052313: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=swapper/7 next_pid=0 next_prio=120
+          <idle>-0     (-----) [007] d..1  5859.052314: cpu_idle: state=0 cpu_id=7
+          <idle>-0     (-----) [004] .n.1  5859.052324: cpu_idle: state=4294967295 cpu_id=4
+           <...>-796   (  796) [000] d..3  5859.052328: sched_wakeup: comm=PropertyWatch pid=872 prio=120 target_cpu=004
+          <idle>-0     (-----) [004] d..2  5859.052334: sched_switch: prev_comm=swapper/4 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=PropertyWatch next_pid=872 next_prio=120
+           <...>-872   (  796) [004] d..2  5859.052350: sched_switch: prev_comm=PropertyWatch prev_pid=872 prev_prio=120 prev_state=S ==> next_comm=swapper/4 next_pid=0 next_prio=120
+          <idle>-0     (-----) [004] d..1  5859.052354: cpu_idle: state=0 cpu_id=4
+          <idle>-0     (-----) [007] d.h2  5859.052364: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=007
+           <...>-796   (  796) [000] d..2  5859.052365: sched_waking: comm=loggerd_write pid=868 prio=120 target_cpu=004
+          <idle>-0     (-----) [004] d.h4  5859.052365: sched_waking: comm=amfm pid=1191 prio=120 target_cpu=004
+          <idle>-0     (-----) [007] dnh3  5859.052368: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] .n.1  5859.052370: cpu_idle: state=4294967295 cpu_id=7
+          <idle>-0     (-----) [007] d..2  5859.052372: sched_switch: prev_comm=swapper/7 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=yuntool next_pid=16316 next_prio=120
+          <idle>-0     (-----) [004] dnh5  5859.052373: sched_wakeup: comm=amfm pid=1191 prio=120 target_cpu=004
+          <idle>-0     (-----) [004] .n.1  5859.052377: cpu_idle: state=4294967295 cpu_id=4
+          <idle>-0     (-----) [004] d..2  5859.052389: sched_switch: prev_comm=swapper/4 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=amfm next_pid=1191 next_prio=120
+           <...>-796   (  796) [000] d..3  5859.052395: sched_wakeup: comm=loggerd_write pid=868 prio=120 target_cpu=007
+            amfm-1191  ( 1174) [004] d..1  5859.052401: sched_waking: comm=amfm pid=1199 prio=120 target_cpu=007
+         yuntool-16316 (  692) [007] d..2  5859.052402: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=loggerd_write next_pid=868 next_prio=120
+   loggerd_write-868   (  835) [007] d..2  5859.052412: sched_waking: comm=log_reader pid=16319 prio=120 target_cpu=007
+            amfm-1191  ( 1174) [004] d..2  5859.052433: sched_wakeup: comm=amfm pid=1199 prio=120 target_cpu=004
+   loggerd_write-868   (  835) [007] d..3  5859.052437: sched_wakeup: comm=log_reader pid=16319 prio=120 target_cpu=004
+           <...>-796   (  796) [000] d..2  5859.052445: sched_waking: comm=PropertyWatch pid=872 prio=120 target_cpu=004
+   loggerd_write-868   (  835) [007] d.h2  5859.052449: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=007
+            amfm-1191  ( 1174) [004] d..2  5859.052462: sched_switch: prev_comm=amfm prev_pid=1191 prev_prio=120 prev_state=S ==> next_comm=amfm next_pid=1199 next_prio=120
+           <...>-796   (  796) [000] d..3  5859.052470: sched_wakeup: comm=PropertyWatch pid=872 prio=120 target_cpu=004
+   loggerd_write-868   (  835) [007] d.h3  5859.052473: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=004
+            amfm-1199  ( 1174) [004] d..2  5859.052478: sched_switch: prev_comm=amfm prev_pid=1199 prev_prio=120 prev_state=S ==> next_comm=PropertyWatch next_pid=872 next_prio=120
+   loggerd_write-868   (  835) [007] d..2  5859.052500: sched_switch: prev_comm=loggerd_write prev_pid=868 prev_prio=120 prev_state=S ==> next_comm=swapper/7 next_pid=0 next_prio=120
+          <idle>-0     (-----) [007] d..1  5859.052503: cpu_idle: state=0 cpu_id=7
+           <...>-796   (  796) [000] d..2  5859.052532: sched_waking: comm=PropertyWatch pid=1036 prio=120 target_cpu=007
+           <...>-872   (  796) [004] d..2  5859.052546: sched_switch: prev_comm=PropertyWatch prev_pid=872 prev_prio=120 prev_state=S ==> next_comm=yuntool next_pid=16316 next_prio=120
+          <idle>-0     (-----) [007] .n.1  5859.052550: cpu_idle: state=4294967295 cpu_id=7
+           <...>-796   (  796) [000] d..3  5859.052554: sched_wakeup: comm=PropertyWatch pid=1036 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] d..2  5859.052558: sched_switch: prev_comm=swapper/7 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=PropertyWatch next_pid=1036 next_prio=120
+           <...>-1036  (  864) [007] d..2  5859.052572: sched_switch: prev_comm=PropertyWatch prev_pid=1036 prev_prio=120 prev_state=S ==> next_comm=swapper/7 next_pid=0 next_prio=120
+          <idle>-0     (-----) [007] d..1  5859.052574: cpu_idle: state=0 cpu_id=7
+           <...>-796   (  796) [000] d..2  5859.052587: sched_waking: comm=loggerd_write pid=868 prio=120 target_cpu=007
+         yuntool-16316 (  692) [004] d..2  5859.052588: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=log_reader next_pid=16319 next_prio=120
+          <idle>-0     (-----) [007] .n.1  5859.052602: cpu_idle: state=4294967295 cpu_id=7
+           <...>-796   (  796) [000] d..3  5859.052605: sched_wakeup: comm=loggerd_write pid=868 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] d..2  5859.052609: sched_switch: prev_comm=swapper/7 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=loggerd_write next_pid=868 next_prio=120
+   loggerd_write-868   (  835) [007] d..2  5859.052617: sched_waking: comm=log_reader pid=16319 prio=120 target_cpu=004
+      log_reader-16319 (  835) [004] d..2  5859.052629: sched_switch: prev_comm=log_reader prev_pid=16319 prev_prio=120 prev_state=S ==> next_comm=swapper/4 next_pid=0 next_prio=120
+           <...>-796   (  796) [000] d..2  5859.052634: sched_waking: comm=PropertyWatch pid=1036 prio=120 target_cpu=007
+          <idle>-0     (-----) [004] dn.1  5859.052636: cpu_idle: state=0 cpu_id=4
+   loggerd_write-868   (  835) [007] d..3  5859.052637: sched_wakeup: comm=log_reader pid=16319 prio=120 target_cpu=004
+          <idle>-0     (-----) [004] dnh2  5859.052644: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=004
+           <...>-796   (  796) [000] d..3  5859.052655: sched_wakeup: comm=PropertyWatch pid=1036 prio=120 target_cpu=007
+   loggerd_write-868   (  835) [007] d..2  5859.052659: sched_switch: prev_comm=loggerd_write prev_pid=868 prev_prio=120 prev_state=S ==> next_comm=PropertyWatch next_pid=1036 next_prio=120
+          <idle>-0     (-----) [004] dnh3  5859.052669: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=007
+          <idle>-0     (-----) [004] .n.1  5859.052682: cpu_idle: state=4294967295 cpu_id=4
+          <idle>-0     (-----) [004] d..2  5859.052686: sched_switch: prev_comm=swapper/4 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=log_reader next_pid=16319 next_prio=120
+      log_reader-16319 (  835) [004] d..2  5859.052711: sched_switch: prev_comm=log_reader prev_pid=16319 prev_prio=120 prev_state=S ==> next_comm=swapper/4 next_pid=0 next_prio=120
+          <idle>-0     (-----) [004] d..1  5859.052713: cpu_idle: state=0 cpu_id=4
+           <...>-796   (  796) [000] d..2  5859.052719: sched_waking: comm=PropertyWatch pid=1017 prio=112 target_cpu=007
+          <idle>-0     (-----) [004] .n.1  5859.052749: cpu_idle: state=4294967295 cpu_id=4
+           <...>-796   (  796) [000] d..3  5859.052751: sched_wakeup: comm=PropertyWatch pid=1017 prio=112 target_cpu=004
+          <idle>-0     (-----) [004] d..2  5859.052756: sched_switch: prev_comm=swapper/4 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=PropertyWatch next_pid=1017 next_prio=112
+           <...>-1036  (  864) [007] d..2  5859.052782: sched_switch: prev_comm=PropertyWatch prev_pid=1036 prev_prio=120 prev_state=S ==> next_comm=yuntool next_pid=16316 next_prio=120
+           <...>-1017  (  797) [004] d..2  5859.052784: sched_switch: prev_comm=PropertyWatch prev_pid=1017 prev_prio=112 prev_state=S ==> next_comm=swapper/4 next_pid=0 next_prio=120
+          <idle>-0     (-----) [004] d..1  5859.052788: cpu_idle: state=0 cpu_id=4
+           <...>-796   (  796) [000] d..2  5859.052802: sched_waking: comm=loggerd_write pid=868 prio=120 target_cpu=007
+         yuntool-16316 (  692) [007] d..2  5859.052830: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=swapper/7 next_pid=0 next_prio=120
+          <idle>-0     (-----) [007] d..1  5859.052834: cpu_idle: state=0 cpu_id=7
+          <idle>-0     (-----) [004] .n.1  5859.052834: cpu_idle: state=4294967295 cpu_id=4
+           <...>-796   (  796) [000] d..3  5859.052837: sched_wakeup: comm=loggerd_write pid=868 prio=120 target_cpu=004
+          <idle>-0     (-----) [004] d..2  5859.052842: sched_switch: prev_comm=swapper/4 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=loggerd_write next_pid=868 next_prio=120
+   loggerd_write-868   (  835) [004] d..2  5859.052853: sched_waking: comm=log_reader pid=16319 prio=120 target_cpu=004
+   loggerd_write-868   (  835) [004] d..3  5859.052870: sched_wakeup: comm=log_reader pid=16319 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] dnh2  5859.052875: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=007
+           <...>-796   (  796) [000] d..2  5859.052883: sched_waking: comm=PropertyWatch pid=1017 prio=112 target_cpu=004
+          <idle>-0     (-----) [007] dnh3  5859.052888: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] .n.1  5859.052891: cpu_idle: state=4294967295 cpu_id=7
+          <idle>-0     (-----) [007] d..2  5859.052894: sched_switch: prev_comm=swapper/7 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=yuntool next_pid=16316 next_prio=120
+   loggerd_write-868   (  835) [004] d..2  5859.052905: sched_switch: prev_comm=loggerd_write prev_pid=868 prev_prio=120 prev_state=S ==> next_comm=swapper/4 next_pid=0 next_prio=120
+          <idle>-0     (-----) [004] d..1  5859.052908: cpu_idle: state=0 cpu_id=4
+           <...>-796   (  796) [000] d..3  5859.052911: sched_wakeup: comm=PropertyWatch pid=1017 prio=112 target_cpu=007
+         yuntool-16316 (  692) [007] d..2  5859.052916: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=PropertyWatch next_pid=1017 next_prio=112
+           <...>-1017  (  797) [007] d.h1  5859.052967: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=007
+          <idle>-0     (-----) [004] .n.1  5859.052980: cpu_idle: state=4294967295 cpu_id=4
+           <...>-1017  (  797) [007] d.h2  5859.052981: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=004
+          <idle>-0     (-----) [004] d..2  5859.052986: sched_switch: prev_comm=swapper/4 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=yuntool next_pid=16316 next_prio=120
+           <...>-796   (  796) [000] d..2  5859.052997: sched_waking: comm=PropertyWatch pid=1740 prio=120 target_cpu=000
+           <...>-796   (  796) [000] d..3  5859.053028: sched_wakeup: comm=PropertyWatch pid=1740 prio=120 target_cpu=007
+         yuntool-16316 (  692) [004] d..2  5859.053047: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=swapper/4 next_pid=0 next_prio=120
+          <idle>-0     (-----) [004] d..1  5859.053050: cpu_idle: state=0 cpu_id=4
+           <...>-1017  (  797) [007] d..2  5859.053063: sched_switch: prev_comm=PropertyWatch prev_pid=1017 prev_prio=112 prev_state=S ==> next_comm=PropertyWatch next_pid=1740 next_prio=120
+           <...>-796   (  796) [000] d..2  5859.053070: sched_waking: comm=loggerd_write pid=868 prio=120 target_cpu=004
+           <...>-1740  ( 1735) [007] d..2  5859.053073: sched_switch: prev_comm=PropertyWatch prev_pid=1740 prev_prio=120 prev_state=S ==> next_comm=log_reader next_pid=16319 next_prio=120
+           <...>-796   (  796) [000] d..3  5859.053087: sched_wakeup: comm=loggerd_write pid=868 prio=120 target_cpu=004
+          <idle>-0     (-----) [004] dnh2  5859.053092: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=004
+      log_reader-16319 (  835) [007] d..2  5859.053115: sched_switch: prev_comm=log_reader prev_pid=16319 prev_prio=120 prev_state=S ==> next_comm=swapper/7 next_pid=0 next_prio=120
+           <...>-796   (  796) [000] d..2  5859.053117: sched_waking: comm=PropertyWatch pid=1740 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] d..1  5859.053119: cpu_idle: state=0 cpu_id=7
+          <idle>-0     (-----) [007] .n.1  5859.053120: cpu_idle: state=4294967295 cpu_id=7
+          <idle>-0     (-----) [004] dnh3  5859.053122: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] d..2  5859.053128: sched_switch: prev_comm=swapper/7 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=yuntool next_pid=16316 next_prio=120
+           <...>-796   (  796) [000] d..3  5859.053136: sched_wakeup: comm=PropertyWatch pid=1740 prio=120 target_cpu=007
+          <idle>-0     (-----) [004] .n.1  5859.053145: cpu_idle: state=4294967295 cpu_id=4
+          <idle>-0     (-----) [004] d..2  5859.053149: sched_switch: prev_comm=swapper/4 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=loggerd_write next_pid=868 next_prio=120
+   loggerd_write-868   (  835) [004] d..2  5859.053161: sched_waking: comm=log_reader pid=16319 prio=120 target_cpu=007
+         yuntool-16316 (  692) [007] d..2  5859.053162: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=PropertyWatch next_pid=1740 next_prio=120
+   loggerd_write-868   (  835) [004] d..3  5859.053173: sched_wakeup: comm=log_reader pid=16319 prio=120 target_cpu=007
+   loggerd_write-868   (  835) [004] d..2  5859.053190: sched_switch: prev_comm=loggerd_write prev_pid=868 prev_prio=120 prev_state=S ==> next_comm=swapper/4 next_pid=0 next_prio=120
+          <idle>-0     (-----) [004] d..1  5859.053193: cpu_idle: state=0 cpu_id=4
+           <...>-796   (  796) [000] d..2  5859.053202: sched_waking: comm=PropertyWatch pid=1942 prio=120 target_cpu=004
+           <...>-1740  ( 1735) [007] d.h1  5859.053215: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=007
+          <idle>-0     (-----) [004] .n.1  5859.053222: cpu_idle: state=4294967295 cpu_id=4
+           <...>-796   (  796) [000] d..3  5859.053225: sched_wakeup: comm=PropertyWatch pid=1942 prio=120 target_cpu=004
+          <idle>-0     (-----) [004] d..2  5859.053234: sched_switch: prev_comm=swapper/4 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=PropertyWatch next_pid=1942 next_prio=120
+           <...>-1740  ( 1735) [007] d.h2  5859.053241: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=004
+           <...>-1942  ( 1783) [004] d..2  5859.053248: sched_switch: prev_comm=PropertyWatch prev_pid=1942 prev_prio=120 prev_state=S ==> next_comm=yuntool next_pid=16316 next_prio=120
+           <...>-796   (  796) [000] d..2  5859.053262: sched_waking: comm=loggerd_write pid=868 prio=120 target_cpu=004
+           <...>-1740  ( 1735) [007] d..2  5859.053275: sched_switch: prev_comm=PropertyWatch prev_pid=1740 prev_prio=120 prev_state=S ==> next_comm=log_reader next_pid=16319 next_prio=120
+           <...>-796   (  796) [000] d..3  5859.053294: sched_wakeup: comm=loggerd_write pid=868 prio=120 target_cpu=007
+      log_reader-16319 (  835) [007] d..2  5859.053301: sched_switch: prev_comm=log_reader prev_pid=16319 prev_prio=120 prev_state=S ==> next_comm=loggerd_write next_pid=868 next_prio=120
+   loggerd_write-868   (  835) [007] d..2  5859.053310: sched_waking: comm=log_reader pid=16319 prio=120 target_cpu=007
+         yuntool-16316 (  692) [004] d..2  5859.053318: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=swapper/4 next_pid=0 next_prio=120
+          <idle>-0     (-----) [004] d..1  5859.053322: cpu_idle: state=0 cpu_id=4
+          <idle>-0     (-----) [004] .n.1  5859.053327: cpu_idle: state=4294967295 cpu_id=4
+   loggerd_write-868   (  835) [007] d..3  5859.053329: sched_wakeup: comm=log_reader pid=16319 prio=120 target_cpu=004
+          <idle>-0     (-----) [004] d..2  5859.053338: sched_switch: prev_comm=swapper/4 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=log_reader next_pid=16319 next_prio=120
+      log_reader-16319 (  835) [004] d.h3  5859.053343: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=004
+           <...>-796   (  796) [000] d..2  5859.053343: sched_waking: comm=PropertyWatch pid=1942 prio=120 target_cpu=004
+      log_reader-16319 (  835) [004] dnh4  5859.053357: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=004
+   loggerd_write-868   (  835) [007] d..2  5859.053369: sched_switch: prev_comm=loggerd_write prev_pid=868 prev_prio=120 prev_state=S ==> next_comm=swapper/7 next_pid=0 next_prio=120
+      log_reader-16319 (  835) [004] d..2  5859.053372: sched_switch: prev_comm=log_reader prev_pid=16319 prev_prio=120 prev_state=R ==> next_comm=yuntool next_pid=16316 next_prio=120
+          <idle>-0     (-----) [007] d..1  5859.053372: cpu_idle: state=0 cpu_id=7
+          <idle>-0     (-----) [007] .n.1  5859.053378: cpu_idle: state=4294967295 cpu_id=7
+           <...>-796   (  796) [000] d..3  5859.053381: sched_wakeup: comm=PropertyWatch pid=1942 prio=120 target_cpu=007
+          <idle>-0     (-----) [007] d..2  5859.053385: sched_switch: prev_comm=swapper/7 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=PropertyWatch next_pid=1942 next_prio=120
+         yuntool-16316 (  692) [004] d..2  5859.053423: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=log_reader next_pid=16319 next_prio=120
+      log_reader-16319 (  835) [004] d..2  5859.053464: sched_switch: prev_comm=log_reader prev_pid=16319 prev_prio=120 prev_state=S ==> next_comm=swapper/4 next_pid=0 next_prio=120
+           <...>-1942  ( 1783) [007] d..2  5859.053464: sched_switch: prev_comm=PropertyWatch prev_pid=1942 prev_prio=120 prev_state=S ==> next_comm=swapper/7 next_pid=0 next_prio=120
+          <idle>-0     (-----) [007] d..1  5859.053466: cpu_idle: state=0 cpu_id=7
+          <idle>-0     (-----) [004] d.h3  5859.053469: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=004
+          <idle>-0     (-----) [004] dnh4  5859.053474: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=004
+          <idle>-0     (-----) [004] d..2  5859.053478: sched_switch: prev_comm=swapper/4 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=yuntool next_pid=16316 next_prio=120
+           <...>-796   (  796) [000] d.h5  5859.053494: sched_waking: comm=crtc_event:204 pid=217 prio=83 target_cpu=004
+           <...>-796   (  796) [000] dnh6  5859.053521: sched_wakeup: comm=crtc_event:204 pid=217 prio=83 target_cpu=000
+         yuntool-16316 (  692) [004] d..2  5859.053526: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=swapper/4 next_pid=0 next_prio=120
+          <idle>-0     (-----) [004] d..1  5859.053530: cpu_idle: state=0 cpu_id=4
+           <...>-796   (  796) [000] dnh7  5859.053533: sched_waking: comm=kworker/0:1 pid=6034 prio=120 target_cpu=000
+           <...>-796   (  796) [000] dnh8  5859.053548: sched_wakeup: comm=kworker/0:1 pid=6034 prio=120 target_cpu=000
+           <...>-796   (  796) [000] dnh7  5859.053565: sched_waking: comm=SDM_EventThread pid=1071 prio=107 target_cpu=004
+          <idle>-0     (-----) [004] d.h2  5859.053568: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=004
+          <idle>-0     (-----) [004] dnh3  5859.053578: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=004
+           <...>-796   (  796) [000] dnh8  5859.053586: sched_wakeup: comm=SDM_EventThread pid=1071 prio=107 target_cpu=004
+          <idle>-0     (-----) [004] .n.1  5859.053590: cpu_idle: state=4294967295 cpu_id=4
+          <idle>-0     (-----) [004] d..2  5859.053594: sched_switch: prev_comm=swapper/4 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=yuntool next_pid=16316 next_prio=120
+           <...>-796   (  796) [000] dnh5  5859.053594: sched_waking: comm=crtc_commit:204 pid=216 prio=83 target_cpu=004
+           <...>-796   (  796) [000] dnh6  5859.053609: sched_wakeup: comm=crtc_commit:204 pid=216 prio=83 target_cpu=004
+         yuntool-16316 (  692) [004] d..2  5859.053616: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=R+ ==> next_comm=crtc_commit:204 next_pid=216 next_prio=83
+           <...>-796   (  796) [000] dnh5  5859.053626: sched_waking: comm=crtc_event:215 pid=219 prio=83 target_cpu=000
+          <idle>-0     (-----) [007] .n.1  5859.053643: cpu_idle: state=4294967295 cpu_id=7
+           <...>-796   (  796) [000] dnh6  5859.053645: sched_wakeup: comm=crtc_event:215 pid=219 prio=83 target_cpu=007
+          <idle>-0     (-----) [007] d..2  5859.053651: sched_switch: prev_comm=swapper/7 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=crtc_event:215 next_pid=219 next_prio=83
+           <...>-796   (  796) [000] dnh5  5859.053660: sched_waking: comm=crtc_commit:215 pid=218 prio=83 target_cpu=000
+  crtc_event:215-219   (  219) [007] d..4  5859.053662: sched_waking: comm=weston pid=875 prio=107 target_cpu=004
+           <...>-796   (  796) [000] dnh6  5859.053668: sched_wakeup: comm=crtc_commit:215 pid=218 prio=83 target_cpu=000
+  crtc_event:215-219   (  219) [007] d..5  5859.053674: sched_wakeup: comm=weston pid=875 prio=107 target_cpu=007
+  crtc_event:215-219   (  219) [007] d..2  5859.053680: sched_switch: prev_comm=crtc_event:215 prev_pid=219 prev_prio=83 prev_state=S ==> next_comm=weston next_pid=875 next_prio=107
+           <...>-796   (  796) [000] d..2  5859.053708: sched_switch: prev_comm=propertyd prev_pid=796 prev_prio=120 prev_state=R+ ==> next_comm=crtc_event:204 next_pid=217 next_prio=83
+ crtc_commit:204-216   (  216) [004] d..2  5859.053727: sched_switch: prev_comm=crtc_commit:204 prev_pid=216 prev_prio=83 prev_state=S ==> next_comm=yuntool next_pid=16316 next_prio=120
+          weston-875   (  875) [007] d..2  5859.053746: sched_switch: prev_comm=weston prev_pid=875 prev_prio=107 prev_state=R ==> next_comm=crtc_commit:215 next_pid=218 next_prio=83
+         yuntool-16316 (  692) [004] d..2  5859.053748: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=SDM_EventThread next_pid=1071 next_prio=107
+ crtc_commit:215-218   (  218) [007] d..2  5859.053758: sched_waking: comm=crtc_event:215 pid=219 prio=83 target_cpu=007
+ crtc_commit:215-218   (  218) [007] d..3  5859.053769: sched_wakeup: comm=crtc_event:215 pid=219 prio=83 target_cpu=004
+  crtc_event:204-217   (  217) [000] d..2  5859.053771: sched_switch: prev_comm=crtc_event:204 prev_pid=217 prev_prio=83 prev_state=S ==> next_comm=kworker/0:1 next_pid=6034 next_prio=120
+ SDM_EventThread-1071  (  875) [004] d..2  5859.053777: sched_switch: prev_comm=SDM_EventThread prev_pid=1071 prev_prio=107 prev_state=R+ ==> next_comm=crtc_event:215 next_pid=219 next_prio=83
+  crtc_event:215-219   (  219) [004] d..2  5859.053792: sched_switch: prev_comm=crtc_event:215 prev_pid=219 prev_prio=83 prev_state=S ==> next_comm=SDM_EventThread next_pid=1071 next_prio=107
+     kworker/0:1-6034  ( 6034) [000] d..2  5859.053794: sched_switch: prev_comm=kworker/0:1 prev_pid=6034 prev_prio=120 prev_state=I ==> next_comm=propertyd next_pid=796 next_prio=120
+ SDM_EventThread-1071  (  875) [004] d.h1  5859.053798: sched_waking: comm=yuntool pid=16316 prio=120 target_cpu=004
+ SDM_EventThread-1071  (  875) [004] dnh2  5859.053806: sched_wakeup: comm=yuntool pid=16316 prio=120 target_cpu=004
+ SDM_EventThread-1071  (  875) [004] d..2  5859.053810: sched_switch: prev_comm=SDM_EventThread prev_pid=1071 prev_prio=107 prev_state=R+ ==> next_comm=yuntool next_pid=16316 next_prio=120
+         yuntool-16316 (  692) [004] d.s1  5859.053864: sched_waking: comm=rcu_preempt pid=9 prio=120 target_cpu=004
+ crtc_commit:215-218   (  218) [007] d.s2  5859.053864: sched_waking: comm=rcu_sched pid=10 prio=120 target_cpu=007
+           <...>-796   (  796) [000] d.h2  5859.053872: sched_waking: comm=migration/0 pid=20 prio=0 target_cpu=000
+         yuntool-16316 (  692) [004] d.s2  5859.053873: sched_wakeup: comm=rcu_preempt pid=9 prio=120 target_cpu=004
+ crtc_commit:215-218   (  218) [007] d.s3  5859.053882: sched_wakeup: comm=rcu_sched pid=10 prio=120 target_cpu=004
+           <...>-796   (  796) [000] dnh3  5859.053883: sched_wakeup: comm=migration/0 pid=20 prio=0 target_cpu=000
+ crtc_commit:215-218   (  218) [007] d.s3  5859.053903: sched_waking: comm=kworker/u16:1 pid=23640 prio=120 target_cpu=004
+           <...>-796   (  796) [000] dns2  5859.053907: sched_waking: comm=crtc_event:215 pid=219 prio=83 target_cpu=004
+         yuntool-16316 (  692) [004] d..2  5859.053911: sched_switch: prev_comm=yuntool prev_pid=16316 prev_prio=120 prev_state=S ==> next_comm=rcu_preempt next_pid=9 next_prio=120
+ crtc_commit:215-218   (  218) [007] d.s4  5859.053919: sched_wakeup: comm=kworker/u16:1 pid=23640 prio=120 target_cpu=007
+ crtc_commit:215-218   (  218) [007] d.s3  5859.053923: sched_waking: comm=kworker/7:
